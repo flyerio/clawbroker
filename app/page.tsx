@@ -5,12 +5,14 @@ import { useState } from "react";
 /* ─── Data ─── */
 
 const COMPARISON_TRADITIONAL = [
-  { task: "Searching listing databases manually", time: "20 min" },
-  { task: "Building comp spreadsheets", time: "15 min" },
-  { task: "Analyzing tenant financials", time: "15 min" },
-  { task: "Drafting LOIs and proposals", time: "20 min" },
-  { task: "Monitoring market changes", time: "10 min" },
-  { task: "Coordinating with brokers via email", time: "10 min" },
+  { task: "Purchasing local virtual machine", time: "15 min" },
+  { task: "Creating SSH keys and storing securely", time: "10 min" },
+  { task: "Connecting to the server via SSH", time: "5 min" },
+  { task: "Installing Node.js and NPM", time: "5 min" },
+  { task: "Installing OpenClaw", time: "7 min" },
+  { task: "Setting up OpenClaw", time: "10 min" },
+  { task: "Connecting to AI provider", time: "4 min" },
+  { task: "Pairing with Telegram", time: "4 min" },
 ];
 
 const MARQUEE_ROWS = [
@@ -316,7 +318,7 @@ export default function Home() {
 
           {/* Heading */}
           <h2 className="main-text max-w-3xl mx-auto mb-10">
-            Traditional CRE Research vs ClawBroker
+            Traditional Method vs ClawBroker
           </h2>
 
           {/* Comparison cards */}
@@ -341,14 +343,14 @@ export default function Home() {
               </div>
               <div className="border-t-2 border-white/20 mt-4 pt-4 flex justify-between text-sm font-medium text-white">
                 <span>Total</span>
-                <span>90 min</span>
+                <span>60 min</span>
               </div>
               <p className="mt-4 text-sm italic text-zinc-300">
-                If you&apos;re doing this for{" "}
+                If you&apos;re non-technical, multiply these times by{" "}
                 <span className="bg-red-500/10 text-red-500 px-1 py-0.5 rounded-md">
-                  every deal
+                  10
                 </span>
-                , multiply by your pipeline size.
+                {" "}&mdash; you have to learn each step before doing.
               </p>
             </div>
 
@@ -362,13 +364,11 @@ export default function Home() {
                 ClawBroker
               </h3>
               <p className="text-4xl font-semibold text-white mb-4">&lt;1 min</p>
-              <p className="text-sm text-zinc-400 leading-relaxed mb-3">
-                Ask your AI agent, get instant CRE intelligence — comps,
-                financials, market data, drafts — done.
-              </p>
               <p className="text-sm text-zinc-400 leading-relaxed">
-                Your agent monitors markets 24/7, screens deals, and drafts
-                documents while you focus on relationships.
+                Pick a model, connect Telegram, deploy &mdash; done under 1
+                minute. Servers, SSH and OpenClaw Environment are already set
+                up, waiting to get assigned. Simple, secure and fast connection
+                to your bot.
               </p>
             </div>
           </div>
