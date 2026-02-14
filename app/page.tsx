@@ -480,7 +480,7 @@ function GradientLineLeft() {
     <svg
       viewBox="0 0 272 2"
       preserveAspectRatio="none"
-      className="shrink min-w-0 flex-1 max-w-[120px] sm:max-w-[180px] md:max-w-[272px] h-0.5"
+      className="shrink min-w-0 flex-1 h-0.5"
     >
       <defs>
         <linearGradient id="gl-left" x1="272.5" y1="1.5" x2="0.5" y2="1">
@@ -499,7 +499,7 @@ function GradientLineRight() {
     <svg
       viewBox="0 0 272 2"
       preserveAspectRatio="none"
-      className="shrink min-w-0 flex-1 max-w-[120px] sm:max-w-[180px] md:max-w-[272px] h-0.5"
+      className="shrink min-w-0 flex-1 h-0.5"
     >
       <defs>
         <linearGradient id="gl-right" x1="-0.5" y1="0.5" x2="271.5" y2="1">
