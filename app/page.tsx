@@ -54,13 +54,13 @@ const MARQUEE_ROWS = [
 ];
 
 const PILL_STYLES = [
-  "options-card border border-white/10",
-  "table-left-gradient border border-white/10",
-  "border-2 border-white/20 bg-white/[0.02]",
-  "bg-zinc-800/60 border border-zinc-600/40",
-  "bg-zinc-900/80 border border-white/5",
-  "border-2 border-dashed border-zinc-500/50",
-  "bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(255,255,255,0.06),transparent)] border border-white/10",
+  "options-card border border-white/10 text-zinc-300",
+  "table-left-gradient border border-white/10 text-zinc-300",
+  "border-2 border-white/20 bg-white/[0.02] text-zinc-300",
+  "bg-zinc-800/60 border border-zinc-600/40 text-zinc-300",
+  "bg-zinc-900/80 border border-white/5 text-zinc-300",
+  "border-2 border-dashed border-zinc-500/50 text-zinc-400",
+  "bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(255,255,255,0.06),transparent)] border border-white/10 text-zinc-300",
 ];
 
 const MODELS = [
@@ -483,10 +483,10 @@ function GradientLineLeft() {
       className="shrink min-w-0 flex-1 max-w-[120px] sm:max-w-[180px] md:max-w-[272px] h-0.5"
     >
       <defs>
-        <linearGradient id="gl-left" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#190E14" />
-          <stop offset="50%" stopColor="#581D27" />
-          <stop offset="100%" stopColor="#ECA5A7" />
+        <linearGradient id="gl-left" x1="272.5" y1="1.5" x2="0.5" y2="1">
+          <stop offset="0%" stopColor="#ECA5A7" />
+          <stop offset="16.5%" stopColor="#581D27" />
+          <stop offset="100%" stopColor="#190E14" />
         </linearGradient>
       </defs>
       <path d="M0 1 H272" stroke="url(#gl-left)" strokeWidth="2" fill="none" />
@@ -502,9 +502,9 @@ function GradientLineRight() {
       className="shrink min-w-0 flex-1 max-w-[120px] sm:max-w-[180px] md:max-w-[272px] h-0.5"
     >
       <defs>
-        <linearGradient id="gl-right" x1="0%" y1="0%" x2="100%" y2="0%">
+        <linearGradient id="gl-right" x1="-0.5" y1="0.5" x2="271.5" y2="1">
           <stop offset="0%" stopColor="#ECA5A7" />
-          <stop offset="50%" stopColor="#581D27" />
+          <stop offset="16.5%" stopColor="#581D27" />
           <stop offset="100%" stopColor="#190E14" />
         </linearGradient>
       </defs>
@@ -541,7 +541,7 @@ function MarqueeRow({
             return (
               <span
                 key={`${copy}-${i}`}
-                className={`${PILL_STYLES[styleIdx]} inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium text-zinc-300 shrink-0`}
+                className={`${PILL_STYLES[styleIdx]} inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium shrink-0`}
               >
                 <TaskIcon task={item} />
                 {item}
@@ -595,7 +595,7 @@ export default function Home() {
           <div className="flex flex-col items-center [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:w-[80%] w-full">
             <div className="relative select-none w-full">
               {/* Blur glow overlay */}
-              <div className="absolute -top-[60px] -right-[70px] -bottom-[60px] -left-[70px] blur-[20px] pointer-events-none">
+              <div className="absolute -top-[60px] -right-[70px] -bottom-[60px] -left-[70px] blur-[20px] pointer-events-none transform-[translateZ(0)]">
                 <div
                   className="absolute inset-0 -z-10"
                   style={{
@@ -631,7 +631,7 @@ export default function Home() {
                               <img
                                 src={model.img}
                                 alt={model.label}
-                                className="w-5 h-5 shrink-0 object-contain"
+                                className="w-5 h-5 shrink-0"
                               />
                               <h2
                                 className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-white" : "text-zinc-400 group-hover:text-white"}`}
@@ -722,7 +722,7 @@ export default function Home() {
           {/* Label */}
           <div className="comparison-label-bg w-full max-w-full flex flex-wrap items-center justify-center gap-2 sm:gap-4 min-h-[40px] sm:min-h-[46px] px-2">
             <GradientLineLeft />
-            <span className="mx-1 sm:mx-4 shrink-0 text-xs sm:text-sm text-[#FF6363] font-medium tracking-wide leading-relaxed">
+            <span className="mx-1 sm:mx-4 shrink-0 text-xs sm:text-sm text-[#FF6363] font-medium tracking-[0.2px] leading-[160%]">
               Comparison
             </span>
             <GradientLineRight />
@@ -814,6 +814,9 @@ export default function Home() {
                 reverse={i % 2 === 1}
               />
             ))}
+            {/* Edge fades */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 md:w-20 bg-gradient-to-r from-zinc-950 to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 md:w-20 bg-gradient-to-l from-zinc-950 to-transparent z-10" />
           </div>
 
           <span className="text-sm sm:text-base text-zinc-400 text-pretty text-center italic">
