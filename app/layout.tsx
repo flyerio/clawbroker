@@ -1,20 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "ClawBroker — Coming Soon",
-  description: "Next generation commercial real estate intelligence",
+  title: "ClawBroker — Deploy Your CRE AI Agent",
+  description:
+    "Skip the complexity. One-click deploy your own 24/7 commercial real estate intelligence assistant.",
 };
 
 export default function RootLayout({
@@ -24,9 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="font-sans antialiased bg-[#07080a] text-white overflow-x-hidden min-h-dvh">
         {children}
       </body>
     </html>

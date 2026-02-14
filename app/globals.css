@@ -1,26 +1,144 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #07080a;
+  --color-foreground: #ffffff;
+  --animate-marquee: marquee var(--duration, 45s) linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  0% {
+    transform: translate(0);
+  }
+  100% {
+    transform: translateX(calc(-100% - var(--gap)));
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #07080a;
+  color: #ffffff;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* Hero heading gradient text */
+.main-text {
+  font-feature-settings: "ss08" on, "ss02" on, "liga" off;
+  text-align: center;
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.8) -1.59%,
+    #fff 49.71%,
+    rgba(255, 255, 255, 0.81) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: clamp(1.5rem, 5vw + 1rem, 3rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+@media (min-width: 768px) {
+  .main-text {
+    font-size: clamp(2rem, 4vw, 48px);
+  }
+}
+
+/* Card frame (outer border + shadow) */
+.card-frame {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.42);
+  position: relative;
+}
+
+/* 3D keyboard-key option buttons */
+.options-card {
+  --key-bg-start-color: rgba(255, 255, 255, 0.06);
+  --key-bg-end-color: rgba(255, 255, 255, 0.02);
+  background: radial-gradient(
+    75% 75% at 50% 91.9%,
+    var(--key-bg-start-color) 0,
+    var(--key-bg-end-color) 100%
+  );
+  box-shadow: 0 1.5px 0.5px 2.5px rgba(0, 0, 0, 0.4),
+    0 0 0.5px 1px #000, inset 0 2px 1px 1px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 0 rgba(0, 0, 0, 0);
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 300ms;
+  cursor: pointer;
+}
+.options-card:hover {
+  box-shadow: 0 1.5px 0.5px 2.5px rgba(0, 0, 0, 0.4),
+    0 0 0.5px 1px #000, inset 0 2px 1px 1px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px 1px rgba(255, 255, 255, 0.4),
+    inset 0 0 rgba(0, 0, 0, 0);
+}
+.options-card.selected {
+  background: #18181b;
+  box-shadow: 0 1.5px 0.5px 2.5px rgba(0, 0, 0, 0.4),
+    0 0 0.5px 1px #000, inset 0 2px 1px 1px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px 1px #fff, inset 0 0 rgba(0, 0, 0, 0);
+}
+
+/* CTA button shadow */
+.main-btn-shadow {
+  background: white;
+  color: black;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 500;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5), 0 0 14px rgba(255, 255, 255, 0.19),
+    inset 0 -1px 0.4px rgba(0, 0, 0, 0.2), inset 0 1px 0.4px #fff;
+  transition: all 200ms;
+}
+.main-btn-shadow:hover {
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0.4px rgba(0, 0, 0, 0.2), inset 0 1px 0.4px #fff;
+}
+
+/* Comparison left gradient */
+.table-left-gradient {
+  background: radial-gradient(
+    100% 50% at 0% 50%,
+    rgba(255, 255, 255, 0.05) 0,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Comparison label background */
+.comparison-label-bg {
+  background: radial-gradient(
+    13.65% 50%,
+    rgba(245, 48, 107, 0.1) 0,
+    rgba(255, 103, 167, 0) 100%
+  );
+}
+
+/* Star sparkle dots */
+.star-sparkle {
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
 }
