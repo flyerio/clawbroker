@@ -5,6 +5,7 @@ export default function Home() {
         ClawBroker
       </h1>
       <p className="mt-4 text-lg text-zinc-400 sm:text-xl">Coming Soon</p>
+      <p className="mt-8 text-sm text-zinc-600">Next generation commercial real estate intelligence</p>
     </div>
   );
 }
