@@ -415,12 +415,12 @@ export default function Home() {
             <span className="text-red-500" aria-label="love">
               &#9829;
             </span>{" "}
-            by{" "}
+            from{" "}
             <a
-              href="mailto:isaac@cobroker.ai"
+              href="https://cobroker.ai"
               className="border-b-2 border-white/20 hover:border-white/40 transition-colors"
             >
-              Isaac Herrera
+              Cobroker.ai
             </a>
             <span className="mx-3 text-zinc-600">&#183;</span>
             <a
