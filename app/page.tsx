@@ -445,7 +445,7 @@ function Sparkles() {
 
   let globalIdx = 0;
   return (
-    <div className="absolute -top-[45px] -right-[135px] -bottom-[45px] -left-[135px] pointer-events-none select-none">
+    <div className="absolute -top-[45px] -right-[135px] -bottom-[45px] -left-[135px] *:absolute pointer-events-none">
       {Object.entries(regionStyles).map(([region, cls]) => (
         <div key={region} className={cls}>
           {SPARKLE_DOTS.filter((d) => d.region === region).map((d) => {
@@ -568,13 +568,15 @@ export default function Home() {
           <span className="text-base sm:text-lg font-medium text-white truncate min-w-0">
             ClawBroker<span className="text-zinc-400 italic">.ai</span>
           </span>
-          <a
-            href="mailto:isaac@cobroker.ai"
-            className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base border-b-2 border-white/20 text-zinc-400 hover:text-zinc-500 transition-colors duration-500 whitespace-nowrap"
-          >
-            <MailIcon className="size-4 sm:size-5 shrink-0" />
-            Contact Support
-          </a>
+          <nav className="flex items-center shrink-0">
+            <a
+              href="mailto:isaac@cobroker.ai"
+              className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base border-b-2 border-white/20 text-zinc-400 hover:text-zinc-500 transition-colors duration-500 whitespace-nowrap"
+            >
+              <MailIcon className="size-4 sm:size-5 shrink-0" />
+              Contact Support
+            </a>
+          </nav>
         </header>
 
         {/* ─── Hero ─── */}
@@ -590,8 +592,8 @@ export default function Home() {
 
         {/* ─── Card with Glow ─── */}
         <div className="w-full flex justify-center">
-          <div className="flex flex-col items-center md:w-[80%] w-full">
-            <div className="relative select-none">
+          <div className="flex flex-col items-center [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:w-[80%] w-full">
+            <div className="relative select-none w-full">
               {/* Blur glow overlay */}
               <div className="absolute -top-[60px] -right-[70px] -bottom-[60px] -left-[70px] blur-[20px] pointer-events-none">
                 <div
@@ -629,7 +631,7 @@ export default function Home() {
                               <img
                                 src={model.img}
                                 alt={model.label}
-                                className="w-5 h-5 shrink-0"
+                                className="w-5 h-5 shrink-0 object-contain"
                               />
                               <h2
                                 className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-white" : "text-zinc-400 group-hover:text-white"}`}
@@ -667,7 +669,7 @@ export default function Home() {
                               <img
                                 src={ch.img}
                                 alt={ch.label}
-                                className="w-5 h-5 shrink-0"
+                                className="w-5 h-5 shrink-0 object-contain"
                               />
                               <h2
                                 className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-white" : "text-zinc-400 group-hover:text-white"}`}
@@ -718,9 +720,9 @@ export default function Home() {
         {/* ─── Comparison Section ─── */}
         <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-32 flex flex-col gap-3 max-w-5xl mx-auto min-w-0">
           {/* Label */}
-          <div className="w-full max-w-full flex flex-wrap items-center justify-center gap-2 sm:gap-4 min-h-[40px] sm:min-h-[46px] px-2">
+          <div className="comparison-label-bg w-full max-w-full flex flex-wrap items-center justify-center gap-2 sm:gap-4 min-h-[40px] sm:min-h-[46px] px-2">
             <GradientLineLeft />
-            <span className="mx-1 sm:mx-4 shrink-0 text-xs sm:text-sm text-[#FF6363] font-medium">
+            <span className="mx-1 sm:mx-4 shrink-0 text-xs sm:text-sm text-[#FF6363] font-medium tracking-wide leading-relaxed">
               Comparison
             </span>
             <GradientLineRight />
@@ -821,27 +823,31 @@ export default function Home() {
 
         {/* ─── Footer ─── */}
         <section className="w-full px-4 sm:px-6 pt-12 sm:pt-16 md:pt-24 pb-8 flex flex-col gap-6 sm:gap-12 max-w-5xl mx-auto items-center text-center min-w-0">
-          <h4 className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 gap-y-2 text-sm sm:text-base">
-            Built with{" "}
-            <span className="text-red-500" aria-label="love">
-              &#9829;
-            </span>{" "}
-            from{" "}
-            <a
-              href="https://cobroker.ai"
-              className="text-white hover:text-zinc-400 font-medium border-b-2 border-white/20 transition-all duration-300"
-            >
-              Cobroker.ai
-            </a>
-            <span className="size-1 rounded-full bg-current opacity-60" />
-            <a
-              href="mailto:isaac@cobroker.ai"
-              className="inline-flex items-center gap-1.5 text-white hover:text-zinc-400 transition-colors"
-            >
-              <MailIcon className="size-4 sm:size-5 shrink-0" />
-              Contact Support
-            </a>
-          </h4>
+          <div className="flex flex-col gap-2">
+            <h4 className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 gap-y-2 text-sm sm:text-base">
+              <span className="flex items-center gap-2">
+                Built with{" "}
+                <span className="text-red-500" aria-label="love">
+                  &#9829;
+                </span>{" "}
+                by{" "}
+                <a
+                  href="https://cobroker.ai"
+                  className="text-white hover:text-zinc-400 font-medium border-b-2 border-white/20 transition-all duration-300"
+                >
+                  Cobroker.ai
+                </a>
+              </span>
+              <span className="size-1 rounded-full bg-current opacity-60" />
+              <a
+                href="mailto:isaac@cobroker.ai"
+                className="inline-flex items-center gap-1.5 text-white hover:text-zinc-400 transition-colors"
+              >
+                <MailIcon className="size-4 sm:size-5 shrink-0" />
+                Contact Support
+              </a>
+            </h4>
+          </div>
         </section>
       </div>
     </div>

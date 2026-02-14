@@ -118,6 +118,15 @@ body {
   }
 }
 
+/* Comparison label radial gradient background */
+.comparison-label-bg {
+  background: radial-gradient(13.65% 50%, rgba(245, 48, 107, 0.1) 0px, rgba(255, 103, 167, 0) 100%);
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Star sparkle dots */
 .star-sparkle::before, .star-sparkle::after {
   content: "";
