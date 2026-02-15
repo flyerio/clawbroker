@@ -367,42 +367,52 @@ function TaskIcon({ task }: { task: string }) {
 
 /* ─── Sparkle dots (edge regions with data-state toggling) ─── */
 
+// Seeded PRNG (mulberry32) — deterministic across server/client to avoid hydration mismatch
+function seededRandom(seed: number) {
+  let t = seed + 0x6D2B79F5;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+
 function generateEdgeDots() {
   const dots: { top: number; left: number; opacity: number; region: string }[] = [];
+  let seed = 42;
+  const rand = () => seededRandom(seed++);
 
   // Top strip: h-[45px] across full width (~33 dots)
   for (let i = 0; i < 33; i++) {
     dots.push({
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      opacity: 0.2 + Math.random() * 0.6,
+      top: rand() * 100,
+      left: rand() * 100,
+      opacity: 0.2 + rand() * 0.6,
       region: "top",
     });
   }
   // Right strip (~18 dots)
   for (let i = 0; i < 18; i++) {
     dots.push({
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      opacity: 0.2 + Math.random() * 0.6,
+      top: rand() * 100,
+      left: rand() * 100,
+      opacity: 0.2 + rand() * 0.6,
       region: "right",
     });
   }
   // Bottom strip (~22 dots)
   for (let i = 0; i < 22; i++) {
     dots.push({
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      opacity: 0.2 + Math.random() * 0.6,
+      top: rand() * 100,
+      left: rand() * 100,
+      opacity: 0.2 + rand() * 0.6,
       region: "bottom",
     });
   }
   // Left strip (~18 dots)
   for (let i = 0; i < 18; i++) {
     dots.push({
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      opacity: 0.2 + Math.random() * 0.6,
+      top: rand() * 100,
+      left: rand() * 100,
+      opacity: 0.2 + rand() * 0.6,
       region: "left",
     });
   }
