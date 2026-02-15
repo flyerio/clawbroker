@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ThemeToggle } from "./theme-toggle";
 
 /* ─── Data ─── */
 
@@ -55,13 +54,13 @@ const MARQUEE_ROWS = [
 ];
 
 const PILL_STYLES = [
-  "options-card border border-black/10 dark:border-white/10 text-zinc-600 dark:text-zinc-300",
-  "table-left-gradient border border-black/10 dark:border-white/10 text-zinc-600 dark:text-zinc-300",
-  "border-2 border-black/10 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.02] text-zinc-600 dark:text-zinc-300",
-  "bg-zinc-200/60 dark:bg-zinc-800/60 border border-zinc-400/40 dark:border-zinc-600/40 text-zinc-600 dark:text-zinc-300",
-  "bg-zinc-100/80 dark:bg-zinc-900/80 border border-black/5 dark:border-white/5 text-zinc-600 dark:text-zinc-300",
-  "border-2 border-dashed border-zinc-400/50 dark:border-zinc-500/50 text-zinc-500 dark:text-zinc-400",
-  "bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(0,0,0,0.04),transparent)] dark:bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(255,255,255,0.06),transparent)] border border-black/10 dark:border-white/10 text-zinc-600 dark:text-zinc-300",
+  "options-card border border-black/10 text-zinc-600",
+  "table-left-gradient border border-black/10 text-zinc-600",
+  "border-2 border-black/10 bg-black/[0.02] text-zinc-600",
+  "bg-zinc-200/60 border border-zinc-400/40 text-zinc-600",
+  "bg-zinc-100/80 border border-black/5 text-zinc-600",
+  "border-2 border-dashed border-zinc-400/50 text-zinc-500",
+  "bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(0,0,0,0.04),transparent)] border border-black/10 text-zinc-600",
 ];
 
 const MODELS = [
@@ -74,7 +73,6 @@ const MODELS = [
     id: "gpt",
     label: "GPT-5.2",
     img: "https://img.icons8.com/androidL/512/FFFFFF/chatgpt.png",
-    invertLight: true,
   },
   {
     id: "gemini",
@@ -336,7 +334,7 @@ function CheckIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-4 shrink-0 text-gray-900 dark:text-white"
+      className="size-4 shrink-0 text-gray-900"
     >
       <path d="M20 6 9 17l-5-5" />
     </svg>
@@ -359,7 +357,7 @@ function TaskIcon({ task }: { task: string }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-4 shrink-0 text-zinc-500 dark:text-zinc-400"
+      className="size-4 shrink-0 text-zinc-500"
       aria-hidden="true"
     >
       {paths}
@@ -466,7 +464,7 @@ function Sparkles() {
               <div
                 key={idx}
                 ref={(el) => { dotsRef.current[idx] = el; }}
-                className="star-sparkle absolute bg-gray-800 dark:bg-white rounded-full"
+                className="star-sparkle absolute bg-gray-800 rounded-full"
                 data-index={idx}
                 data-state="off"
                 style={{
@@ -577,18 +575,17 @@ export default function Home() {
       <div className="w-full max-w-5xl flex flex-col gap-0 min-w-0">
         {/* ─── Header ─── */}
         <header className="w-full flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
-          <span className="text-base sm:text-lg font-medium text-gray-900 dark:text-white truncate min-w-0">
+          <span className="text-base sm:text-lg font-medium text-gray-900 truncate min-w-0">
             ClawBroker<span className="text-zinc-400 italic">.ai</span>
           </span>
-          <nav className="flex items-center gap-3 shrink-0">
+          <nav className="flex items-center shrink-0">
             <a
               href="mailto:isaac@cobroker.ai"
-              className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base border-b-2 border-black/20 dark:border-white/20 text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-500 transition-colors duration-500 whitespace-nowrap"
+              className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base border-b-2 border-black/20 text-zinc-500 hover:text-zinc-600 transition-colors duration-500 whitespace-nowrap"
             >
               <MailIcon className="size-4 sm:size-5 shrink-0" />
               Contact Support
             </a>
-            <ThemeToggle />
           </nav>
         </header>
 
@@ -625,11 +622,11 @@ export default function Home() {
 
               {/* Card */}
               <div className="card-frame relative p-2 transform-[translateZ(0)] rounded-[24px] w-full">
-                <div className="w-full min-w-[280px] min-h-[200px] overflow-hidden bg-white dark:bg-[#07080A] border border-black/5 dark:border-white/5 rounded-2xl">
+                <div className="w-full min-w-[280px] min-h-[200px] overflow-hidden bg-white border border-black/5 rounded-2xl">
                   <div className="w-full p-4 sm:p-6 md:p-8 flex flex-col gap-6 sm:gap-8 md:gap-10 min-w-0">
                     {/* Model selection */}
                     <div className="flex flex-col gap-3 sm:gap-4">
-                      <h1 className="font-medium text-base sm:text-lg text-balance text-gray-900 dark:text-white">
+                      <h1 className="font-medium text-base sm:text-lg text-balance text-gray-900">
                         Choose your AI model
                       </h1>
                       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -644,10 +641,10 @@ export default function Home() {
                               <img
                                 src={model.img}
                                 alt={model.label}
-                                className={`w-5 h-5 shrink-0 ${"invertLight" in model && model.invertLight ? "invert dark:invert-0" : ""}`}
+                                className={`w-5 h-5 shrink-0 ${model.id === "gpt" ? "invert" : ""}`}
                               />
                               <h2
-                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-gray-900 dark:text-white" : "text-zinc-500 dark:text-zinc-400 group-hover:text-gray-900 dark:group-hover:text-white"}`}
+                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-gray-900" : "text-zinc-500 group-hover:text-gray-900"}`}
                               >
                                 {model.label}
                               </h2>
@@ -664,7 +661,7 @@ export default function Home() {
 
                     {/* Channel selection */}
                     <div className="flex flex-col gap-3 sm:gap-4">
-                      <h1 className="font-medium text-base sm:text-lg text-balance text-gray-900 dark:text-white">
+                      <h1 className="font-medium text-base sm:text-lg text-balance text-gray-900">
                         Select your channel
                       </h1>
                       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -685,12 +682,12 @@ export default function Home() {
                                 className="w-5 h-5 shrink-0 object-contain"
                               />
                               <h2
-                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-gray-900 dark:text-white" : "text-zinc-500 dark:text-zinc-400 group-hover:text-gray-900 dark:group-hover:text-white"}`}
+                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-gray-900" : "text-zinc-500 group-hover:text-gray-900"}`}
                               >
                                 {ch.label}
                               </h2>
                               {!ch.active && (
-                                <span className="absolute bottom-0 right-0 text-[10px] text-zinc-500 dark:text-zinc-400 group-hover:text-gray-900 dark:group-hover:text-white">
+                                <span className="absolute bottom-0 right-0 text-[10px] text-zinc-500 group-hover:text-gray-900">
                                   Coming soon
                                 </span>
                               )}
@@ -711,7 +708,7 @@ export default function Home() {
                         <input
                           type="email"
                           placeholder="Enter your email"
-                          className="flex-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:border-black/20 dark:focus:border-white/20 transition-colors"
+                          className="flex-1 bg-black/5 border border-black/10 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder:text-zinc-400 outline-none focus:border-black/20 transition-colors"
                         />
                         <button className="main-btn-shadow text-sm sm:text-base whitespace-nowrap">
                           Join Waitlist
@@ -719,7 +716,7 @@ export default function Home() {
                       </div>
                       <h3 className="text-[#6A6B6C] font-medium text-sm">
                         Be first to access{" "}
-                        <span className="text-indigo-600 dark:text-indigo-400">ClawBroker</span> when
+                        <span className="text-indigo-600">ClawBroker</span> when
                         we launch.
                       </h3>
                     </div>
@@ -764,13 +761,13 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 pt-3 border-t-2 border-black/20 dark:border-white/20 flex justify-between text-base sm:text-lg font-medium text-gray-900 dark:text-white">
+              <p className="mt-3 pt-3 border-t-2 border-black/20 flex justify-between text-base sm:text-lg font-medium text-gray-900">
                 <span className="italic">Total</span>
                 <span className="tabular-nums font-medium text-xl">
                   60 min
                 </span>
               </p>
-              <p className="mt-3 text-sm font-medium text-zinc-600 dark:text-zinc-300 text-pretty italic leading-relaxed">
+              <p className="mt-3 text-sm font-medium text-zinc-600 text-pretty italic leading-relaxed">
                 If you&apos;re{" "}
                 <span className="bg-red-500/10 text-red-500 px-1 py-0.5 rounded-md">
                   non-technical
@@ -784,14 +781,14 @@ export default function Home() {
             </div>
 
             {/* Divider */}
-            <div className="w-full md:w-[2px] h-[2px] md:h-auto md:min-h-px shrink-0 bg-black/10 dark:bg-white/10" />
+            <div className="w-full md:w-[2px] h-[2px] md:h-auto md:min-h-px shrink-0 bg-black/10" />
 
             {/* ClawBroker side */}
             <div className="flex-1 md:pl-10 min-w-0 flex flex-col justify-center pt-6 md:pt-0 gap-3 table-left-gradient">
               <p className="text-base sm:text-lg font-medium text-zinc-400 italic">
                 ClawBroker
               </p>
-              <p className="text-2xl sm:text-4xl font-semibold text-gray-900 dark:text-white tabular-nums">
+              <p className="text-2xl sm:text-4xl font-semibold text-gray-900 tabular-nums">
                 &lt;1 min
               </p>
               <p className="text-sm sm:text-base text-zinc-400 text-pretty leading-relaxed">
@@ -810,7 +807,7 @@ export default function Home() {
         {/* ─── Use Cases Section ─── */}
         <section className="w-full px-4 sm:px-6 py-10 sm:py-16 flex flex-col gap-8 sm:gap-12 max-w-5xl mx-auto min-w-0">
           <div className="flex flex-col items-center justify-center gap-1 sm:gap-2">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900 dark:text-white text-center text-balance">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900 text-center text-balance">
               What can ClawBroker do for you?
             </h2>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-[#6A6B6C] text-center text-balance">
@@ -828,8 +825,8 @@ export default function Home() {
               />
             ))}
             {/* Edge fades */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 md:w-20 bg-gradient-to-r from-[#f8f9fa] dark:from-zinc-950 to-transparent z-10" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 md:w-20 bg-gradient-to-l from-[#f8f9fa] dark:from-zinc-950 to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 md:w-20 bg-gradient-to-r from-[#f8f9fa] to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 md:w-20 bg-gradient-to-l from-[#f8f9fa] to-transparent z-10" />
           </div>
 
           <span className="text-sm sm:text-base text-zinc-400 text-pretty text-center italic">
@@ -849,7 +846,7 @@ export default function Home() {
                 by{" "}
                 <a
                   href="https://cobroker.ai"
-                  className="text-gray-900 dark:text-white hover:text-zinc-500 dark:hover:text-zinc-400 font-medium border-b-2 border-black/20 dark:border-white/20 transition-all duration-300"
+                  className="text-gray-900 hover:text-zinc-500 font-medium border-b-2 border-black/20 transition-all duration-300"
                 >
                   Cobroker.ai
                 </a>
@@ -857,7 +854,7 @@ export default function Home() {
               <span className="size-1 rounded-full bg-current opacity-60" />
               <a
                 href="mailto:isaac@cobroker.ai"
-                className="inline-flex items-center gap-1.5 text-gray-900 dark:text-white hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors"
+                className="inline-flex items-center gap-1.5 text-gray-900 hover:text-zinc-500 transition-colors"
               >
                 <MailIcon className="size-4 sm:size-5 shrink-0" />
                 Contact Support

@@ -1,33 +1,9 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 @theme inline {
-  --color-background: var(--cb-bg);
-  --color-foreground: var(--cb-fg);
+  --color-background: #f8f9fa;
+  --color-foreground: #111113;
   --animate-marquee: marquee var(--duration, 45s) linear infinite;
-}
-
-/* ─── Light-mode (default) ─── */
-:root {
-  --cb-bg: #f8f9fa;
-  --cb-fg: #111113;
-  --cb-surface: #ffffff;
-  --cb-border: rgba(0, 0, 0, 0.08);
-  --cb-border-subtle: rgba(0, 0, 0, 0.04);
-  --cb-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  --cb-surface-subtle: rgba(0, 0, 0, 0.03);
-}
-
-/* ─── Dark-mode ─── */
-.dark {
-  --cb-bg: #07080a;
-  --cb-fg: #ffffff;
-  --cb-surface: #07080A;
-  --cb-border: rgba(255, 255, 255, 0.08);
-  --cb-border-subtle: rgba(255, 255, 255, 0.05);
-  --cb-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.42);
-  --cb-surface-subtle: rgba(255, 255, 255, 0.05);
 }
 
 @keyframes marquee {
@@ -40,13 +16,13 @@
 }
 
 body {
-  background: var(--cb-bg);
-  color: var(--cb-fg);
+  background: #f8f9fa;
+  color: #111113;
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-/* Hero heading gradient text — light */
+/* Hero heading gradient text */
 .main-text {
   font-feature-settings: "ss08" on, "ss02" on, "liga" off;
   text-align: center;
@@ -64,41 +40,27 @@ body {
   font-weight: 600;
   line-height: 1.2;
 }
-/* Hero heading gradient text — dark */
-.dark .main-text {
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.8) -1.59%,
-    #fff 49.71%,
-    rgba(255, 255, 255, 0.81) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-}
 @media (min-width: 768px) {
   .main-text {
     font-size: clamp(2rem, 4vw, 48px);
   }
 }
 
-/* Card frame — light */
+/* Card frame */
 .card-frame {
-  border: 1px solid var(--cb-border);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 24px;
   padding: 8px;
-  box-shadow: var(--cb-card-shadow);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   position: relative;
 }
 
-/* 3D keyboard-key option buttons — light */
+/* 3D keyboard-key option buttons */
 .options-card {
-  --key-bg-start-color: rgba(0, 0, 0, 0.03);
-  --key-bg-end-color: rgba(0, 0, 0, 0.01);
   background: radial-gradient(
     75% 75% at 50% 91.9%,
-    var(--key-bg-start-color) 0,
-    var(--key-bg-end-color) 100%
+    rgba(0, 0, 0, 0.03) 0,
+    rgba(0, 0, 0, 0.01) 100%
   );
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(0, 0, 0, 0.04),
@@ -121,29 +83,7 @@ body {
     inset 0 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-/* 3D keyboard-key option buttons — dark */
-.dark .options-card {
-  --key-bg-start-color: rgba(255, 255, 255, 0.06);
-  --key-bg-end-color: rgba(255, 255, 255, 0.02);
-  box-shadow: 0 1.5px 0.5px 2.5px rgba(0, 0, 0, 0.4),
-    0 0 0.5px 1px #000, inset 0 2px 1px 1px rgba(0, 0, 0, 0.25),
-    inset 0 1px 1px 1px rgba(255, 255, 255, 0.2),
-    inset 0 0 rgba(0, 0, 0, 0);
-}
-.dark .options-card:hover {
-  box-shadow: 0 1.5px 0.5px 2.5px rgba(0, 0, 0, 0.4),
-    0 0 0.5px 1px #000, inset 0 2px 1px 1px rgba(0, 0, 0, 0.25),
-    inset 0 1px 1px 1px rgba(255, 255, 255, 0.4),
-    inset 0 0 rgba(0, 0, 0, 0);
-}
-.dark .options-card.selected {
-  background: #18181b;
-  box-shadow: 0 1.5px 0.5px 2.5px rgba(0, 0, 0, 0.4),
-    0 0 0.5px 1px #000, inset 0 2px 1px 1px rgba(0, 0, 0, 0.25),
-    inset 0 1px 1px 1px #fff, inset 0 0 rgba(0, 0, 0, 0);
-}
-
-/* CTA button shadow — light (inverted: dark bg, white text) */
+/* CTA button shadow */
 .main-btn-shadow {
   background: #111113;
   color: white;
@@ -160,31 +100,18 @@ body {
     inset 0 -1px 0.4px rgba(0, 0, 0, 0.3), inset 0 1px 0.4px rgba(255, 255, 255, 0.15);
 }
 
-/* CTA button shadow — dark (white bg, dark text) */
-.dark .main-btn-shadow {
-  background: white;
-  color: black;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5), 0 0 14px rgba(255, 255, 255, 0.19),
-    inset 0 -1px 0.4px rgba(0, 0, 0, 0.2), inset 0 1px 0.4px #fff;
-}
-.dark .main-btn-shadow:hover {
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(255, 255, 255, 0.28),
-    inset 0 -1px 0.4px rgba(0, 0, 0, 0.2), inset 0 1px 0.4px #fff;
-}
-
-/* Comparison left gradient — light */
+/* Comparison left gradient */
 .table-left-gradient {
   background: radial-gradient(
     100% 50% at 0% 50%,
-    var(--cb-surface-subtle) 0,
+    rgba(0, 0, 0, 0.03) 0,
     transparent 100%
   );
 }
 
 @media (max-width: 768px) {
   .table-left-gradient {
-    background: radial-gradient(49.41% 64.58% at 49.4% 0px, var(--cb-surface-subtle) 0px, transparent 100%) !important;
+    background: radial-gradient(49.41% 64.58% at 49.4% 0px, rgba(0, 0, 0, 0.03) 0px, transparent 100%) !important;
   }
 }
 
@@ -197,7 +124,7 @@ body {
   align-items: center;
 }
 
-/* Star sparkle dots — light */
+/* Star sparkle dots */
 .star-sparkle::before, .star-sparkle::after {
   content: "";
   border-radius: inherit;
@@ -212,7 +139,7 @@ body {
   box-shadow: rgba(50, 145, 255, 0.35) 0px 0px 4px;
 }
 .star-sparkle::after {
-  background: var(--cb-fg);
+  background: #111113;
   box-shadow: rgba(50, 145, 255, 0.4) 0px 0px 6px;
 }
 .star-sparkle[data-state="high"]::after,
