@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     .eq("clerk_user_id", userId)
     .single();
 
-  const finalUserId = existingUser?.app_user_id || appUserId;
+  let finalUserId = existingUser?.app_user_id || appUserId;
 
   if (!existingUser) {
     const { error: insertErr } = await supabase
@@ -49,12 +49,30 @@ export async function POST(req: Request) {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       });
-    if (insertErr && insertErr.code !== "23505") {
-      console.error("user_identity_map insert error:", insertErr);
-      return NextResponse.json(
-        { error: "Failed to create user record" },
-        { status: 500 }
-      );
+    if (insertErr) {
+      if (insertErr.code === "23505") {
+        // Row exists with different app_user_id — re-fetch the real one
+        const { data: refetched } = await supabase
+          .from("user_identity_map")
+          .select("app_user_id")
+          .eq("clerk_user_id", userId)
+          .single();
+        if (refetched) {
+          finalUserId = refetched.app_user_id;
+        } else {
+          console.error("user_identity_map 23505 but re-fetch failed");
+          return NextResponse.json(
+            { error: "Failed to create user record" },
+            { status: 500 }
+          );
+        }
+      } else {
+        console.error("user_identity_map insert error:", insertErr);
+        return NextResponse.json(
+          { error: "Failed to create user record" },
+          { status: 500 }
+        );
+      }
     }
   }
 
@@ -100,6 +118,7 @@ export async function POST(req: Request) {
     .eq("status", "available"); // optimistic lock
 
   if (botUpdateErr) {
+    console.error("bot_pool update error:", botUpdateErr);
     return NextResponse.json(
       { error: "Failed to assign bot. Please try again." },
       { status: 500 }
