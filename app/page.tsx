@@ -702,22 +702,18 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Waitlist CTA */}
+                    {/* CTA */}
                     <div className="flex flex-col items-center gap-4">
-                      <div className="flex w-full gap-2">
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          className="flex-1 bg-black/5 border border-black/10 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder:text-zinc-400 outline-none focus:border-black/20 transition-colors"
-                        />
-                        <button className="main-btn-shadow text-sm sm:text-base whitespace-nowrap">
-                          Join Waitlist
-                        </button>
-                      </div>
+                      <a
+                        href="/sign-up"
+                        className="main-btn-shadow text-sm sm:text-base whitespace-nowrap inline-block text-center w-full"
+                      >
+                        Get Started — Free $10 Credit
+                      </a>
                       <h3 className="text-[#6A6B6C] font-medium text-sm">
-                        Be first to access{" "}
-                        <span className="text-indigo-600">ClawBroker</span> when
-                        we launch.
+                        Deploy your{" "}
+                        <span className="text-indigo-600">ClawBroker</span>{" "}
+                        agent in under 1 minute.
                       </h3>
                     </div>
                   </div>
