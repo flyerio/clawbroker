@@ -626,7 +626,7 @@ export default function Home() {
               href="https://cal.com/cobroker/website"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg border border-zinc-700 px-6 py-2.5 text-sm font-medium text-zinc-300 hover:bg-zinc-800/50 transition-colors"
+              className="inline-flex items-center justify-center rounded-lg border border-zinc-300 px-6 py-2.5 text-sm font-medium text-zinc-600 hover:bg-zinc-100 transition-colors"
             >
               Talk to a Human
             </a>
