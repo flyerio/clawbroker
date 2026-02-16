@@ -8,6 +8,44 @@ function getResend() {
 
 const EMAIL_FROM = () => process.env.EMAIL_FROM || "isaac@cobroker.ai";
 
+export async function sendActivationEmail({
+  to,
+  firstName,
+  botUsername,
+}: {
+  to: string;
+  firstName: string;
+  botUsername: string;
+}): Promise<boolean> {
+  try {
+    const { error } = await getResend().emails.send({
+      from: EMAIL_FROM(),
+      to,
+      subject: "Your CRE AI agent is ready!",
+      text: `Hi ${firstName},
+
+Your ClawBroker AI agent is set up and ready to go!
+
+Open this link to start chatting with your agent on Telegram:
+https://t.me/${botUsername}?start=welcome
+
+Your agent can search for commercial real estate listings, analyze deals, and send you alerts — all through Telegram.
+
+If you have questions, reply to this email or reach out at support@clawbroker.ai.
+
+— The ClawBroker Team`,
+    });
+    if (error) {
+      console.error("Resend error:", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("Email send failed:", err);
+    return false;
+  }
+}
+
 export async function sendSuspensionEmail({
   to,
   firstName,
