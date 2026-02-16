@@ -2,6 +2,8 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { notifyAdmin } from "@/lib/telegram";
+import { startMachine, configureTenant } from "@/lib/fly";
+import { sendActivationEmail } from "@/lib/email";
 import crypto from "crypto";
 
 export async function POST(req: Request) {
@@ -159,14 +161,45 @@ export async function POST(req: Request) {
     available_credits: 2000,
   });
 
-  // 4. Notify admin
+  // 4. Auto-activate: configure VM and set tenant to active
+  let activated = false;
+  if (bot.fly_app_name && bot.fly_machine_id) {
+    try {
+      await startMachine(bot.fly_app_name, bot.fly_machine_id);
+      await configureTenant(bot.fly_app_name, bot.fly_machine_id, telegramUserId);
+      await supabase
+        .from("tenant_registry")
+        .update({ status: "active", provisioned_at: new Date().toISOString() })
+        .eq("user_id", finalUserId);
+      activated = true;
+    } catch (err) {
+      console.error("Auto-activation failed (will require manual activation):", err);
+    }
+  }
+
+  // 5. Send activation email if activated
+  if (activated) {
+    try {
+      await sendActivationEmail({
+        to: email,
+        firstName: email.split("@")[0],
+        botUsername: bot.bot_username,
+      });
+    } catch (err) {
+      console.error("Activation email failed (non-blocking):", err);
+    }
+  }
+
+  // 6. Notify admin
   await notifyAdmin(
-    `🆕 New signup!\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nAssigned bot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}\n\nRun:\n\`deploy-tenant.sh configure-user --app ${bot.fly_app_name} --telegram-user-id ${telegramUserId}\``
+    activated
+      ? `✅ Auto-activated!\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nBot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}`
+      : `🆕 New signup (auto-activation failed — activate manually)\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nBot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}`
   );
 
   return NextResponse.json({
     botUsername: bot.bot_username,
     flyAppName: bot.fly_app_name,
-    status: "pending",
+    status: activated ? "active" : "pending",
   });
 }
