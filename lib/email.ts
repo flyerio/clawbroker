@@ -6,7 +6,7 @@ function getResend() {
   return _resend;
 }
 
-const EMAIL_FROM = () => process.env.EMAIL_FROM || "noreply@clawbroker.ai";
+const EMAIL_FROM = () => process.env.EMAIL_FROM || "isaac@cobroker.ai";
 
 export async function sendSuspensionEmail({
   to,
