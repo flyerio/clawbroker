@@ -56,13 +56,13 @@ const MARQUEE_ROWS = [
 ];
 
 const PILL_STYLES = [
-  "options-card border border-black/10 text-zinc-600",
-  "table-left-gradient border border-black/10 text-zinc-600",
-  "border-2 border-black/10 bg-black/[0.02] text-zinc-600",
-  "bg-zinc-200/60 border border-zinc-400/40 text-zinc-600",
-  "bg-zinc-100/80 border border-black/5 text-zinc-600",
-  "border-2 border-dashed border-zinc-400/50 text-zinc-500",
-  "bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(0,0,0,0.04),transparent)] border border-black/10 text-zinc-600",
+  "options-card border border-[#26251e]/10 text-[#26251e]/70",
+  "table-left-gradient border border-[#26251e]/10 text-[#26251e]/70",
+  "border-2 border-[#26251e]/10 bg-[#26251e]/[0.02] text-[#26251e]/70",
+  "bg-[#26251e]/[0.04] border border-[#26251e]/10 text-[#26251e]/70",
+  "bg-[#26251e]/[0.03] border border-[#26251e]/[0.06] text-[#26251e]/70",
+  "border-2 border-dashed border-[#26251e]/10 text-[#26251e]/55",
+  "bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(38,37,30,0.04),transparent)] border border-[#26251e]/10 text-[#26251e]/70",
 ];
 
 const MODELS = [
@@ -336,7 +336,7 @@ function CheckIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-4 shrink-0 text-gray-900"
+      className="size-4 shrink-0 text-[#26251e]"
     >
       <path d="M20 6 9 17l-5-5" />
     </svg>
@@ -359,7 +359,7 @@ function TaskIcon({ task }: { task: string }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-4 shrink-0 text-zinc-500"
+      className="size-4 shrink-0 text-[#26251e]/55"
       aria-hidden="true"
     >
       {paths}
@@ -466,7 +466,7 @@ function Sparkles() {
               <div
                 key={idx}
                 ref={(el) => { dotsRef.current[idx] = el; }}
-                className="star-sparkle absolute bg-gray-800 rounded-full"
+                className="star-sparkle absolute bg-[#26251e] rounded-full"
                 data-index={idx}
                 data-state="off"
                 style={{
@@ -496,9 +496,9 @@ function GradientLineLeft() {
     >
       <defs>
         <linearGradient id="gl-left" x1="272.5" y1="1.5" x2="0.5" y2="1">
-          <stop offset="0%" stopColor="#ECA5A7" />
-          <stop offset="16.5%" stopColor="#581D27" />
-          <stop offset="100%" stopColor="#190E14" />
+          <stop offset="0%" stopColor="rgba(38, 37, 30, 0.25)" />
+          <stop offset="16.5%" stopColor="rgba(38, 37, 30, 0.15)" />
+          <stop offset="100%" stopColor="rgba(38, 37, 30, 0.05)" />
         </linearGradient>
       </defs>
       <path d="M0 1 H272" stroke="url(#gl-left)" strokeWidth="2" fill="none" />
@@ -515,9 +515,9 @@ function GradientLineRight() {
     >
       <defs>
         <linearGradient id="gl-right" x1="-0.5" y1="0.5" x2="271.5" y2="1">
-          <stop offset="0%" stopColor="#ECA5A7" />
-          <stop offset="16.5%" stopColor="#581D27" />
-          <stop offset="100%" stopColor="#190E14" />
+          <stop offset="0%" stopColor="rgba(38, 37, 30, 0.25)" />
+          <stop offset="16.5%" stopColor="rgba(38, 37, 30, 0.15)" />
+          <stop offset="100%" stopColor="rgba(38, 37, 30, 0.05)" />
         </linearGradient>
       </defs>
       <path d="M0 1 H272" stroke="url(#gl-right)" strokeWidth="2" fill="none" />
@@ -591,13 +591,13 @@ export default function Home() {
       <div className="w-full max-w-5xl flex flex-col gap-0 min-w-0">
         {/* ─── Header ─── */}
         <header className="w-full flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
-          <span className="text-base sm:text-lg font-medium text-gray-900 truncate min-w-0">
-            ClawBroker<span className="text-zinc-400 italic">.ai</span>
+          <span className="text-base sm:text-lg font-medium text-[#26251e] truncate min-w-0">
+            ClawBroker<span className="text-[#26251e]/55 italic">.ai</span>
           </span>
           <nav className="flex items-center shrink-0">
             <a
               href="mailto:isaac@cobroker.ai"
-              className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base border-b-2 border-black/20 text-zinc-500 hover:text-zinc-600 transition-colors duration-500 whitespace-nowrap"
+              className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base border-b-2 border-[#26251e]/15 text-[#26251e]/55 hover:text-[#26251e]/70 transition-colors duration-500 whitespace-nowrap"
             >
               <MailIcon className="size-4 sm:size-5 shrink-0" />
               Contact Support
@@ -610,7 +610,7 @@ export default function Home() {
           <h1 className="main-text text-balance">
             Your CRE AI Employee That Actually Does Things—So You Can Focus on Closing.
           </h1>
-          <p className="text-sm sm:text-base text-zinc-400 leading-relaxed text-pretty max-w-xl mx-auto">
+          <p className="text-sm sm:text-base text-[#26251e]/55 leading-relaxed text-pretty max-w-xl mx-auto">
             Powered by OpenClaw. Generates maps, analyzes demographics,
             remembers client profiles and search criteria, imports deal data
             from emails, and tracks market changes—all from your phone, 24/7.
@@ -618,7 +618,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-2">
             <a
               href="/sign-up"
-              className="main-btn-shadow inline-flex items-center justify-center rounded-lg bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 transition-colors"
+              className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors"
             >
               Start Free
             </a>
@@ -626,7 +626,7 @@ export default function Home() {
               href="https://cal.com/cobroker/website"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg border border-zinc-300 px-6 py-2.5 text-sm font-medium text-zinc-600 hover:bg-zinc-100 transition-colors"
+              className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors"
             >
               Talk to a Human
             </a>
@@ -645,7 +645,7 @@ export default function Home() {
                     clipPath:
                       "polygon(0 0, 50% 14%, 100% 0, 92% 50%, 100% 100%, 50% 86%, 0 100%, 8% 50%)",
                     background:
-                      "radial-gradient(40% 147% at 50% 46.2%, rgba(255,117,117,0.1) 5%, rgba(154,170,255,0.05) 60%, rgba(255,194,194,0) 140%)",
+                      "radial-gradient(40% 147% at 50% 46.2%, rgba(38,37,30,0.04) 5%, rgba(38,37,30,0.02) 60%, rgba(38,37,30,0) 140%)",
                   }}
                 />
               </div>
@@ -655,11 +655,11 @@ export default function Home() {
 
               {/* Card */}
               <div className="card-frame relative p-2 transform-[translateZ(0)] rounded-[24px] w-full">
-                <div className="w-full min-w-[280px] min-h-[200px] overflow-hidden bg-white border border-black/5 rounded-2xl">
+                <div className="w-full min-w-[280px] min-h-[200px] overflow-hidden bg-white border border-[#26251e]/[0.06] rounded-2xl">
                   <div className="w-full p-4 sm:p-6 md:p-8 flex flex-col gap-6 sm:gap-8 md:gap-10 min-w-0">
                     {/* Model selection */}
                     <div className="flex flex-col gap-3 sm:gap-4">
-                      <h1 className="font-medium text-base sm:text-lg text-balance text-gray-900">
+                      <h1 className="font-medium text-base sm:text-lg text-balance text-[#26251e]">
                         Choose your AI model
                       </h1>
                       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -677,7 +677,7 @@ export default function Home() {
                                 className={`w-5 h-5 shrink-0 ${model.id === "gpt" ? "invert" : ""}`}
                               />
                               <h2
-                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-gray-900" : "text-zinc-500 group-hover:text-gray-900"}`}
+                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-[#26251e]" : "text-[#26251e]/55 group-hover:text-[#26251e]"}`}
                               >
                                 {model.label}
                               </h2>
@@ -694,7 +694,7 @@ export default function Home() {
 
                     {/* Channel selection */}
                     <div className="flex flex-col gap-3 sm:gap-4">
-                      <h1 className="font-medium text-base sm:text-lg text-balance text-gray-900">
+                      <h1 className="font-medium text-base sm:text-lg text-balance text-[#26251e]">
                         Select your channel
                       </h1>
                       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -715,12 +715,12 @@ export default function Home() {
                                 className="w-5 h-5 shrink-0 object-contain"
                               />
                               <h2
-                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-gray-900" : "text-zinc-500 group-hover:text-gray-900"}`}
+                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-[#26251e]" : "text-[#26251e]/55 group-hover:text-[#26251e]"}`}
                               >
                                 {ch.label}
                               </h2>
                               {!ch.active && (
-                                <span className="absolute bottom-0 right-0 text-[10px] text-zinc-500 group-hover:text-gray-900">
+                                <span className="absolute bottom-0 right-0 text-[10px] text-[#26251e]/55 group-hover:text-[#26251e]">
                                   Coming soon
                                 </span>
                               )}
@@ -743,9 +743,9 @@ export default function Home() {
                       >
                         Get Started — Free $10 Credit
                       </a>
-                      <h3 className="text-[#6A6B6C] font-medium text-sm">
+                      <h3 className="text-[#26251e]/55 font-medium text-sm">
                         Deploy your{" "}
-                        <span className="text-indigo-600">ClawBroker</span>{" "}
+                        <span className="text-[#26251e]">ClawBroker</span>{" "}
                         agent in under 1 minute.
                       </h3>
                     </div>
@@ -761,7 +761,7 @@ export default function Home() {
           {/* Label */}
           <div className="comparison-label-bg w-full max-w-full flex flex-wrap items-center justify-center gap-2 sm:gap-4 min-h-[40px] sm:min-h-[46px] px-2">
             <GradientLineLeft />
-            <span className="mx-1 sm:mx-4 shrink-0 text-xs sm:text-sm text-[#FF6363] font-medium tracking-[0.2px] leading-[160%]">
+            <span className="mx-1 sm:mx-4 shrink-0 text-xs sm:text-sm text-[#c4421a] font-medium tracking-[0.2px] leading-[160%]">
               Comparison
             </span>
             <GradientLineRight />
@@ -776,33 +776,33 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-stretch min-w-0 mt-4 sm:mt-7 md:gap-0">
             {/* Traditional side */}
             <div className="flex-1 md:pr-10 min-w-0 flex flex-col gap-2 pb-6 md:pb-0">
-              <p className="text-base sm:text-lg font-medium text-zinc-400 italic mb-1">
+              <p className="text-base sm:text-lg font-medium text-[#26251e]/55 italic mb-1">
                 Traditional
               </p>
               <ul>
                 {COMPARISON_TRADITIONAL.map((item, i) => (
                   <li
                     key={i}
-                    className="flex justify-between gap-2 text-sm sm:text-base text-zinc-400"
+                    className="flex justify-between gap-2 text-sm sm:text-base text-[#26251e]/55"
                   >
                     <span className="min-w-0">{item.task}</span>
                     <span className="shrink-0 tabular-nums">{item.time}</span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 pt-3 border-t-2 border-black/20 flex justify-between text-base sm:text-lg font-medium text-gray-900">
+              <p className="mt-3 pt-3 border-t-2 border-[#26251e]/15 flex justify-between text-base sm:text-lg font-medium text-[#26251e]">
                 <span className="italic">Total</span>
                 <span className="tabular-nums font-medium text-xl">
                   60 min
                 </span>
               </p>
-              <p className="mt-3 text-sm font-medium text-zinc-600 text-pretty italic leading-relaxed">
+              <p className="mt-3 text-sm font-medium text-[#26251e]/70 text-pretty italic leading-relaxed">
                 If you&apos;re{" "}
-                <span className="bg-red-500/10 text-red-500 px-1 py-0.5 rounded-md">
+                <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded-md">
                   non-technical
                 </span>
                 , multiply these{" "}
-                <span className="bg-red-500/10 text-red-500 px-1 py-0.5 rounded-md">
+                <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded-md">
                   times by 10
                 </span>{" "}
                 &mdash; you have to learn each step before doing.
@@ -810,21 +810,21 @@ export default function Home() {
             </div>
 
             {/* Divider */}
-            <div className="w-full md:w-[2px] h-[2px] md:h-auto md:min-h-px shrink-0 bg-black/10" />
+            <div className="w-full md:w-[2px] h-[2px] md:h-auto md:min-h-px shrink-0 bg-[#26251e]/10" />
 
             {/* ClawBroker side */}
             <div className="flex-1 md:pl-10 min-w-0 flex flex-col justify-center pt-6 md:pt-0 gap-3 table-left-gradient">
-              <p className="text-base sm:text-lg font-medium text-zinc-400 italic">
+              <p className="text-base sm:text-lg font-medium text-[#26251e]/55 italic">
                 ClawBroker
               </p>
-              <p className="text-2xl sm:text-4xl font-semibold text-gray-900 tabular-nums">
+              <p className="text-2xl sm:text-4xl font-semibold text-[#26251e] tabular-nums">
                 &lt;1 min
               </p>
-              <p className="text-sm sm:text-base text-zinc-400 text-pretty leading-relaxed">
+              <p className="text-sm sm:text-base text-[#26251e]/55 text-pretty leading-relaxed">
                 Pick a model, connect Telegram, deploy &mdash; done under 1
                 minute.
               </p>
-              <p className="text-sm sm:text-base text-zinc-400 text-pretty leading-relaxed">
+              <p className="text-sm sm:text-base text-[#26251e]/55 text-pretty leading-relaxed">
                 Servers, SSH and OpenClaw Environment are already set up,
                 waiting to get assigned. Simple, secure and fast connection to
                 your bot.
@@ -836,10 +836,10 @@ export default function Home() {
         {/* ─── Use Cases Section ─── */}
         <section className="w-full px-4 sm:px-6 py-10 sm:py-16 flex flex-col gap-8 sm:gap-12 max-w-5xl mx-auto min-w-0">
           <div className="flex flex-col items-center justify-center gap-1 sm:gap-2">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900 text-center text-balance">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-[#26251e] text-center text-balance">
               What can ClawBroker do for you?
             </h2>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-[#6A6B6C] text-center text-balance">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-[#26251e]/55 text-center text-balance">
               One assistant, thousands of use cases
             </h2>
           </div>
@@ -854,11 +854,11 @@ export default function Home() {
               />
             ))}
             {/* Edge fades */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 md:w-20 bg-gradient-to-r from-[#f8f9fa] to-transparent z-10" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 md:w-20 bg-gradient-to-l from-[#f8f9fa] to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 md:w-20 bg-gradient-to-r from-[#f7f7f4] to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 md:w-20 bg-gradient-to-l from-[#f7f7f4] to-transparent z-10" />
           </div>
 
-          <span className="text-sm sm:text-base text-zinc-400 text-pretty text-center italic">
+          <span className="text-sm sm:text-base text-[#26251e]/55 text-pretty text-center italic">
             P.S. — Your agent gets smarter with every conversation.
           </span>
         </section>
@@ -869,13 +869,13 @@ export default function Home() {
             <h4 className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 gap-y-2 text-sm sm:text-base">
               <span className="flex items-center gap-2">
                 Built with{" "}
-                <span className="text-red-500" aria-label="love">
+                <span className="text-[#c4421a]" aria-label="love">
                   &#9829;
                 </span>{" "}
                 by{" "}
                 <a
                   href="https://cobroker.ai"
-                  className="text-gray-900 hover:text-zinc-500 font-medium border-b-2 border-black/20 transition-all duration-300"
+                  className="text-[#26251e] hover:text-[#26251e]/55 font-medium border-b-2 border-[#26251e]/15 transition-all duration-300"
                 >
                   Cobroker.ai
                 </a>
@@ -883,7 +883,7 @@ export default function Home() {
               <span className="size-1 rounded-full bg-current opacity-60" />
               <a
                 href="mailto:isaac@cobroker.ai"
-                className="inline-flex items-center gap-1.5 text-gray-900 hover:text-zinc-500 transition-colors"
+                className="inline-flex items-center gap-1.5 text-[#26251e] hover:text-[#26251e]/55 transition-colors"
               >
                 <MailIcon className="size-4 sm:size-5 shrink-0" />
                 Contact Support

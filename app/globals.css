@@ -2,8 +2,8 @@
 
 @theme inline {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --color-background: #f8f9fa;
-  --color-foreground: #111113;
+  --color-background: #f7f7f4;
+  --color-foreground: #26251e;
   --animate-marquee: marquee var(--duration, 45s) linear infinite;
 }
 
@@ -17,21 +17,20 @@
 }
 
 body {
-  background: #f8f9fa;
-  color: #111113;
+  background: #f7f7f4;
+  color: #26251e;
 }
 
 /* Hero heading gradient text */
 .main-text {
   font-feature-settings: "ss08" on, "ss02" on, "liga" off;
   text-align: center;
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
   -webkit-text-fill-color: transparent;
   background: linear-gradient(
     90deg,
-    rgba(17, 17, 19, 0.7) -1.59%,
-    #111113 49.71%,
-    rgba(17, 17, 19, 0.7) 100%
+    rgba(38, 37, 30, 0.7) -1.59%,
+    #26251e 49.71%,
+    rgba(38, 37, 30, 0.7) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -47,56 +46,40 @@ body {
 
 /* Card frame */
 .card-frame {
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(38, 37, 30, 0.08);
   border-radius: 24px;
   padding: 8px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   position: relative;
 }
 
 /* 3D keyboard-key option buttons */
 .options-card {
-  background: radial-gradient(
-    75% 75% at 50% 91.9%,
-    rgba(0, 0, 0, 0.03) 0,
-    rgba(0, 0, 0, 0.01) 100%
-  );
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  background: transparent;
+  border: 1px solid rgba(38, 37, 30, 0.08);
   border-radius: 12px;
   padding: 12px 16px;
   transition: all 300ms;
   cursor: pointer;
 }
 .options-card:hover {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-color: rgba(38, 37, 30, 0.15);
 }
 .options-card.selected {
-  background: #f0f0f2;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 1px 1px 1px rgba(0, 0, 0, 0.05);
+  background: rgba(38, 37, 30, 0.04);
+  border-color: rgba(38, 37, 30, 0.15);
 }
 
 /* CTA button shadow */
 .main-btn-shadow {
-  background: #111113;
-  color: white;
-  border-radius: 12px;
+  background: #26251e;
+  color: #f7f7f4;
+  border-radius: 9999px;
   padding: 10px 20px;
   font-weight: 500;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15), 0 0 14px rgba(0, 0, 0, 0.06),
-    inset 0 -1px 0.4px rgba(0, 0, 0, 0.3), inset 0 1px 0.4px rgba(255, 255, 255, 0.15);
   transition: all 200ms;
 }
 .main-btn-shadow:hover {
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2),
-    0 0 20px rgba(0, 0, 0, 0.1),
-    inset 0 -1px 0.4px rgba(0, 0, 0, 0.3), inset 0 1px 0.4px rgba(255, 255, 255, 0.15);
+  opacity: 0.9;
 }
 
 /* Comparison left gradient */
@@ -116,7 +99,7 @@ body {
 
 /* Comparison label radial gradient background */
 .comparison-label-bg {
-  background: radial-gradient(13.65% 50%, rgba(245, 48, 107, 0.1) 0px, rgba(255, 103, 167, 0) 100%);
+  background: radial-gradient(13.65% 50%, rgba(38, 37, 30, 0.04) 0px, rgba(38, 37, 30, 0) 100%);
   height: 46px;
   display: flex;
   justify-content: center;
@@ -135,11 +118,11 @@ body {
   inset: 0;
 }
 .star-sparkle::before {
-  box-shadow: rgba(50, 145, 255, 0.35) 0px 0px 4px;
+  box-shadow: rgba(38, 37, 30, 0.35) 0px 0px 4px;
 }
 .star-sparkle::after {
-  background: #111113;
-  box-shadow: rgba(50, 145, 255, 0.4) 0px 0px 6px;
+  background: #26251e;
+  box-shadow: rgba(38, 37, 30, 0.4) 0px 0px 6px;
 }
 .star-sparkle[data-state="high"]::after,
 .star-sparkle[data-state="medium"]::before {
