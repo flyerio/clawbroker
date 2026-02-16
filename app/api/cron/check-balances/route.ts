@@ -86,7 +86,7 @@ export async function GET(req: Request) {
 
     // NOTIFICATION 3: Telegram to admin
     await notifyAdmin(
-      `⚠️ Credit exhaustion: ${email} (@${tenant.telegram_username}) ran out of credits on @${botUsername}. VM suspended. Stripe link sent.`
+      `⚠️ Credit exhaustion: ${email} (TG ID: ${tenant.telegram_user_id || "unknown"}) ran out of credits on @${botUsername}. VM suspended. Stripe link sent.`
     );
 
     suspendedCount++;

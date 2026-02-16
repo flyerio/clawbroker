@@ -15,7 +15,7 @@ interface Status {
   status: string;
   botUsername?: string;
   flyAppName?: string;
-  telegramUsername?: string;
+  telegramUserId?: string;
   createdAt?: string;
   provisionedAt?: string;
 }

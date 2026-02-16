@@ -32,7 +32,7 @@ export async function GET() {
     status: tenant.status,
     botUsername: tenant.bot_pool?.bot_username,
     flyAppName: tenant.fly_app_name,
-    telegramUsername: tenant.telegram_username,
+    telegramUserId: tenant.telegram_user_id,
     createdAt: tenant.created_at,
     provisionedAt: tenant.provisioned_at,
   });

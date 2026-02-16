@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function OnboardingPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
-  const [telegramUsername, setTelegramUsername] = useState("");
+  const [telegramUserId, setTelegramUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,9 +24,9 @@ export default function OnboardingPage() {
     setLoading(true);
     setError("");
 
-    const username = telegramUsername.replace(/^@/, "").trim();
-    if (!username) {
-      setError("Please enter your Telegram username");
+    const userId = telegramUserId.trim();
+    if (!userId || !/^\d+$/.test(userId)) {
+      setError("Please enter a valid numeric Telegram user ID");
       setLoading(false);
       return;
     }
@@ -35,7 +35,7 @@ export default function OnboardingPage() {
       const res = await fetch("/api/onboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ telegramUsername: username }),
+        body: JSON.stringify({ telegramUserId: userId }),
       });
 
       const data = await res.json();
@@ -71,24 +71,20 @@ export default function OnboardingPage() {
                   htmlFor="telegram"
                   className="block text-sm font-medium text-gray-900 mb-1.5"
                 >
-                  Telegram Username
+                  Telegram User ID
                 </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-sm">
-                    @
-                  </span>
-                  <input
-                    id="telegram"
-                    type="text"
-                    value={telegramUsername}
-                    onChange={(e) => setTelegramUsername(e.target.value)}
-                    placeholder="yourusername"
-                    className="w-full bg-black/5 border border-black/10 rounded-xl pl-8 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-zinc-400 outline-none focus:border-black/20 transition-colors"
-                    autoFocus
-                  />
-                </div>
+                <input
+                  id="telegram"
+                  type="text"
+                  inputMode="numeric"
+                  value={telegramUserId}
+                  onChange={(e) => setTelegramUserId(e.target.value)}
+                  placeholder="8411700555"
+                  className="w-full bg-black/5 border border-black/10 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder:text-zinc-400 outline-none focus:border-black/20 transition-colors"
+                  autoFocus
+                />
                 <p className="mt-1.5 text-xs text-zinc-400">
-                  Open Telegram, go to Settings, and copy your username.
+                  Message <span className="font-medium text-zinc-500">@userinfobot</span> on Telegram — it will reply with your numeric ID.
                 </p>
               </div>
 

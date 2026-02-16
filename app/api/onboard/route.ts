@@ -15,10 +15,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "User not found" }, { status: 401 });
   }
 
-  const { telegramUsername } = await req.json();
-  if (!telegramUsername || typeof telegramUsername !== "string") {
+  const { telegramUserId } = await req.json();
+  if (!telegramUserId || typeof telegramUserId !== "string" || !/^\d+$/.test(telegramUserId)) {
     return NextResponse.json(
-      { error: "Telegram username is required" },
+      { error: "A valid numeric Telegram user ID is required" },
       { status: 400 }
     );
   }
@@ -129,7 +129,7 @@ export async function POST(req: Request) {
     user_id: finalUserId,
     bot_id: bot.id,
     fly_app_name: bot.fly_app_name,
-    telegram_username: telegramUsername.replace(/^@/, ""),
+    telegram_user_id: telegramUserId,
     status: "pending",
   });
 
@@ -161,7 +161,7 @@ export async function POST(req: Request) {
 
   // 4. Notify admin
   await notifyAdmin(
-    `🆕 New signup!\nEmail: ${email}\nTelegram: @${telegramUsername}\nAssigned bot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}\n\nRun:\n\`deploy-tenant.sh configure-user --app ${bot.fly_app_name} --telegram-user-id <GET_FROM_USER>\``
+    `🆕 New signup!\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nAssigned bot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}\n\nRun:\n\`deploy-tenant.sh configure-user --app ${bot.fly_app_name} --telegram-user-id ${telegramUserId}\``
   );
 
   return NextResponse.json({
