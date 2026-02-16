@@ -608,12 +608,29 @@ export default function Home() {
         {/* ─── Hero ─── */}
         <section className="w-full px-4 sm:px-6 md:px-8 pt-8 sm:pt-12 md:pt-24 pb-6 sm:pb-10 md:pb-12 flex flex-col gap-3 sm:gap-4 text-center min-w-0">
           <h1 className="main-text text-balance">
-            Deploy your CRE AI agent in under 1 minute
+            Your CRE AI Employee That Actually Does Things—So You Can Focus on Closing.
           </h1>
           <p className="text-sm sm:text-base text-zinc-400 leading-relaxed text-pretty max-w-xl mx-auto">
-            Skip the complexity. One-click deploy your own 24/7 commercial real
-            estate intelligence assistant.
+            Powered by OpenClaw. Generates maps, analyzes demographics,
+            remembers client profiles and search criteria, imports deal data
+            from emails, and tracks market changes—all from your phone, 24/7.
           </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-2">
+            <a
+              href="/sign-up"
+              className="main-btn-shadow inline-flex items-center justify-center rounded-lg bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 transition-colors"
+            >
+              Start Free
+            </a>
+            <a
+              href="https://cal.com/cobroker/website"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-lg border border-zinc-700 px-6 py-2.5 text-sm font-medium text-zinc-300 hover:bg-zinc-800/50 transition-colors"
+            >
+              Talk to a Human
+            </a>
+          </div>
         </section>
 
         {/* ─── Card with Glow ─── */}
