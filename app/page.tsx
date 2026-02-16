@@ -606,30 +606,93 @@ export default function Home() {
         </header>
 
         {/* ─── Hero ─── */}
-        <section className="w-full px-4 sm:px-6 md:px-8 pt-8 sm:pt-12 md:pt-24 pb-6 sm:pb-10 md:pb-12 flex flex-col gap-3 sm:gap-4 text-center min-w-0">
-          <h1 className="main-text text-balance">
-            Your CRE AI Employee That Actually Does Things—So You Can Focus on Closing.
-          </h1>
-          <p className="text-sm sm:text-base text-[#26251e]/55 leading-relaxed text-pretty max-w-xl mx-auto">
-            Powered by OpenClaw. Generates maps, analyzes demographics,
-            remembers client profiles and search criteria, imports deal data
-            from emails, and tracks market changes—all from your phone, 24/7.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-2">
-            <a
-              href="/sign-up"
-              className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors"
-            >
-              Start Free
-            </a>
-            <a
-              href="https://cal.com/cobroker/website"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors"
-            >
-              Talk to a Human
-            </a>
+        <section className="w-full px-2 sm:px-4 md:px-6 pt-6 sm:pt-10 md:pt-16 pb-6 sm:pb-10 md:pb-12 flex justify-center min-w-0">
+          <div className="hero-card">
+            {/* Left Column */}
+            <div className="hero-card-left">
+              <h1 className="text-2xl sm:text-3xl md:text-[28px] font-semibold leading-[1.2] text-[#26251e] text-balance">
+                Your CRE AI Employee That Actually Does Things
+                <span className="text-[#26251e]/50">—So You Can Focus on Closing.</span>
+              </h1>
+              <p className="text-sm text-[#26251e]/60 leading-relaxed text-pretty">
+                Powered by OpenClaw. Generates maps, analyzes demographics,
+                remembers client profiles and search criteria, imports deal data
+                from emails, and tracks market changes—all from your phone, 24/7.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="/sign-up"
+                  className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors"
+                >
+                  Start Free
+                </a>
+                <a
+                  href="https://cal.com/cobroker/website"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors"
+                >
+                  Talk to a Human
+                </a>
+              </div>
+              <div className="text-xs font-mono text-[#26251e]/40 bg-[#ebeae5] rounded-lg px-3 py-2 w-fit">
+                Deploy in under 60 seconds
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="hero-card-right">
+              <div className="iphone-frame">
+                <div className="iphone-screen">
+                  <div className="iphone-notch" />
+                  <div className="iphone-statusbar">
+                    <span>9:41</span>
+                    <svg width="68" height="12" viewBox="0 0 68 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="0" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.3"/>
+                      <rect x="6" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.5"/>
+                      <rect x="12" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.7"/>
+                      <rect x="18" y="1" width="4" height="10" rx="1" fill="#1a1a1a"/>
+                      <path d="M30 3a5 5 0 0 1 7 0" stroke="#1a1a1a" strokeWidth="1.2" fill="none" opacity="0.4"/>
+                      <path d="M31.5 5a3 3 0 0 1 4 0" stroke="#1a1a1a" strokeWidth="1.2" fill="none" opacity="0.7"/>
+                      <circle cx="33.5" cy="7.5" r="1" fill="#1a1a1a"/>
+                      <rect x="42" y="2.5" width="20" height="7" rx="2" stroke="#1a1a1a" strokeWidth="1"/>
+                      <rect x="43.5" y="4" width="15" height="4" rx="1" fill="#1a1a1a"/>
+                      <rect x="62.5" y="4.5" width="1.5" height="3" rx="0.5" fill="#1a1a1a" opacity="0.4"/>
+                    </svg>
+                  </div>
+                  <div className="phone-header">
+                    <div className="phone-header-avatar">CB</div>
+                    <div className="phone-header-info">
+                      <span className="phone-header-name">ClawBroker Agent</span>
+                      <span className="phone-header-status">
+                        <span className="agent-status-dot" />
+                        Online
+                      </span>
+                    </div>
+                  </div>
+                  <div className="phone-chat">
+                    <div className="chat-bubble-user">Pull lease comps for 200 Park Ave, Class A offices, last 24 months</div>
+                    <div className="chat-bubble-agent">Found <strong>14 comparable leases</strong> within 0.3 mi. Avg asking rent $78.50/SF. Generating comp report...</div>
+                    <div className="chat-bubble-agent">
+                      <span className="text-[#34c759]">&#10003;</span> Comp analysis complete<br/>
+                      <span className="text-[#34c759]">&#10003;</span> Map generated<br/>
+                      <span className="text-[#34c759]">&#10003;</span> PDF ready to share
+                    </div>
+                    <div className="chat-bubble-user">Draft an LOI for suite 4200 at $74/SF, 7-year term</div>
+                    <div className="chat-bubble-agent">LOI drafted for <strong>Suite 4200</strong> — $74.00/SF, 7-yr term, 3% annual escalations. Ready for your review.</div>
+                  </div>
+                  <div className="phone-input-bar">
+                    <div className="phone-input-field">Message ClawBroker...</div>
+                    <div className="phone-send-btn">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 2 11 13"/>
+                        <path d="M22 2 15 22 11 13 2 9 22 2z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

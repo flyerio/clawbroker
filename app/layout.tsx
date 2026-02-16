@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider dynamic>
       <html lang="en">
-        <body className={`${GeistSans.className} antialiased overflow-x-hidden min-h-dvh`}>
+        <body className={`${GeistSans.className} ${GeistMono.variable} antialiased overflow-x-hidden min-h-dvh`}>
           {children}
         </body>
       </html>
