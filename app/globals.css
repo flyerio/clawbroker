@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --color-background: #f8f9fa;
   --color-foreground: #111113;
   --animate-marquee: marquee var(--duration, 45s) linear infinite;
@@ -18,8 +19,6 @@
 body {
   background: #f8f9fa;
   color: #111113;
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 /* Hero heading gradient text */

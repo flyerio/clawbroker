@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider dynamic>
       <html lang="en">
-        <body className="font-sans antialiased overflow-x-hidden min-h-dvh">
+        <body className={`${GeistSans.className} antialiased overflow-x-hidden min-h-dvh`}>
           {children}
         </body>
       </html>
