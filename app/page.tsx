@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 /* ─── Data ─── */
 
@@ -569,6 +571,20 @@ function MarqueeRow({
 export default function Home() {
   const [selectedModel, setSelectedModel] = useState("opus");
   const [selectedChannel, setSelectedChannel] = useState("telegram");
+  const { isSignedIn, isLoaded } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn) return;
+    fetch("/api/status")
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (data && data.status !== "no_tenant") {
+          router.replace("/dashboard");
+        }
+      })
+      .catch(() => {});
+  }, [isLoaded, isSignedIn, router]);
 
   return (
     <div className="flex flex-row w-screen overflow-x-hidden h-full justify-center px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 min-w-0">

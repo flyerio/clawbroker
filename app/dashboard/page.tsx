@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useUser, useClerk } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -60,6 +60,7 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
   const [balance, setBalance] = useState<Balance | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
   const [loading, setLoading] = useState(true);
@@ -122,7 +123,15 @@ export default function DashboardPage() {
             </h1>
             <p className="text-sm text-zinc-400">Your ClawBroker dashboard</p>
           </div>
-          <StatusBadge status={status?.status || "pending"} />
+          <div className="flex items-center gap-3">
+            <StatusBadge status={status?.status || "pending"} />
+            <button
+              onClick={() => signOut({ redirectUrl: "/" })}
+              className="text-xs text-zinc-400 hover:text-zinc-600 transition-colors"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
 
         {/* Bot Card */}
