@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { getCalApi } from "@calcom/embed-react";
 
 /* ─── Data ─── */
 
@@ -409,6 +410,18 @@ export default function Home() {
       .catch(() => {});
   }, [isLoaded, isSignedIn, router]);
 
+  useEffect(() => {
+    (async () => {
+      const cal = await getCalApi();
+      cal("ui", {
+        cssVarsPerTheme: {
+          light: { "cal-brand": "#26251e" },
+        },
+        hideEventTypeDetails: false,
+      });
+    })();
+  }, []);
+
   return (
     <div className="flex flex-row w-screen overflow-x-hidden h-full justify-center px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 min-w-0">
       <div className="w-full flex flex-col gap-0 min-w-0">
@@ -448,14 +461,15 @@ export default function Home() {
               >
                 Start Free
               </a>
-              <a
-                href="https://cal.com/cobroker/website"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={async () => {
+                  const cal = await getCalApi();
+                  cal("modal", { calLink: "cobroker/website" });
+                }}
                 className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors"
               >
                 Talk to a Human
-              </a>
+              </button>
             </div>
           </div>
 
