@@ -232,6 +232,16 @@ body {
   }
 }
 
+/* ─── Hero Scene Inner (fills iphone-screen) ─── */
+.hero-scene-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  inset: 0;
+}
+
 /* ─── Phone Header ─── */
 .phone-header {
   display: flex;

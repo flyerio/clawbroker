@@ -943,6 +943,26 @@ function FloatingNavbar() {
 export default function Home() {
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
+  const [heroScene, setHeroScene] = useState(0); // 0 = chat, 1 = video
+  const heroTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Auto-cycle hero scenes every 5 seconds
+  useEffect(() => {
+    heroTimerRef.current = setInterval(() => {
+      setHeroScene((s) => (s === 0 ? 1 : 0));
+    }, 5000);
+    return () => {
+      if (heroTimerRef.current) clearInterval(heroTimerRef.current);
+    };
+  }, []);
+
+  const switchHeroScene = useCallback((scene: number) => {
+    setHeroScene(scene);
+    if (heroTimerRef.current) clearInterval(heroTimerRef.current);
+    heroTimerRef.current = setInterval(() => {
+      setHeroScene((s) => (s === 0 ? 1 : 0));
+    }, 5000);
+  }, []);
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
@@ -1022,38 +1042,84 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Right Column — static chat */}
+            {/* Right Column — auto-cycling chat / video */}
             <div className="hero-card-right">
               <div className="iphone-frame">
-                <div className="iphone-screen">
-                  <div className="iphone-notch" />
-                  <div className="phone-header">
-                    <div className="phone-header-avatar">CB</div>
-                    <div className="phone-header-info">
-                      <span className="phone-header-name">ClawBroker</span>
-                      <span className="phone-header-status">
-                        <span className="agent-status-dot" />
-                        Online
-                      </span>
-                    </div>
-                  </div>
-                  <div className="phone-chat">
-                    <div className="chat-bubble-user">Pull lease comps for 200 Park Ave, Class A offices, last 24 months</div>
-                    <div className="chat-bubble-agent">Found <strong>14 comparable leases</strong> within 0.3 mi. Avg asking rent $78.50/SF. Generating comp report...</div>
-                    <div className="chat-bubble-agent">&#10003; Comp analysis &nbsp; &#10003; Map &nbsp; &#10003; PDF</div>
-                    <div className="chat-bubble-user">Draft an LOI for suite 4200 at $74/SF, 7-year term</div>
-                    <div className="chat-bubble-agent">LOI drafted for <strong>Suite 4200</strong> — $74.00/SF, 7-yr term, 3% annual escalations. Ready for your review.</div>
-                  </div>
-                  <div className="phone-input-bar">
-                    <div className="phone-input-field">Message ClawBroker...</div>
-                    <div className="phone-send-btn">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 2 11 13"/>
-                        <path d="M22 2 15 22 11 13 2 9 22 2z"/>
-                      </svg>
-                    </div>
-                  </div>
+                <div className="iphone-screen" style={{ overflow: "hidden" }}>
+                  <AnimatePresence mode="wait">
+                    {heroScene === 0 ? (
+                      <motion.div
+                        key="chat"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4 }}
+                        className="hero-scene-inner"
+                      >
+                        <div className="phone-header">
+                          <div className="phone-header-avatar">CB</div>
+                          <div className="phone-header-info">
+                            <span className="phone-header-name">ClawBroker</span>
+                            <span className="phone-header-status">
+                              <span className="agent-status-dot" />
+                              Online
+                            </span>
+                          </div>
+                        </div>
+                        <div className="phone-chat">
+                          <div className="chat-bubble-user">Pull lease comps for 200 Park Ave, Class A offices, last 24 months</div>
+                          <div className="chat-bubble-agent">Found <strong>14 comparable leases</strong> within 0.3 mi. Avg asking rent $78.50/SF. Generating comp report...</div>
+                          <div className="chat-bubble-agent">&#10003; Comp analysis &nbsp; &#10003; Map &nbsp; &#10003; PDF</div>
+                          <div className="chat-bubble-user">Draft an LOI for suite 4200 at $74/SF, 7-year term</div>
+                          <div className="chat-bubble-agent">LOI drafted for <strong>Suite 4200</strong> — $74.00/SF, 7-yr term, 3% annual escalations. Ready for your review.</div>
+                        </div>
+                        <div className="phone-input-bar">
+                          <div className="phone-input-field">Message ClawBroker...</div>
+                          <div className="phone-send-btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M22 2 11 13"/>
+                              <path d="M22 2 15 22 11 13 2 9 22 2z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="video"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4 }}
+                        className="hero-scene-inner"
+                      >
+                        <video
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-cover"
+                          style={{ borderRadius: "inherit" }}
+                          src="/hero-demo.mp4"
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
+              </div>
+              {/* Scene indicators */}
+              <div className="flex justify-center gap-2 mt-3">
+                {[0, 1].map((i) => (
+                  <button
+                    key={i}
+                    onClick={() => switchHeroScene(i)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      heroScene === i
+                        ? "bg-[#26251e] scale-110"
+                        : "bg-[#26251e]/25 hover:bg-[#26251e]/40"
+                    }`}
+                    aria-label={`Switch to ${i === 0 ? "chat" : "video"} view`}
+                  />
+                ))}
               </div>
             </div>
           </div>
