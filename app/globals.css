@@ -374,6 +374,11 @@ body {
 }
 
 /* ─── Glowing Dot ─── */
+@keyframes glow-pulse {
+  0%, 100% { transform: scale(0.57); opacity: 0; }
+  50% { transform: scale(1); opacity: 0.4; }
+}
+
 .glow-dot-outer {
   width: 8px;
   height: 8px;
@@ -400,8 +405,8 @@ body {
   inset: -3px;
   border-radius: 100%;
   background: #FF683D;
-  opacity: 0.4;
   z-index: -1;
+  animation: glow-pulse 2s ease-in-out infinite;
 }
 
 @keyframes fadeIn {
