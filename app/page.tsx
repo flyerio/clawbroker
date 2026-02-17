@@ -950,10 +950,11 @@ export default function Home() {
   // Scene-aware cycling: chat shows 5s, video plays until ~2s before end
   useEffect(() => {
     if (heroScene === 0) {
-      videoFadingRef.current = false;
       heroTimerRef.current = setTimeout(() => {
         setHeroScene(1);
       }, 5000);
+    } else if (heroScene === 1) {
+      videoFadingRef.current = false;
     }
     return () => {
       if (heroTimerRef.current) clearTimeout(heroTimerRef.current);
@@ -1110,6 +1111,12 @@ export default function Home() {
                           style={{ borderRadius: "inherit" }}
                           src="/hero-demo.mp4"
                           onTimeUpdate={handleVideoTimeUpdate}
+                          onEnded={() => {
+                            if (!videoFadingRef.current) {
+                              videoFadingRef.current = true;
+                              switchHeroScene(0);
+                            }
+                          }}
                         />
                         {/* URL overlay to cover cropped browser bar */}
                         <div
