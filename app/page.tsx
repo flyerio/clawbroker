@@ -1096,16 +1096,16 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-[10px] w-full max-w-[1300px] mt-12 sm:mt-16">
             <div className="rounded p-3 sm:p-[15px] bg-[#f2f1ed] flex flex-col sm:aspect-[16/9]">
+              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] grow">80%</p>
+              <p className="text-base font-normal text-[#26251e]/70 leading-normal tracking-[0.08px]">Of broker time spent gathering data, not deals</p>
+            </div>
+            <div className="rounded p-3 sm:p-[15px] bg-[#f2f1ed] flex flex-col sm:aspect-[16/9]">
               <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] grow">23 min</p>
               <p className="text-base font-normal text-[#26251e]/70 leading-normal tracking-[0.08px]">Lost refocusing after every interruption</p>
             </div>
             <div className="rounded p-3 sm:p-[15px] bg-[#f2f1ed] flex flex-col sm:aspect-[16/9]">
               <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] grow">67%</p>
               <p className="text-base font-normal text-[#26251e]/70 leading-normal tracking-[0.08px]">Of company context lives undocumented</p>
-            </div>
-            <div className="rounded p-3 sm:p-[15px] bg-[#f2f1ed] flex flex-col sm:aspect-[16/9]">
-              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] grow">6 hrs</p>
-              <p className="text-base font-normal text-[#26251e]/70 leading-normal tracking-[0.08px]">Average before critical bugs get noticed</p>
             </div>
           </div>
         </section>
