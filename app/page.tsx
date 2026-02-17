@@ -944,25 +944,34 @@ export default function Home() {
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
   const [heroScene, setHeroScene] = useState(0); // 0 = chat, 1 = video
-  const heroTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const heroTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const videoFadingRef = useRef(false);
 
-  // Auto-cycle hero scenes every 5 seconds
+  // Scene-aware cycling: chat shows 5s, video plays until ~2s before end
   useEffect(() => {
-    heroTimerRef.current = setInterval(() => {
-      setHeroScene((s) => (s === 0 ? 1 : 0));
-    }, 5000);
+    if (heroScene === 0) {
+      videoFadingRef.current = false;
+      heroTimerRef.current = setTimeout(() => {
+        setHeroScene(1);
+      }, 5000);
+    }
     return () => {
-      if (heroTimerRef.current) clearInterval(heroTimerRef.current);
+      if (heroTimerRef.current) clearTimeout(heroTimerRef.current);
     };
-  }, []);
+  }, [heroScene]);
 
   const switchHeroScene = useCallback((scene: number) => {
+    if (heroTimerRef.current) clearTimeout(heroTimerRef.current);
     setHeroScene(scene);
-    if (heroTimerRef.current) clearInterval(heroTimerRef.current);
-    heroTimerRef.current = setInterval(() => {
-      setHeroScene((s) => (s === 0 ? 1 : 0));
-    }, 5000);
   }, []);
+
+  const handleVideoTimeUpdate = useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const vid = e.currentTarget;
+    if (!videoFadingRef.current && vid.duration && vid.currentTime >= vid.duration - 2) {
+      videoFadingRef.current = true;
+      switchHeroScene(0);
+    }
+  }, [switchHeroScene]);
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
@@ -1087,19 +1096,19 @@ export default function Home() {
                       <motion.div
                         key="video"
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.4 }}
+                        animate={{ opacity: 1, transition: { duration: 0.4 } }}
+                        exit={{ opacity: 0, transition: { duration: 2 } }}
                         className="hero-scene-inner"
                       >
                         <video
+                          ref={(el) => { if (el) el.playbackRate = 1.5; }}
                           autoPlay
-                          loop
                           muted
                           playsInline
                           className="w-full h-full object-cover"
                           style={{ borderRadius: "inherit" }}
                           src="/hero-demo.mp4"
+                          onTimeUpdate={handleVideoTimeUpdate}
                         />
                       </motion.div>
                     )}
