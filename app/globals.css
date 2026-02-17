@@ -232,24 +232,12 @@ body {
   }
 }
 
-.iphone-notch {
-  width: 100px;
-  height: 28px;
-  background: #1a1a1a;
-  border-radius: 14px;
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
 /* ─── Phone Header ─── */
 .phone-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 52px 16px 10px;
+  padding: 16px 16px 10px;
   border-bottom: 1px solid #f0f0f0;
   flex-shrink: 0;
 }

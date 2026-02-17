@@ -522,7 +522,6 @@ function ExamplesSection() {
         >
           <div className="iphone-frame">
             <div className="iphone-screen">
-              <div className="iphone-notch" />
               <div className="phone-header">
                 <div className="phone-header-avatar">CB</div>
                 <div className="phone-header-info">
@@ -819,17 +818,25 @@ function FloatingNavbar() {
       initial={false}
       animate={{
         width: scrolled ? scrolledWidth : "100%",
-        maxWidth: scrolled ? (isMobile ? "none" : "820px") : "1348px",
+        maxWidth: scrolled ? (isMobile ? "9999px" : "820px") : "1348px",
+        y: scrolled ? 8 : 0,
       }}
       transition={{ type: "spring", stiffness: 200, damping: 50 }}
-      style={{ paddingLeft: scrolled ? 0 : 24, paddingRight: scrolled ? 0 : 24 }}
+      style={{ willChange: "transform, width" }}
     >
       <motion.div
-        className={`flex items-center justify-between px-4 sm:px-6 py-3 rounded-full transition-colors duration-300 ${
-          scrolled
-            ? "bg-white/80 backdrop-blur-xl shadow-[0_2px_20px_rgba(0,0,0,0.06)]"
-            : "bg-transparent"
-        }`}
+        className="flex items-center justify-between py-3 rounded-full"
+        initial={false}
+        animate={{
+          backgroundColor: scrolled ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0)",
+          backdropFilter: scrolled ? "blur(24px)" : "blur(0px)",
+          boxShadow: scrolled
+            ? "0 0 24px rgba(34,42,53,0.06), 0 1px 1px rgba(0,0,0,0.05), 0 0 0 1px rgba(34,42,53,0.04), 0 0 4px rgba(34,42,53,0.08), 0 16px 68px rgba(47,48,55,0.05), 0 1px 0 rgba(255,255,255,0.1) inset"
+            : "0 0 0px rgba(0,0,0,0), 0 0 0px rgba(0,0,0,0)",
+          paddingLeft: scrolled ? 16 : 24,
+          paddingRight: scrolled ? 16 : 24,
+        }}
+        transition={{ type: "spring", stiffness: 200, damping: 50 }}
       >
         {/* Logo */}
         <a href="#" className="text-lg font-semibold text-[#26251e] font-[family-name:var(--font-logo)] tracking-[-0.03em] shrink-0">
