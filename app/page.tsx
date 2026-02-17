@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { getCalApi } from "@calcom/embed-react";
+import { MessageSquare, Handshake } from "lucide-react";
 
 /* ─── Data ─── */
 
@@ -624,7 +625,7 @@ export default function Home() {
       <div className="w-full flex flex-col gap-0 min-w-0">
         {/* ─── Header ─── */}
         <header className="w-full max-w-[1300px] mx-auto flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
-          <span className="text-lg sm:text-xl font-semibold text-[#26251e] truncate min-w-0">
+          <span className="text-lg sm:text-xl font-semibold text-[#26251e] truncate min-w-0 font-[family-name:var(--font-logo)] tracking-[-0.03em]">
             ClawBroker
           </span>
           <nav className="flex items-center shrink-0">
@@ -893,7 +894,7 @@ export default function Home() {
             {/* Regular AI Chatbot */}
             <div className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
               <div className="flex items-center gap-3 mb-1">
-                <span className="text-2xl">💬</span>
+                <MessageSquare className="w-6 h-6 text-[#26251e]/40" />
                 <div>
                   <p className="text-base font-normal text-[#26251e]">
                     Regular AI Chatbot
@@ -924,7 +925,7 @@ export default function Home() {
             {/* ClawBroker */}
             <div className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
               <div className="flex items-center gap-3 mb-1">
-                <span className="text-2xl">🦀</span>
+                <Handshake className="w-6 h-6 text-[#26251e]" />
                 <div>
                   <p className="text-base font-normal text-[#26251e]">
                     ClawBroker
