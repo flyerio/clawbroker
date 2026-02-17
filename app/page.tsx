@@ -414,7 +414,7 @@ export default function Home() {
       <div className="w-full flex flex-col gap-0 min-w-0">
         {/* ─── Header ─── */}
         <header className="w-full max-w-[1300px] mx-auto flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
-          <span className="text-base sm:text-lg font-medium text-[#26251e] truncate min-w-0">
+          <span className="text-lg sm:text-xl font-normal text-[#26251e] truncate min-w-0">
             ClawBroker
           </span>
           <nav className="flex items-center shrink-0">
@@ -432,10 +432,13 @@ export default function Home() {
         <section className="w-full px-2 sm:px-4 md:px-6 pt-6 sm:pt-10 md:pt-16 pb-6 sm:pb-10 md:pb-12 flex flex-col items-center min-w-0">
           {/* Heading above card */}
           <div className="w-full max-w-[1300px] px-2 sm:px-0">
-            <h1 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e] text-balance">
+            <p className="font-mono text-xs sm:text-sm text-[#26251e]/45 mb-4">
+              Powered by OpenClaw
+            </p>
+            <h1 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e]/60 text-balance">
               Your CRE AI Employee That Does Things
             </h1>
-            <div className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e]/60 text-balance">
+            <div className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e] text-balance">
               So You Can Focus on Closing.
             </div>
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
@@ -462,9 +465,6 @@ export default function Home() {
           <div className="hero-card">
             {/* Left Column */}
             <div className="hero-card-left">
-              <h3 className="text-lg md:text-[22px] font-normal leading-[1.3] text-[#26251e]">
-                Powered by OpenClaw
-              </h3>
               <p className="text-lg md:text-[22px] font-normal leading-[1.3] text-[#26251e]/60 text-pretty">
                 Generates maps, analyzes demographics,
                 remembers client profiles and search criteria, imports deal data
