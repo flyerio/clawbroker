@@ -577,11 +577,9 @@ function ExamplesSection() {
                   style={{ cursor: "pointer" }}
                 >
                   <div className="flex items-center gap-3 py-1.5">
-                    {isActive && (
-                      <div className="glow-dot-outer">
-                        <div className="glow-dot-inner" />
-                      </div>
-                    )}
+                    <div className={`glow-dot-outer transition-opacity duration-300 ${isActive ? "opacity-100" : "opacity-0"}`}>
+                      <div className="glow-dot-inner" />
+                    </div>
                     <span
                       className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight transition-colors duration-300"
                       style={{ color: isActive ? "#FF683D" : "#292929" }}
