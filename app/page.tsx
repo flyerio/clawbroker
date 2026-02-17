@@ -10,17 +10,6 @@ import Image from "next/image";
 
 /* ─── Data ─── */
 
-const COMPARISON_TRADITIONAL = [
-  { task: "Purchasing local virtual machine", time: "15 min" },
-  { task: "Creating SSH keys and storing securely", time: "10 min" },
-  { task: "Connecting to the server via SSH", time: "5 min" },
-  { task: "Installing Node.js and NPM", time: "5 min" },
-  { task: "Installing OpenClaw", time: "7 min" },
-  { task: "Setting up OpenClaw", time: "10 min" },
-  { task: "Connecting to AI provider", time: "4 min" },
-  { task: "Pairing with Telegram", time: "4 min" },
-];
-
 const MARQUEE_ROWS = [
   [
     "Analyze lease comps",
@@ -137,7 +126,7 @@ const EXAMPLE_TABS = [
     title: "Charts",
     description: "Turn any data into professional bar, line, or doughnut charts instantly.",
     items: ["Bar Charts", "Line Charts", "Doughnut Charts", "Rent Trends"],
-    gradient: "linear-gradient(135deg, #f0c4d4 0%, #e4a8be 25%, #d88da8 50%, #cc7292 75%, #c05a7e 100%)",
+    gradient: "linear-gradient(135deg, #bcc8a8 0%, #a0b088 25%, #889a70 50%, #708458 75%, #5a7042 100%)",
     chat: [
       { role: "user" as const, text: "Compare asking rates for retail spaces across Austin" },
       { role: "agent" as const, text: `2nd Street leads at <strong>$55/SF</strong>, nearly double The Arboretum. Here's the breakdown:${AUSTIN_CHART_SVG}` },
@@ -1208,73 +1197,83 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ─── Examples Section ─── */}
-        <ExamplesSection />
-
-        {/* ─── Comparison Section ─── */}
-        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
-          <div className="w-full max-w-[1300px] mb-8 sm:mb-10">
+        {/* ─── What Is An AI Team? Section ─── */}
+        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0">
+          <div className="w-full max-w-[1300px]">
             <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
-              COMPARISON
+              WHAT IS AN AI TEAM?
             </p>
             <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
-              Traditional Method vs ClawBroker
+              A teammate that never sleeps
+            </p>
+            <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 mt-1 text-pretty">
+              Not a chatbot. A proactive team member that lives in your tools.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] w-full max-w-[1300px]">
-            {/* Traditional side */}
-            <div className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
-              <p className="text-base font-normal text-[#26251e]/50 mb-2">
-                Traditional
-              </p>
-              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] tabular-nums">
-                60 min
-              </p>
-              <ul className="flex flex-col gap-1">
-                {COMPARISON_TRADITIONAL.map((item, i) => (
+            {/* Regular AI Chatbot */}
+            <div className="relative rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
+              <span className="absolute top-4 right-4 text-xs font-medium text-[#26251e]/40 bg-[#26251e]/[0.05] rounded-full px-3 py-1">Old way</span>
+              <div className="flex items-center gap-3 mb-1">
+                <MessageSquare className="w-8 h-8 shrink-0 text-[#26251e]/40" />
+                <div>
+                  <p className="text-xl font-medium text-[#26251e]">Regular AI Chatbot</p>
+                  <p className="text-sm text-[#26251e]/50">Waits for you to ask</p>
+                </div>
+              </div>
+              <ul className="flex flex-col">
+                {[
+                  "Only answers when prompted",
+                  "No business context",
+                  "Can\u2019t take action",
+                  "Forgets everything",
+                  "No CRE-specific tools built in",
+                ].map((item, i) => (
                   <li
                     key={i}
-                    className="flex justify-between gap-2 text-sm text-[#26251e]/60"
+                    className="flex items-center gap-3 py-1.5 text-sm text-[#26251e]"
                   >
-                    <span className="min-w-0">{item.task}</span>
-                    <span className="shrink-0 tabular-nums">{item.time}</span>
+                    <span className="shrink-0 text-[#26251e]/30 text-sm">✕</span>
+                    {item}
                   </li>
                 ))}
               </ul>
-              <p className="text-sm text-[#26251e]/50 text-pretty leading-relaxed">
-                If you&apos;re{" "}
-                <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded">
-                  non-technical
-                </span>
-                , multiply these{" "}
-                <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded">
-                  times by 10
-                </span>{" "}
-                &mdash; you have to learn each step before doing.
-              </p>
             </div>
 
-            {/* ClawBroker side */}
-            <div className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
-              <p className="text-base font-normal text-[#26251e]/50 mb-2">
-                ClawBroker
-              </p>
-              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] tabular-nums">
-                &lt;1 min
-              </p>
-              <p className="text-sm text-[#26251e]/60 text-pretty leading-relaxed">
-                Pick a model, connect Telegram, deploy &mdash; done under 1
-                minute.
-              </p>
-              <p className="text-sm text-[#26251e]/60 text-pretty leading-relaxed">
-                Servers, SSH and OpenClaw Environment are already set up,
-                waiting to get assigned. Simple, secure and fast connection to
-                your bot.
-              </p>
+            {/* ClawBroker */}
+            <div className="relative rounded p-5 sm:p-8 bg-[#f2f1ed] border-2 border-[#26251e] flex flex-col gap-3">
+              <span className="absolute top-4 right-4 text-xs font-medium text-white bg-[#26251e] rounded-full px-3 py-1">New way</span>
+              <div className="flex items-center gap-3 mb-1">
+                <Handshake className="w-8 h-8 shrink-0 text-[#26251e]" />
+                <div>
+                  <p className="text-xl font-medium text-[#26251e]">ClawBroker</p>
+                  <p className="text-sm text-[#26251e]/50">Works proactively for you</p>
+                </div>
+              </div>
+              <ul className="flex flex-col">
+                {[
+                  "Monitors 24/7, alerts you first",
+                  "Learns your deals & clients",
+                  "Drafts LOIs, pulls comps, sends reports",
+                  "Remembers everything forever",
+                  "CRE tools for comps, underwriting & more",
+                ].map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-3 py-1.5 text-sm text-[#26251e]"
+                  >
+                    <span className="shrink-0 text-[#26251e]/60 text-sm">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
+
+        {/* ─── Examples Section ─── */}
+        <ExamplesSection />
 
         {/* ─── Property Data Section ─── */}
         <PropertyDataSection />
@@ -1315,78 +1314,61 @@ export default function Home() {
           </span>
         </section>
 
-        {/* ─── What Is An AI Team? Section ─── */}
-        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0">
-          <div className="w-full max-w-[1300px]">
+        {/* ─── Get Started Section (rewritten Comparison) ─── */}
+        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
+          <div className="w-full max-w-[1300px] mb-8 sm:mb-10">
             <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
-              WHAT IS AN AI TEAM?
+              GET STARTED
             </p>
             <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
-              A teammate that never sleeps
+              Up and running in 60 seconds
             </p>
             <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 mt-1 text-pretty">
-              Not a chatbot. A proactive team member that lives in your tools.
+              No downloads. No setup guides. Three steps and you&apos;re live.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] w-full max-w-[1300px]">
-            {/* Regular AI Chatbot */}
-            <div className="relative rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
-              <span className="absolute top-4 right-4 text-xs font-medium text-[#26251e]/40 bg-[#26251e]/[0.05] rounded-full px-3 py-1">Old way</span>
-              <div className="flex items-center gap-3 mb-1">
-                <MessageSquare className="w-8 h-8 shrink-0 text-[#26251e]/40" />
-                <div>
-                  <p className="text-xl font-medium text-[#26251e]">Regular AI Chatbot</p>
-                  <p className="text-sm text-[#26251e]/50">Waits for you to ask</p>
-                </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-[10px] w-full max-w-[1300px]">
+            {[
+              { step: "1", title: "Pick your AI model", description: "Choose from GPT-4o, Claude, Gemini, or others. Switch anytime." },
+              { step: "2", title: "Connect your chat", description: "Link Telegram, WhatsApp, or Slack — wherever your team already works." },
+              { step: "3", title: "Start closing deals", description: "Your AI teammate is live. Ask it anything, assign it tasks, let it work." },
+            ].map((item) => (
+              <div key={item.step} className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#26251e] text-white text-sm font-medium">
+                  {item.step}
+                </span>
+                <p className="text-lg font-medium text-[#26251e]">{item.title}</p>
+                <p className="text-sm text-[#26251e]/60 leading-relaxed">{item.description}</p>
               </div>
-              <ul className="flex flex-col">
-                {[
-                  "Only answers when prompted",
-                  "No business context",
-                  "Can\u2019t take action",
-                  "Forgets everything",
-                  "No CRE-specific tools built in",
-                ].map((item, i, arr) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 py-1.5 text-sm text-[#26251e]"
-                  >
-                    <span className="shrink-0 text-[#26251e]/30 text-sm">✕</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            ))}
+          </div>
+        </section>
 
-            {/* ClawBroker */}
-            <div className="relative rounded p-5 sm:p-8 bg-[#f2f1ed] border-2 border-[#26251e] flex flex-col gap-3">
-              <span className="absolute top-4 right-4 text-xs font-medium text-white bg-[#26251e] rounded-full px-3 py-1">New way</span>
-              <div className="flex items-center gap-3 mb-1">
-                <Handshake className="w-8 h-8 shrink-0 text-[#26251e]" />
-                <div>
-                  <p className="text-xl font-medium text-[#26251e]">ClawBroker</p>
-                  <p className="text-sm text-[#26251e]/50">Works proactively for you</p>
-                </div>
-              </div>
-              <ul className="flex flex-col">
-                {[
-                  "Monitors 24/7, alerts you first",
-                  "Learns your deals & clients",
-                  "Drafts LOIs, pulls comps, sends reports",
-                  "Remembers everything forever",
-                  "CRE tools for comps, underwriting & more",
-                ].map((item, i, arr) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 py-1.5 text-sm text-[#26251e]"
-                  >
-                    <span className="shrink-0 text-[#26251e]/60 text-sm">✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        {/* ─── Closing CTA ─── */}
+        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto text-center">
+          <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance mb-2">
+            Ready to stop drowning in busywork?
+          </p>
+          <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 text-pretty mb-8">
+            Join the brokers who closed more deals last quarter — with less effort.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href="/sign-up"
+              className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors"
+            >
+              Start Free
+            </a>
+            <button
+              onClick={async () => {
+                const cal = await getCalApi();
+                cal("modal", { calLink: "cobroker/website" });
+              }}
+              className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors cursor-pointer"
+            >
+              Book a Demo
+            </button>
           </div>
         </section>
 
