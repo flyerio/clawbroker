@@ -924,8 +924,8 @@ export default function Home() {
             </div>
 
             {/* ClawBroker */}
-            <div className="relative rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
-              <span className="absolute top-4 right-4 text-xs font-medium text-[#26251e]/40 bg-[#26251e]/[0.05] rounded-full px-3 py-1">New way</span>
+            <div className="relative rounded p-5 sm:p-8 bg-[#f2f1ed] border-2 border-[#26251e] flex flex-col gap-3">
+              <span className="absolute top-4 right-4 text-xs font-medium text-white bg-[#26251e] rounded-full px-3 py-1">New way</span>
               <div className="flex items-center gap-3 mb-1">
                 <Handshake className="w-6 h-6 text-[#26251e]" />
                 <div>
