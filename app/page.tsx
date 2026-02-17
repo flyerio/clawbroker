@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { getCalApi } from "@calcom/embed-react";
-import { MessageSquare, Handshake } from "lucide-react";
+import { MessageSquare, Handshake, Gauge, Link as LinkIcon, Table, Tag } from "lucide-react";
+import Image from "next/image";
 
 /* ─── Data ─── */
 
@@ -590,6 +591,191 @@ function ExamplesSection() {
   );
 }
 
+/* ─── Property Data Section ─── */
+
+const PROPERTY_TABS = [
+  { label: "Score", icon: <Gauge className="w-4 h-4" />, src: "/enrichment-table.png", alt: "ClawBroker enrichment table showing confidence scores" },
+  { label: "Citations", icon: <LinkIcon className="w-4 h-4" />, src: "/citations.png", alt: "ClawBroker citations view showing data sources" },
+];
+
+function PropertyDataSection() {
+  const [currentTab, setCurrentTab] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startInterval = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setCurrentTab((prev) => (prev + 1) % PROPERTY_TABS.length);
+    }, 10000);
+  }, []);
+
+  useEffect(() => {
+    startInterval();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [startInterval]);
+
+  const handleTabClick = (index: number) => {
+    setCurrentTab(index);
+    startInterval();
+  };
+
+  return (
+    <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
+      <div className="border border-[#26251e]/10 rounded-xl overflow-hidden bg-[#f2f1ed] w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-5 min-h-[400px] lg:min-h-[650px]">
+          {/* Left - Text content (2/5) */}
+          <div className="lg:col-span-2 flex flex-col justify-center p-8 lg:p-10 xl:p-12 order-2 lg:order-1">
+            <div>
+              <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
+                RESEARCH
+              </p>
+              <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] mb-3">
+                Property data<br />you can trust
+              </p>
+              <p className="text-sm md:text-base text-[#26251e]/60 leading-relaxed">
+                Ask any question about a property. CLAWBROKER searches the web and returns answers with a confidence score—backed by citations you can verify.
+              </p>
+
+              {/* Tabs */}
+              <div className="mt-8">
+                <div className="inline-flex bg-white rounded-full p-1 gap-1">
+                  {PROPERTY_TABS.map((tab, index) => (
+                    <button
+                      key={tab.label}
+                      onClick={() => handleTabClick(index)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                        currentTab === index
+                          ? "bg-[#26251e] text-white"
+                          : "text-[#26251e]/50 hover:text-[#26251e]/70"
+                      }`}
+                    >
+                      {tab.icon}
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right - Media (3/5) */}
+          <div className="lg:col-span-3 relative h-[350px] lg:h-auto order-1 lg:order-2 overflow-hidden">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative w-[90%] h-[90%] rounded-xl overflow-hidden border border-[#26251e]/10">
+                {PROPERTY_TABS.map((tab, index) => (
+                  <Image
+                    key={tab.src}
+                    src={tab.src}
+                    alt={tab.alt}
+                    fill
+                    className={`object-cover object-top transition-opacity duration-700 ${
+                      currentTab === index ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Client Experience Section ─── */
+
+const CLIENT_TABS = [
+  { value: "tab1", label: "Survey", icon: <Table size={14} />, src: "/01_cobroker_grid.png", alt: "ClawBroker interface showing property survey grid" },
+  { value: "tab2", label: "Labels", icon: <Tag size={14} />, src: "/02_cobroker_labels.png", alt: "ClawBroker interface showing property labels" },
+  { value: "tab3", label: "Chat", icon: <MessageSquare size={14} />, src: "/03_cobroker_feedback.png", alt: "ClawBroker interface showing client chat" },
+];
+
+function ClientExperienceSection() {
+  const [activeTab, setActiveTab] = useState("tab1");
+
+  const tabButtons = (
+    <div className="inline-flex bg-[#26251e]/[0.06] rounded-full p-1 gap-1">
+      {CLIENT_TABS.map((tab) => (
+        <button
+          key={tab.value}
+          onClick={() => setActiveTab(tab.value)}
+          className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
+            activeTab === tab.value
+              ? "bg-[#26251e] text-white shadow-sm"
+              : "text-[#26251e]/60 hover:text-[#26251e]/80"
+          }`}
+        >
+          {tab.icon}
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+
+  return (
+    <section className="w-full px-4 sm:px-6 flex flex-col items-center max-w-[1300px] mx-auto">
+      <div className="relative overflow-hidden bg-[#f2f1ed] rounded-xl w-full">
+        <div className="relative w-full min-h-[800px] md:min-h-[950px]">
+          {/* Mobile toggle at top center */}
+          <div className="relative w-full flex justify-center mb-4 md:hidden z-20 pt-4">
+            <div className="bg-white/80 rounded-full p-1 shadow-md">
+              {tabButtons}
+            </div>
+          </div>
+
+          {/* Full-width image container */}
+          <div className="absolute inset-0 w-full h-full mt-14 md:mt-0">
+            <div className="relative w-full h-full">
+              {CLIENT_TABS.map((tab) => (
+                <Image
+                  key={tab.src}
+                  src={tab.src}
+                  alt={tab.alt}
+                  fill
+                  className={`object-contain transition-opacity duration-500 ${
+                    activeTab === tab.value ? "opacity-100" : "opacity-0"
+                  }`}
+                  style={{ objectPosition: "left top" }}
+                  priority
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Floating glass card */}
+          <div className="absolute bottom-8 left-0 right-0 md:bottom-16 md:right-16 md:left-auto w-full max-w-sm mx-auto md:mx-0 md:max-w-md z-10">
+            <div
+              className="backdrop-blur-xl rounded-md p-4 md:p-8 mx-4 md:mx-0"
+              style={{
+                background: "rgba(255, 255, 255, 0.65)",
+                boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.2)",
+                backdropFilter: "blur(15px)",
+                WebkitBackdropFilter: "blur(15px)",
+              }}
+            >
+              <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
+                CLIENT PORTAL
+              </p>
+              <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] mb-2 md:mb-4">
+                The best client experience
+              </p>
+              <p className="text-[#26251e]/60 text-lg leading-relaxed">
+                Deliver a frictionless, polished property survey with our modern, Interactive Property Grid. Differentiate yourself from the competition and provide the contemporary, user-friendly software experience your clients expect.
+              </p>
+              {/* Desktop tabs */}
+              <div className="mt-3 md:mt-6 hidden md:block">
+                {tabButtons}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─── Main Page ─── */
 
 export default function Home() {
@@ -843,6 +1029,12 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ─── Property Data Section ─── */}
+        <PropertyDataSection />
+
+        {/* ─── Client Experience Section ─── */}
+        <ClientExperienceSection />
+
         {/* ─── Use Cases Section ─── */}
         <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0">
           <div className="w-full max-w-[1300px]">
@@ -895,14 +1087,10 @@ export default function Home() {
             <div className="relative rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
               <span className="absolute top-4 right-4 text-xs font-medium text-[#26251e]/40 bg-[#26251e]/[0.05] rounded-full px-3 py-1">Old way</span>
               <div className="flex items-center gap-3 mb-1">
-                <MessageSquare className="w-6 h-6 text-[#26251e]/40" />
+                <MessageSquare className="w-8 h-8 shrink-0 text-[#26251e]/40" />
                 <div>
-                  <p className="text-base font-normal text-[#26251e]">
-                    Regular AI Chatbot
-                  </p>
-                  <p className="text-sm text-[#26251e]/50">
-                    Waits for you to ask
-                  </p>
+                  <p className="text-xl font-medium text-[#26251e]">Regular AI Chatbot</p>
+                  <p className="text-sm text-[#26251e]/50">Waits for you to ask</p>
                 </div>
               </div>
               <ul className="flex flex-col">
@@ -911,12 +1099,13 @@ export default function Home() {
                   "No business context",
                   "Can\u2019t take action",
                   "Forgets everything",
+                  "No CRE-specific tools built in",
                 ].map((item, i, arr) => (
                   <li
                     key={i}
-                    className={`flex items-center gap-3 py-3 text-sm text-[#26251e]/60${i < arr.length - 1 ? " border-b border-[#26251e]/10" : ""}`}
+                    className="flex items-center gap-3 py-1.5 text-sm text-[#26251e]"
                   >
-                    <span className="shrink-0 w-5 h-5 rounded-full bg-[#c4421a]/10 flex items-center justify-center text-[#c4421a] text-xs font-bold">✕</span>
+                    <span className="shrink-0 text-[#26251e]/30 text-sm">✕</span>
                     {item}
                   </li>
                 ))}
@@ -927,14 +1116,10 @@ export default function Home() {
             <div className="relative rounded p-5 sm:p-8 bg-[#f2f1ed] border-2 border-[#26251e] flex flex-col gap-3">
               <span className="absolute top-4 right-4 text-xs font-medium text-white bg-[#26251e] rounded-full px-3 py-1">New way</span>
               <div className="flex items-center gap-3 mb-1">
-                <Handshake className="w-6 h-6 text-[#26251e]" />
+                <Handshake className="w-8 h-8 shrink-0 text-[#26251e]" />
                 <div>
-                  <p className="text-base font-normal text-[#26251e]">
-                    ClawBroker
-                  </p>
-                  <p className="text-sm text-[#26251e]/50">
-                    Works proactively for you
-                  </p>
+                  <p className="text-xl font-medium text-[#26251e]">ClawBroker</p>
+                  <p className="text-sm text-[#26251e]/50">Works proactively for you</p>
                 </div>
               </div>
               <ul className="flex flex-col">
@@ -943,12 +1128,13 @@ export default function Home() {
                   "Learns your deals & clients",
                   "Drafts LOIs, pulls comps, sends reports",
                   "Remembers everything forever",
+                  "CRE tools for comps, underwriting & more",
                 ].map((item, i, arr) => (
                   <li
                     key={i}
-                    className={`flex items-center gap-3 py-3 text-sm text-[#26251e]/60${i < arr.length - 1 ? " border-b border-[#26251e]/10" : ""}`}
+                    className="flex items-center gap-3 py-1.5 text-sm text-[#26251e]"
                   >
-                    <span className="shrink-0 w-5 h-5 rounded-full bg-green-600/15 flex items-center justify-center text-green-600 text-xs font-bold">✓</span>
+                    <span className="shrink-0 text-[#26251e]/60 text-sm">✓</span>
                     {item}
                   </li>
                 ))}
