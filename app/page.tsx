@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { getCalApi } from "@calcom/embed-react";
-import { MessageSquare, Handshake, Gauge, Link as LinkIcon, Table, Tag } from "lucide-react";
+import { MessageSquare, Handshake, Gauge, Link as LinkIcon, Table, Tag, Menu, X } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
 
 /* ─── Data ─── */
@@ -497,7 +498,7 @@ function ExamplesSection() {
   const tab = EXAMPLE_TABS[activeTab];
 
   return (
-    <section className="w-full px-2 sm:px-4 md:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center min-w-0">
+    <section id="examples" className="w-full px-2 sm:px-4 md:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center min-w-0 scroll-mt-20">
       <div className="w-full max-w-[1300px] px-2 sm:px-0 mb-8 sm:mb-10">
         <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
           See it in action
@@ -622,7 +623,7 @@ function PropertyDataSection() {
   };
 
   return (
-    <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
+    <section id="research" className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto scroll-mt-20">
       <div className="border border-[#26251e]/10 rounded-xl overflow-hidden bg-[#f2f1ed] w-full">
         <div className="grid grid-cols-1 lg:grid-cols-5 min-h-[400px] lg:min-h-[650px]">
           {/* Left - Text content (2/5) */}
@@ -715,8 +716,8 @@ function ClientExperienceSection() {
   );
 
   return (
-    <section className="w-full px-4 sm:px-6 flex flex-col items-center max-w-[1300px] mx-auto">
-      <div className="relative overflow-hidden bg-[#f2f1ed] rounded-xl w-full">
+    <section id="deliverables" className="w-full flex flex-col items-center scroll-mt-20">
+      <div className="relative overflow-hidden bg-[#f2f1ed] w-full">
         <div className="relative w-full min-h-[800px] md:min-h-[950px]">
           {/* Mobile toggle at top center */}
           <div className="relative w-full flex justify-center mb-4 md:hidden z-20 pt-4">
@@ -756,7 +757,7 @@ function ClientExperienceSection() {
               }}
             >
               <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
-                CLIENT PORTAL
+                DELIVERABLES
               </p>
               <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] mb-2 md:mb-4">
                 The best client experience
@@ -773,6 +774,158 @@ function ClientExperienceSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ─── Floating Navbar ─── */
+
+const NAV_ITEMS = [
+  { label: "Examples", href: "#examples" },
+  { label: "Research", href: "#research" },
+  { label: "Deliverables", href: "#deliverables" },
+  { label: "Use Cases", href: "#use-cases" },
+];
+
+function FloatingNavbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const { scrollY } = useScroll();
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 100);
+  });
+
+  const handleBookDemo = async () => {
+    const cal = await getCalApi();
+    cal("modal", { calLink: "cobroker/website" });
+  };
+
+  const scrolledWidth = isMobile ? "90%" : "min(55%, 820px)";
+
+  return (
+    <motion.nav
+      className="fixed top-4 left-0 right-0 z-50 mx-auto"
+      initial={{ width: "100%" }}
+      animate={{
+        width: scrolled ? scrolledWidth : "100%",
+        maxWidth: scrolled ? (isMobile ? "none" : "820px") : "1348px",
+      }}
+      transition={{ type: "spring", stiffness: 200, damping: 50 }}
+      style={{ paddingLeft: scrolled ? 0 : 24, paddingRight: scrolled ? 0 : 24 }}
+    >
+      <motion.div
+        className={`flex items-center justify-between px-4 sm:px-6 py-3 rounded-full transition-colors duration-300 ${
+          scrolled
+            ? "bg-white/80 backdrop-blur-xl shadow-[0_2px_20px_rgba(0,0,0,0.06)]"
+            : "bg-transparent"
+        }`}
+      >
+        {/* Logo */}
+        <a href="#" className="text-lg font-semibold text-[#26251e] font-[family-name:var(--font-logo)] tracking-[-0.03em] shrink-0">
+          ClawBroker
+        </a>
+
+        {/* Desktop nav links */}
+        <div className="hidden md:flex items-center gap-1" onMouseLeave={() => setHoveredIdx(null)}>
+          {NAV_ITEMS.map((item, i) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="relative px-3 py-1.5 text-sm font-medium text-[#26251e]/70 hover:text-[#26251e] transition-colors"
+              onMouseEnter={() => setHoveredIdx(i)}
+            >
+              {hoveredIdx === i && (
+                <motion.span
+                  layoutId="hovered"
+                  className="absolute inset-0 rounded-full bg-[#26251e]/[0.06]"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10">{item.label}</span>
+            </a>
+          ))}
+        </div>
+
+        {/* Desktop CTAs */}
+        <div className="hidden md:flex items-center gap-2 shrink-0">
+          <button
+            onClick={handleBookDemo}
+            className="text-sm font-medium text-[#26251e]/70 hover:text-[#26251e] px-3 py-1.5 transition-colors cursor-pointer"
+          >
+            Book a Demo
+          </button>
+          <a
+            href="/sign-up"
+            className="main-btn-shadow inline-flex items-center justify-center px-5 py-2 text-sm font-medium"
+          >
+            Start Free
+          </a>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden p-2 text-[#26251e]/70 hover:text-[#26251e] transition-colors cursor-pointer"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </motion.div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden mt-2 mx-2 rounded-2xl bg-white/90 backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.08)] overflow-hidden"
+          >
+            <div className="flex flex-col py-3">
+              {NAV_ITEMS.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="px-6 py-3 text-sm font-medium text-[#26251e]/70 hover:text-[#26251e] hover:bg-[#26251e]/[0.04] transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.label}
+                </a>
+              ))}
+              <div className="border-t border-[#26251e]/10 mx-4 my-2" />
+              <button
+                onClick={() => {
+                  setMobileOpen(false);
+                  handleBookDemo();
+                }}
+                className="px-6 py-3 text-sm font-medium text-[#26251e]/70 hover:text-[#26251e] hover:bg-[#26251e]/[0.04] transition-colors text-left cursor-pointer"
+              >
+                Book a Demo
+              </button>
+              <div className="px-4 py-2">
+                <a
+                  href="/sign-up"
+                  className="main-btn-shadow flex items-center justify-center px-5 py-2.5 text-sm font-medium w-full"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Start Free
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }
 
@@ -800,6 +953,7 @@ export default function Home() {
       cal("ui", {
         cssVarsPerTheme: {
           light: { "cal-brand": "#26251e" },
+          dark: { "cal-brand": "#26251e" },
         },
         hideEventTypeDetails: false,
       });
@@ -808,22 +962,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-row w-screen overflow-x-hidden h-full justify-center px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 min-w-0">
-      <div className="w-full flex flex-col gap-0 min-w-0">
-        {/* ─── Header ─── */}
-        <header className="w-full max-w-[1300px] mx-auto flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
-          <span className="text-lg sm:text-xl font-semibold text-[#26251e] truncate min-w-0 font-[family-name:var(--font-logo)] tracking-[-0.03em]">
-            ClawBroker
-          </span>
-          <nav className="flex items-center shrink-0">
-            <a
-              href="mailto:isaac@cobroker.ai"
-              className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base border-b-2 border-[#26251e]/15 text-[#26251e]/55 hover:text-[#26251e]/70 transition-colors duration-500 whitespace-nowrap"
-            >
-              <MailIcon className="size-4 sm:size-5 shrink-0" />
-              Support
-            </a>
-          </nav>
-        </header>
+      <FloatingNavbar />
+      <div className="w-full flex flex-col gap-0 min-w-0 pt-14">
 
         {/* ─── Hero ─── */}
         <section className="w-full px-2 sm:px-4 md:px-6 pt-6 sm:pt-10 md:pt-16 pb-6 sm:pb-10 md:pb-12 flex flex-col items-center min-w-0">
@@ -1036,7 +1176,7 @@ export default function Home() {
         <ClientExperienceSection />
 
         {/* ─── Use Cases Section ─── */}
-        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0">
+        <section id="use-cases" className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0 scroll-mt-20">
           <div className="w-full max-w-[1300px]">
             <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
               USE CASES
