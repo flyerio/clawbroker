@@ -70,6 +70,8 @@ const PILL_STYLES = [
 ];
 
 
+const AUSTIN_CHART_SVG = `<svg viewBox="0 0 210 140" xmlns="http://www.w3.org/2000/svg" style="background:#fff;font-family:system-ui,sans-serif"><text x="105" y="10" text-anchor="middle" font-size="7" font-weight="600" fill="#444">Avg Asking Rate ($/SF/yr)</text><line x1="24" y1="18" x2="200" y2="18" stroke="#eee" stroke-width=".5"/><line x1="24" y1="68" x2="200" y2="68" stroke="#eee" stroke-width=".5"/><line x1="24" y1="118" x2="200" y2="118" stroke="#ccc" stroke-width=".5"/><text x="21" y="21" text-anchor="end" font-size="5.5" fill="#999">$60</text><text x="21" y="71" text-anchor="end" font-size="5.5" fill="#999">$30</text><text x="21" y="121" text-anchor="end" font-size="5.5" fill="#999">$0</text><rect x="30" y="26" width="18" height="92" rx="2" fill="#c05a7e"/><rect x="58" y="38" width="18" height="80" rx="2" fill="#c96f8f"/><rect x="86" y="48" width="18" height="70" rx="2" fill="#d287a1"/><rect x="114" y="55" width="18" height="63" rx="2" fill="#db9db3"/><rect x="142" y="60" width="18" height="58" rx="2" fill="#e4b3c5"/><rect x="170" y="71" width="18" height="47" rx="2" fill="#f0c4d4"/><text x="39" y="23" text-anchor="middle" font-size="5.5" font-weight="600" fill="#555">$55</text><text x="67" y="35" text-anchor="middle" font-size="5.5" font-weight="600" fill="#555">$48</text><text x="95" y="45" text-anchor="middle" font-size="5.5" font-weight="600" fill="#555">$42</text><text x="123" y="52" text-anchor="middle" font-size="5.5" font-weight="600" fill="#555">$38</text><text x="151" y="57" text-anchor="middle" font-size="5.5" font-weight="600" fill="#555">$35</text><text x="179" y="68" text-anchor="middle" font-size="5.5" font-weight="600" fill="#555">$28</text><text x="39" y="128" text-anchor="middle" font-size="5" fill="#666">2nd St</text><text x="67" y="128" text-anchor="middle" font-size="5" fill="#666">SoCo</text><text x="95" y="128" text-anchor="middle" font-size="5" fill="#666">Domain</text><text x="123" y="128" text-anchor="middle" font-size="5" fill="#666">Triangle</text><text x="151" y="128" text-anchor="middle" font-size="5" fill="#666">Mueller</text><text x="179" y="128" text-anchor="middle" font-size="5" fill="#666">Arbrtm</text></svg>`;
+
 const EXAMPLE_TABS = [
   {
     title: "Search",
@@ -137,10 +139,10 @@ const EXAMPLE_TABS = [
     items: ["Bar Charts", "Line Charts", "Doughnut Charts", "Rent Trends"],
     gradient: "linear-gradient(135deg, #f0c4d4 0%, #e4a8be 25%, #d88da8 50%, #cc7292 75%, #c05a7e 100%)",
     chat: [
-      { role: "user" as const, text: "Show me rent trends for Class A offices in Midtown, last 12 months" },
-      { role: "agent" as const, text: "Avg asking rent rose from <strong>$74/SF to $81/SF</strong> — up <strong>9.5% YoY</strong>. Vacancy tightened from 14.2% to 11.8%." },
-      { role: "user" as const, text: "Chart it" },
-      { role: "agent" as const, text: "Here's the 12-month trend. Steepest climb was Q3 — jumped <strong>$3.20/SF</strong> in two months." },
+      { role: "user" as const, text: "Compare asking rates for retail spaces across Austin" },
+      { role: "agent" as const, text: `2nd Street leads at <strong>$55/SF</strong>, nearly double The Arboretum. Here's the breakdown:${AUSTIN_CHART_SVG}` },
+      { role: "user" as const, text: "Why is 2nd Street so much higher?" },
+      { role: "agent" as const, text: "2nd Street District commands a <strong>96% premium</strong> over The Arboretum — driven by walkability, lake proximity, and high-income foot traffic." },
     ],
   },
 ];
