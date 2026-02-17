@@ -497,10 +497,10 @@ function ExamplesSection() {
   return (
     <section className="w-full px-2 sm:px-4 md:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center min-w-0">
       <div className="w-full max-w-[1300px] px-2 sm:px-0 mb-8 sm:mb-10">
-        <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e]/60 text-balance">
+        <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
           See it in action
-        </h2>
-        <p className="text-lg md:text-[22px] font-normal leading-[1.3] text-[#26251e]/45 mt-2 text-pretty">
+        </p>
+        <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 mt-1 text-pretty">
           Research, analyze, and create — all from one chat.
         </p>
       </div>
@@ -703,7 +703,10 @@ export default function Home() {
           <div className="hero-card">
             {/* Left Column */}
             <div className="hero-card-left">
-              <p className="text-lg md:text-[22px] font-normal leading-[1.3] text-[#26251e]/60 text-pretty">
+              <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-pretty">
+                A Full Team In Your Pocket
+              </p>
+              <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 text-pretty">
                 Generates maps, analyzes demographics,
                 remembers client profiles and search criteria, imports deal data
                 from emails, and tracks market changes—all from your phone, 24/7.
@@ -846,6 +849,9 @@ export default function Home() {
         <section className="w-full px-4 sm:px-6 py-10 sm:py-16 flex flex-col gap-8 sm:gap-12 max-w-5xl mx-auto min-w-0">
           <div className="flex flex-col items-center justify-center gap-1 sm:gap-2">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-[#26251e] text-center text-balance">
+              A Full Team In Your Pocket
+            </h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-[#26251e]/55 text-center text-balance">
               What can ClawBroker do for you?
             </h2>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-[#26251e]/55 text-center text-balance">

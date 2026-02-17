@@ -156,7 +156,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 8px;
   padding: 16px 20px 16px 2.5px;
 }
 @media (min-width: 768px) {
