@@ -498,8 +498,11 @@ function ExamplesSection() {
   const tab = EXAMPLE_TABS[activeTab];
 
   return (
-    <section id="examples" className="w-full px-2 sm:px-4 md:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center min-w-0 scroll-mt-20">
+    <section id="skills" className="w-full px-2 sm:px-4 md:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center min-w-0 scroll-mt-20">
       <div className="w-full max-w-[1300px] px-2 sm:px-0 mb-8 sm:mb-10">
+        <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
+          SKILLS
+        </p>
         <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
           See it in action
         </p>
@@ -780,7 +783,7 @@ function ClientExperienceSection() {
 /* ─── Floating Navbar ─── */
 
 const NAV_ITEMS = [
-  { label: "Examples", href: "#examples" },
+  { label: "Skills", href: "#skills" },
   { label: "Research", href: "#research" },
   { label: "Deliverables", href: "#deliverables" },
   { label: "Use Cases", href: "#use-cases" },
