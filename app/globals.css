@@ -372,3 +372,34 @@ body {
   justify-content: center;
   flex-shrink: 0;
 }
+
+/* ─── Glowing Dot ─── */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.6; }
+}
+
+.glow-dot-outer {
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  background: #FF683D;
+  opacity: 0.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: glow-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.glow-dot-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+  background: #FF683D;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { getCalApi } from "@calcom/embed-react";
@@ -66,6 +66,81 @@ const PILL_STYLES = [
   "bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(38,37,30,0.04),transparent)] border border-[#26251e]/10 text-[#26251e]/70",
 ];
 
+
+const EXAMPLE_TABS = [
+  {
+    title: "Search",
+    description: "Find available properties for sale or lease using AI-powered web search.",
+    items: ["Web Search", "Listings", "Availability", "Saved Searches"],
+    gradient: "linear-gradient(135deg, #87CEEB 0%, #a8d8ea 25%, #b0e0e6 50%, #7ec8d8 75%, #6bbfcf 100%)",
+    chat: [
+      { role: "user" as const, text: "What's available in Uptown Dallas? Retail, 8-12K SF" },
+      { role: "agent" as const, text: "Found <strong>7 spaces</strong>. Top match: 4500 McKinney Ave — <strong>10,200 SF, $32/SF NNN</strong>. Asking below market." },
+      { role: "user" as const, text: "Any with corner visibility?" },
+      { role: "agent" as const, text: "Two: <strong>4500 McKinney</strong> (corner lot, 180ft frontage) and <strong>3200 Cole Ave</strong> (9,400 SF, signage rights). Want me to save these?" },
+    ],
+  },
+  {
+    title: "Memory",
+    description: "Remembers every client's criteria, preferences, and deal history across conversations.",
+    items: ["Client Profiles", "Criteria", "Deal History", "Preferences"],
+    gradient: "linear-gradient(135deg, #f7e8c1 0%, #e8c87a 25%, #d4a853 50%, #c8963f 75%, #b8862d 100%)",
+    chat: [
+      { role: "user" as const, text: "New client — Apex Retail Group. 10K SF retail, Uptown Dallas, $35/SF NNN cap." },
+      { role: "agent" as const, text: "Saved. <strong>Apex Retail Group</strong>: 10,000 SF retail, Uptown Dallas, $35/SF NNN. I'll flag matches." },
+      { role: "user" as const, text: "What was the budget for my client Rivera Holdings?" },
+      { role: "agent" as const, text: "<strong>Rivera Holdings</strong>: 25K SF office, Downtown Austin, budget <strong>$42/SF gross</strong>. Last search was Jan 28." },
+    ],
+  },
+  {
+    title: "Extract",
+    description: "Forward an email with property docs — agent extracts and organizes everything automatically.",
+    items: ["PDF Parsing", "Data Extraction", "Auto-Organize", "Geocoding"],
+    gradient: "linear-gradient(135deg, #b8e6c8 0%, #98d4a8 25%, #7cc892 50%, #6ab87e 75%, #5aad6e 100%)",
+    chat: [
+      { role: "user" as const, text: "Just forwarded you a 40-page offering memo from CBRE" },
+      { role: "agent" as const, text: "Got it. Extracted <strong>12 properties</strong> from the PDF — addresses, SF, asking price, and cap rates. Ready to review." },
+      { role: "user" as const, text: "Create a project with all of them" },
+      { role: "agent" as const, text: "Done. Project <strong>\"CBRE Q1 Portfolio\"</strong> created with 12 properties. All geocoded and mapped." },
+    ],
+  },
+  {
+    title: "Demographics",
+    description: "Pull population, income, housing, and employment data for any property location.",
+    items: ["Population", "Income", "Housing", "Employment"],
+    gradient: "linear-gradient(135deg, #d4c5f9 0%, #b8a9e8 25%, #c5b8f0 50%, #a89cd4 75%, #9b8ec7 100%)",
+    chat: [
+      { role: "user" as const, text: "Pull demographics for 200 Park Ave" },
+      { role: "agent" as const, text: "Within 1 mile of 200 Park Ave: Population: <strong>48,200</strong> / Median HHI: <strong>$127K</strong> / 73% white-collar workforce" },
+      { role: "user" as const, text: "Compare that to 500 5th Ave" },
+      { role: "agent" as const, text: "500 5th Ave has <strong>62K population</strong> but lower HHI at <strong>$98K</strong>. Higher retail density — 340 stores vs 180. Want a chart?" },
+    ],
+  },
+  {
+    title: "Monitor",
+    description: "Set market alerts once — get new listings and changes delivered on autopilot.",
+    items: ["Daily Alerts", "New Listings", "Market Changes", "Autopilot"],
+    gradient: "linear-gradient(135deg, #f5a8a0 0%, #e8928a 25%, #db7d75 50%, #cf6860 75%, #c4554d 100%)",
+    chat: [
+      { role: "user" as const, text: "Monitor new office listings in the Seaport District, over 5K SF" },
+      { role: "agent" as const, text: "Monitor set. I'll check daily at <strong>7:30am</strong> and message you when something new hits." },
+      { role: "user" as const, text: "Any updates?" },
+      { role: "agent" as const, text: "New listing alert: <strong>1 Seaport Blvd, Suite 400</strong> — 8,200 SF office, $52/SF. Listed today by Cushman. Want details?" },
+    ],
+  },
+  {
+    title: "Charts",
+    description: "Turn any data into professional bar, line, or doughnut charts instantly.",
+    items: ["Bar Charts", "Line Charts", "Doughnut Charts", "Rent Trends"],
+    gradient: "linear-gradient(135deg, #f0c4d4 0%, #e4a8be 25%, #d88da8 50%, #cc7292 75%, #c05a7e 100%)",
+    chat: [
+      { role: "user" as const, text: "Show me rent trends for Class A offices in Midtown, last 12 months" },
+      { role: "agent" as const, text: "Avg asking rent rose from <strong>$74/SF to $81/SF</strong> — up <strong>9.5% YoY</strong>. Vacancy tightened from 14.2% to 11.8%." },
+      { role: "user" as const, text: "Chart it" },
+      { role: "agent" as const, text: "Here's the 12-month trend. Steepest climb was Q3 — jumped <strong>$3.20/SF</strong> in two months." },
+    ],
+  },
+];
 
 /* ─── Lucide-style icon paths for marquee pills ─── */
 
@@ -392,6 +467,155 @@ function MarqueeRow({
   );
 }
 
+/* ─── Examples Section (inverted layout: phone LEFT, tabs RIGHT) ─── */
+
+function ExamplesSection() {
+  const [activeTab, setActiveTab] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startAutoplay = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setActiveTab((prev) => (prev + 1) % EXAMPLE_TABS.length);
+    }, 5000);
+  }, []);
+
+  useEffect(() => {
+    startAutoplay();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [startAutoplay]);
+
+  const handleTabClick = (index: number) => {
+    setActiveTab(index);
+    startAutoplay();
+  };
+
+  const tab = EXAMPLE_TABS[activeTab];
+
+  return (
+    <section className="w-full px-2 sm:px-4 md:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center min-w-0">
+      <div className="w-full max-w-[1300px] px-2 sm:px-0 mb-8 sm:mb-10">
+        <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e]/60 text-balance">
+          See it in action
+        </h2>
+        <p className="text-lg md:text-[22px] font-normal leading-[1.3] text-[#26251e]/45 mt-2 text-pretty">
+          Research, analyze, and create — all from one chat.
+        </p>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-2 w-full max-w-[1300px]">
+        {/* LEFT panel — phone mockup */}
+        <div
+          className="md:w-[67%] rounded-lg relative overflow-hidden min-h-[560px] md:min-h-[713px]"
+          style={{
+            background: tab.gradient,
+            transition: "background 0.5s ease",
+          }}
+        >
+          <div className="iphone-frame">
+            <div className="iphone-screen">
+              <div className="iphone-notch" />
+              <div className="iphone-statusbar">
+                <span>9:41</span>
+                <svg width="68" height="12" viewBox="0 0 68 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.3"/>
+                  <rect x="6" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.5"/>
+                  <rect x="12" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.7"/>
+                  <rect x="18" y="1" width="4" height="10" rx="1" fill="#1a1a1a"/>
+                  <path d="M30 3a5 5 0 0 1 7 0" stroke="#1a1a1a" strokeWidth="1.2" fill="none" opacity="0.4"/>
+                  <path d="M31.5 5a3 3 0 0 1 4 0" stroke="#1a1a1a" strokeWidth="1.2" fill="none" opacity="0.7"/>
+                  <circle cx="33.5" cy="7.5" r="1" fill="#1a1a1a"/>
+                  <rect x="42" y="2.5" width="20" height="7" rx="2" stroke="#1a1a1a" strokeWidth="1"/>
+                  <rect x="43.5" y="4" width="15" height="4" rx="1" fill="#1a1a1a"/>
+                  <rect x="62.5" y="4.5" width="1.5" height="3" rx="0.5" fill="#1a1a1a" opacity="0.4"/>
+                </svg>
+              </div>
+              <div className="phone-header">
+                <div className="phone-header-avatar">CB</div>
+                <div className="phone-header-info">
+                  <span className="phone-header-name">ClawBroker Agent</span>
+                  <span className="phone-header-status">
+                    <span className="agent-status-dot" />
+                    Online
+                  </span>
+                </div>
+              </div>
+              <div className="phone-chat">
+                {tab.chat.map((msg, i) => (
+                  <div
+                    key={`${activeTab}-${i}`}
+                    className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-agent"}
+                    dangerouslySetInnerHTML={{ __html: msg.text }}
+                  />
+                ))}
+              </div>
+              <div className="phone-input-bar">
+                <div className="phone-input-field">Message ClawBroker...</div>
+                <div className="phone-send-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 2 11 13"/>
+                    <path d="M22 2 15 22 11 13 2 9 22 2z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT panel — tab list */}
+        <div className="md:w-[33%] rounded-lg p-6 sm:p-8 flex flex-col justify-center bg-[#f2f1ed]">
+          <div className="flex flex-col gap-1">
+            {EXAMPLE_TABS.map((t, i) => {
+              const isActive = i === activeTab;
+              return (
+                <button
+                  key={t.title}
+                  onClick={() => handleTabClick(i)}
+                  className="text-left w-full transition-all duration-300"
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="flex items-center gap-3 py-1.5">
+                    {isActive && (
+                      <div className="glow-dot-outer">
+                        <div className="glow-dot-inner" />
+                      </div>
+                    )}
+                    <span
+                      className="text-base sm:text-lg font-semibold transition-colors duration-300"
+                      style={{ color: isActive ? "#FF683D" : "#292929" }}
+                    >
+                      {t.title}
+                    </span>
+                  </div>
+                  {isActive && (
+                    <div className="pl-[24px] pb-3 flex flex-col gap-2 animate-[fadeIn_0.3s_ease]">
+                      <p className="text-sm text-[#292929]/70 leading-relaxed">
+                        {t.description}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 mt-1">
+                        {t.items.map((item) => (
+                          <span
+                            key={item}
+                            className="text-xs px-2.5 py-1 rounded-full bg-[#FF683D]/10 text-[#FF683D] font-medium"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─── Main Page ─── */
 
 export default function Home() {
@@ -486,7 +710,7 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Right Column */}
+            {/* Right Column — static chat */}
             <div className="hero-card-right">
               <div className="iphone-frame">
                 <div className="iphone-screen">
@@ -519,11 +743,7 @@ export default function Home() {
                   <div className="phone-chat">
                     <div className="chat-bubble-user">Pull lease comps for 200 Park Ave, Class A offices, last 24 months</div>
                     <div className="chat-bubble-agent">Found <strong>14 comparable leases</strong> within 0.3 mi. Avg asking rent $78.50/SF. Generating comp report...</div>
-                    <div className="chat-bubble-agent">
-                      <span className="text-[#34c759]">&#10003;</span> Comp analysis complete<br/>
-                      <span className="text-[#34c759]">&#10003;</span> Map generated<br/>
-                      <span className="text-[#34c759]">&#10003;</span> PDF ready to share
-                    </div>
+                    <div className="chat-bubble-agent">&#10003; Comp analysis &nbsp; &#10003; Map &nbsp; &#10003; PDF</div>
                     <div className="chat-bubble-user">Draft an LOI for suite 4200 at $74/SF, 7-year term</div>
                     <div className="chat-bubble-agent">LOI drafted for <strong>Suite 4200</strong> — $74.00/SF, 7-yr term, 3% annual escalations. Ready for your review.</div>
                   </div>
@@ -542,6 +762,8 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ─── Examples Section ─── */}
+        <ExamplesSection />
 
         {/* ─── Comparison Section ─── */}
         <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-32 flex flex-col gap-3 max-w-5xl mx-auto min-w-0">
