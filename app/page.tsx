@@ -755,15 +755,17 @@ export default function Home() {
 
         {/* ─── The Problem Section ─── */}
         <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
-          <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] text-[#c4421a] mb-4">
-            THE PROBLEM
-          </p>
-          <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e] text-center text-balance max-w-3xl">
-            Your team is drowning in busywork instead of building
-          </h2>
-          <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 text-center max-w-2xl mt-3 text-pretty">
-            Context switching, scattered tools, and manual data entry are a second job. ClawBroker handles the busywork so your team can focus on what matters.
-          </p>
+          <div className="w-full max-w-[1300px] mb-8 sm:mb-10">
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] text-[#c4421a] mb-2">
+              THE PROBLEM
+            </p>
+            <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
+              Your team is drowning in busywork instead of building
+            </p>
+            <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 mt-1 text-pretty">
+              Context switching, scattered tools, and manual data entry are a second job. ClawBroker handles the busywork so your team can focus on what matters.
+            </p>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-[10px] w-full max-w-[1300px] mt-12 sm:mt-16">
             <div className="rounded p-3 sm:p-[15px] bg-[#f2f1ed] flex flex-col sm:aspect-[16/9]">
               <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] grow">23 min</p>
