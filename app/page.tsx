@@ -937,6 +937,9 @@ export default function Home() {
   const [heroScene, setHeroScene] = useState(0); // 0 = chat, 1 = video
   const heroTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const videoFadingRef = useRef(false);
+  const [heroProgress, setHeroProgress] = useState(0);
+  const progressRafRef = useRef<number>(0);
+  const videoElRef = useRef<HTMLVideoElement | null>(null);
 
   // Scene-aware cycling: chat shows 5s, video plays until ~2s before end
   useEffect(() => {
@@ -950,6 +953,29 @@ export default function Home() {
     return () => {
       if (heroTimerRef.current) clearTimeout(heroTimerRef.current);
     };
+  }, [heroScene]);
+
+  // Progress ring animation keyed on heroScene
+  useEffect(() => {
+    setHeroProgress(0);
+    let startTime = performance.now();
+
+    const tick = (now: number) => {
+      if (heroScene === 0) {
+        const elapsed = now - startTime;
+        setHeroProgress(Math.min(elapsed / 5000, 1));
+      } else if (heroScene === 1) {
+        const vid = videoElRef.current;
+        if (vid && vid.duration) {
+          const effectiveDuration = vid.duration - 2;
+          setHeroProgress(effectiveDuration > 0 ? Math.min(vid.currentTime / effectiveDuration, 1) : 0);
+        }
+      }
+      progressRafRef.current = requestAnimationFrame(tick);
+    };
+
+    progressRafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(progressRafRef.current);
   }, [heroScene]);
 
   const switchHeroScene = useCallback((scene: number) => {
@@ -1094,7 +1120,7 @@ export default function Home() {
                         className="hero-scene-inner"
                       >
                         <video
-                          ref={(el) => { if (el) el.playbackRate = 1.5; }}
+                          ref={(el) => { videoElRef.current = el; if (el) el.playbackRate = 1.5; }}
                           autoPlay
                           muted
                           playsInline
@@ -1127,20 +1153,77 @@ export default function Home() {
                   </AnimatePresence>
                 </div>
               </div>
-              {/* Scene indicators */}
-              <div className="flex justify-center gap-2 mt-3">
-                {[0, 1].map((i) => (
-                  <button
-                    key={i}
-                    onClick={() => switchHeroScene(i)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      heroScene === i
-                        ? "bg-[#26251e] scale-110"
-                        : "bg-[#26251e]/25 hover:bg-[#26251e]/40"
-                    }`}
-                    aria-label={`Switch to ${i === 0 ? "chat" : "video"} view`}
-                  />
-                ))}
+              {/* Progress-ring scene indicators — skills-style list beside phone */}
+              <div
+                className="absolute top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col gap-1"
+                style={{ left: "calc(50% + 160px)" }}
+              >
+                {[
+                  { label: "Chat", desc: "Ask anything — comps, LOIs, market data.", idx: 0 },
+                  { label: "Deliverables", desc: "Maps, reports, and docs generated live.", idx: 1 },
+                ].map(({ label, desc, idx }) => {
+                  const isActive = heroScene === idx;
+                  const ringRadius = 10;
+                  const circumference = 2 * Math.PI * ringRadius;
+                  const offset = isActive ? circumference * (1 - heroProgress) : circumference;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => switchHeroScene(idx)}
+                      className="text-left w-full transition-all duration-300"
+                      aria-label={`Switch to ${label} view`}
+                    >
+                      <div className="flex items-center gap-3 py-1.5">
+                        {/* Dot with progress ring */}
+                        <div className="relative shrink-0 flex items-center justify-center" style={{ width: 24, height: 24 }}>
+                          {/* Background track */}
+                          <svg width="24" height="24" viewBox="0 0 24 24" className="absolute inset-0">
+                            <circle
+                              cx="12" cy="12" r={ringRadius}
+                              fill="none"
+                              stroke="#FF683D"
+                              strokeWidth="2"
+                              opacity={isActive ? 0.15 : 0}
+                              style={{ transition: "opacity 0.3s" }}
+                            />
+                          </svg>
+                          {/* Progress arc */}
+                          <svg width="24" height="24" viewBox="0 0 24 24" className="absolute inset-0">
+                            <circle
+                              cx="12" cy="12" r={ringRadius}
+                              fill="none"
+                              stroke="#FF683D"
+                              strokeWidth="2"
+                              strokeDasharray={circumference}
+                              strokeDashoffset={offset}
+                              strokeLinecap="round"
+                              style={{ transform: "rotate(-90deg)", transformOrigin: "center", transition: isActive ? "none" : "stroke-dashoffset 0.3s" }}
+                              opacity={isActive ? 0.8 : 0}
+                            />
+                          </svg>
+                          {/* Center dot */}
+                          <div
+                            className="w-[8px] h-[8px] rounded-full transition-opacity duration-300"
+                            style={{ background: "#FF683D", opacity: isActive ? 1 : 0 }}
+                          />
+                        </div>
+                        <span
+                          className="text-base md:text-lg font-normal leading-[1.3] tracking-tight transition-colors duration-300 whitespace-nowrap"
+                          style={{ color: isActive ? "#FF683D" : "#292929" }}
+                        >
+                          {label}
+                        </span>
+                      </div>
+                      {isActive && (
+                        <div className="pl-[20px] pb-2 animate-[fadeIn_0.3s_ease]">
+                          <p className="text-sm font-normal leading-[1.4] text-[#26251e]/55">
+                            {desc}
+                          </p>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
