@@ -1112,7 +1112,7 @@ export default function Home() {
                         {/* URL overlay to cover cropped browser bar */}
                         <div
                           className="absolute bottom-0 left-0 right-0 flex items-center justify-center"
-                          style={{ height: '48px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.95) 40%, #fff)', backdropFilter: 'blur(8px)', zIndex: 10, borderRadius: '0 0 38px 38px' }}
+                          style={{ height: '43px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.95) 40%, #fff)', backdropFilter: 'blur(8px)', zIndex: 10, borderRadius: '0 0 38px 38px' }}
                         >
                           <div className="flex items-center gap-1.5 px-3 py-1 bg-white/80 rounded-full text-[11px] text-gray-500 font-medium tracking-wide">
                             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
