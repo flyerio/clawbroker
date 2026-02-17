@@ -136,6 +136,15 @@ const EXAMPLE_TABS = [
       { role: "agent" as const, text: "New listing alert: <strong>1 Seaport Blvd, Suite 400</strong> — 8,200 SF office, $52/SF. Listed today by Cushman. Want details?" },
     ],
   },
+  {
+    type: "pdf" as const,
+    title: "Reports",
+    description: "Generate polished, branded PDF reports from any dataset — ready to send to clients.",
+    items: ["PDF Reports", "Branded Layouts", "Auto-Charts", "Client-Ready"],
+    gradient: "linear-gradient(135deg, #c8864a 0%, #d4a060 25%, #e0bc7a 50%, #ecdaa0 75%, #f0e8c8 100%)",
+    chat: [],
+    slides: [0, 2, 3, 5, 6].map((i) => `/nike-slides/slide-${String(i).padStart(2, '0')}.png`),
+  },
 ];
 
 /* ─── Lucide-style icon paths for marquee pills ─── */
@@ -467,25 +476,35 @@ function MarqueeRow({
 
 function ExamplesSection() {
   const [activeTab, setActiveTab] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const activeTabRef = useRef(0);
 
-  const startAutoplay = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setActiveTab((prev) => (prev + 1) % EXAMPLE_TABS.length);
-    }, 10000);
+  const scheduleNext = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    const current = activeTabRef.current;
+    const tab = EXAMPLE_TABS[current];
+    const delay = "type" in tab && tab.type === "pdf" ? 17000 : 10000;
+    timerRef.current = setTimeout(() => {
+      const next = (activeTabRef.current + 1) % EXAMPLE_TABS.length;
+      activeTabRef.current = next;
+      setActiveTab(next);
+    }, delay);
   }, []);
 
   useEffect(() => {
-    startAutoplay();
+    scheduleNext();
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [startAutoplay]);
+  }, [scheduleNext]);
+
+  useEffect(() => {
+    activeTabRef.current = activeTab;
+    scheduleNext();
+  }, [activeTab, scheduleNext]);
 
   const handleTabClick = (index: number) => {
     setActiveTab(index);
-    startAutoplay();
   };
 
   const tab = EXAMPLE_TABS[activeTab];
@@ -513,38 +532,63 @@ function ExamplesSection() {
             transition: "background 0.5s ease",
           }}
         >
-          <div className="iphone-frame">
-            <div className="iphone-screen">
-              <div className="phone-header">
-                <div className="phone-header-avatar">CB</div>
-                <div className="phone-header-info">
-                  <span className="phone-header-name">ClawBroker</span>
-                  <span className="phone-header-status">
-                    <span className="agent-status-dot" />
-                    Online
-                  </span>
-                </div>
-              </div>
-              <div className="phone-chat">
-                {tab.chat.map((msg, i) => (
-                  <div
-                    key={`${activeTab}-${i}`}
-                    className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-agent"}
-                    dangerouslySetInnerHTML={{ __html: msg.text }}
-                  />
-                ))}
-              </div>
-              <div className="phone-input-bar">
-                <div className="phone-input-field">Message ClawBroker...</div>
-                <div className="phone-send-btn">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 2 11 13"/>
-                    <path d="M22 2 15 22 11 13 2 9 22 2z"/>
-                  </svg>
+          {"type" in tab && tab.type === "pdf" && "slides" in tab ? (
+            <div className="iphone-frame-landscape" key={`landscape-${activeTab}`}>
+              <div className="iphone-screen-landscape">
+                <div
+                  className="slides-scroll-container"
+                  style={{
+                    ["--scroll-distance" as string]: `-${(tab as any).slides.length * 160}px`,
+                    ["--scroll-duration" as string]: "15s",
+                  }}
+                >
+                  {(tab as any).slides.map((src: string, i: number) => (
+                    <Image
+                      key={i}
+                      src={src}
+                      alt={`Report slide ${i + 1}`}
+                      width={1040}
+                      height={585}
+                      className="w-full h-auto block"
+                    />
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="iphone-frame">
+              <div className="iphone-screen">
+                <div className="phone-header">
+                  <div className="phone-header-avatar">CB</div>
+                  <div className="phone-header-info">
+                    <span className="phone-header-name">ClawBroker</span>
+                    <span className="phone-header-status">
+                      <span className="agent-status-dot" />
+                      Online
+                    </span>
+                  </div>
+                </div>
+                <div className="phone-chat">
+                  {tab.chat.map((msg, i) => (
+                    <div
+                      key={`${activeTab}-${i}`}
+                      className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-agent"}
+                      dangerouslySetInnerHTML={{ __html: msg.text }}
+                    />
+                  ))}
+                </div>
+                <div className="phone-input-bar">
+                  <div className="phone-input-field">Message ClawBroker...</div>
+                  <div className="phone-send-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 2 11 13"/>
+                      <path d="M22 2 15 22 11 13 2 9 22 2z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* RIGHT panel — tab list */}
