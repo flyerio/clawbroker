@@ -588,9 +588,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-row w-screen overflow-x-hidden h-full justify-center px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 min-w-0">
-      <div className="w-full max-w-5xl flex flex-col gap-0 min-w-0">
+      <div className="w-full flex flex-col gap-0 min-w-0">
         {/* ─── Header ─── */}
-        <header className="w-full flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
+        <header className="w-full max-w-5xl mx-auto flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
           <span className="text-base sm:text-lg font-medium text-[#26251e] truncate min-w-0">
             ClawBroker<span className="text-[#26251e]/55 italic">.ai</span>
           </span>
@@ -606,16 +606,28 @@ export default function Home() {
         </header>
 
         {/* ─── Hero ─── */}
-        <section className="w-full px-2 sm:px-4 md:px-6 pt-6 sm:pt-10 md:pt-16 pb-6 sm:pb-10 md:pb-12 flex justify-center min-w-0">
+        <section className="w-full px-2 sm:px-4 md:px-6 pt-6 sm:pt-10 md:pt-16 pb-6 sm:pb-10 md:pb-12 flex flex-col items-center min-w-0">
+          {/* Heading above card */}
+          <div className="w-full max-w-[1300px] px-2 sm:px-0">
+            <h1 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e] text-balance">
+              Your CRE AI Employee That Actually Does Things
+            </h1>
+            <div className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e]/60 text-balance">
+              So You Can Focus on Closing.
+            </div>
+          </div>
+
+          {/* Gap between heading and card */}
+          <div className="h-10 sm:h-14 md:h-[67px]" />
+
           <div className="hero-card">
             {/* Left Column */}
             <div className="hero-card-left">
-              <h1 className="text-2xl sm:text-3xl md:text-[28px] font-semibold leading-[1.2] text-[#26251e] text-balance">
-                Your CRE AI Employee That Actually Does Things
-                <span className="text-[#26251e]/50">—So You Can Focus on Closing.</span>
-              </h1>
-              <p className="text-sm text-[#26251e]/60 leading-relaxed text-pretty">
-                Powered by OpenClaw. Generates maps, analyzes demographics,
+              <h3 className="text-lg md:text-[22px] font-normal leading-[1.3] text-[#26251e]">
+                Powered by OpenClaw
+              </h3>
+              <p className="text-lg md:text-[22px] font-normal leading-[1.3] text-[#26251e]/60 text-pretty">
+                Generates maps, analyzes demographics,
                 remembers client profiles and search criteria, imports deal data
                 from emails, and tracks market changes—all from your phone, 24/7.
               </p>
@@ -635,7 +647,7 @@ export default function Home() {
                   Talk to a Human
                 </a>
               </div>
-              <div className="text-xs font-mono text-[#26251e]/40 bg-[#ebeae5] rounded-lg px-3 py-2 w-fit">
+              <div className="text-xs font-mono text-[#26251e]/40 bg-[#ebeae5] rounded-[4px] px-3 py-2 w-fit">
                 Deploy in under 60 seconds
               </div>
             </div>
@@ -697,7 +709,7 @@ export default function Home() {
         </section>
 
         {/* ─── Card with Glow ─── */}
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center max-w-5xl mx-auto">
           <div className="flex flex-col items-center [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:w-[80%] w-full">
             <div className="relative select-none w-full">
               {/* Blur glow overlay */}
