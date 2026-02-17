@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
@@ -65,44 +65,6 @@ const PILL_STYLES = [
   "bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,rgba(38,37,30,0.04),transparent)] border border-[#26251e]/10 text-[#26251e]/70",
 ];
 
-const MODELS = [
-  {
-    id: "opus",
-    label: "Claude Opus 4.5",
-    img: "https://upload.wikimedia.org/wikipedia/commons/b/b0/Claude_AI_symbol.svg",
-  },
-  {
-    id: "gpt",
-    label: "GPT-5.2",
-    img: "https://img.icons8.com/androidL/512/FFFFFF/chatgpt.png",
-  },
-  {
-    id: "gemini",
-    label: "Gemini 3 Flash",
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Google_Gemini_icon_2025.svg/960px-Google_Gemini_icon_2025.svg.png",
-  },
-];
-
-const CHANNELS = [
-  {
-    id: "telegram",
-    label: "Telegram",
-    active: true,
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/960px-Telegram_logo.svg.png",
-  },
-  {
-    id: "discord",
-    label: "Discord",
-    active: false,
-    img: "https://scbwi-storage-prod.s3.amazonaws.com/images/discord-mark-blue_rA6tXJo.png",
-  },
-  {
-    id: "whatsapp",
-    label: "WhatsApp",
-    active: false,
-    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/960px-WhatsApp.svg.png",
-  },
-];
 
 /* ─── Lucide-style icon paths for marquee pills ─── */
 
@@ -322,26 +284,6 @@ function MailIcon({ className }: { className?: string }) {
   );
 }
 
-/* ─── Checkmark SVG ─── */
-
-function CheckIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-4 shrink-0 text-[#26251e]"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-}
 
 /* ─── Task Icon ─── */
 
@@ -367,123 +309,6 @@ function TaskIcon({ task }: { task: string }) {
   );
 }
 
-/* ─── Sparkle dots (edge regions with data-state toggling) ─── */
-
-// Seeded PRNG (mulberry32) — deterministic across server/client to avoid hydration mismatch
-function seededRandom(seed: number) {
-  let t = seed + 0x6D2B79F5;
-  t = Math.imul(t ^ (t >>> 15), t | 1);
-  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-}
-
-function generateEdgeDots() {
-  const dots: { top: number; left: number; opacity: number; region: string }[] = [];
-  let seed = 42;
-  const rand = () => seededRandom(seed++);
-
-  // Top strip: h-[45px] across full width (~33 dots)
-  for (let i = 0; i < 33; i++) {
-    dots.push({
-      top: rand() * 100,
-      left: rand() * 100,
-      opacity: 0.2 + rand() * 0.6,
-      region: "top",
-    });
-  }
-  // Right strip (~18 dots)
-  for (let i = 0; i < 18; i++) {
-    dots.push({
-      top: rand() * 100,
-      left: rand() * 100,
-      opacity: 0.2 + rand() * 0.6,
-      region: "right",
-    });
-  }
-  // Bottom strip (~22 dots)
-  for (let i = 0; i < 22; i++) {
-    dots.push({
-      top: rand() * 100,
-      left: rand() * 100,
-      opacity: 0.2 + rand() * 0.6,
-      region: "bottom",
-    });
-  }
-  // Left strip (~18 dots)
-  for (let i = 0; i < 18; i++) {
-    dots.push({
-      top: rand() * 100,
-      left: rand() * 100,
-      opacity: 0.2 + rand() * 0.6,
-      region: "left",
-    });
-  }
-  return dots;
-}
-
-const SPARKLE_DOTS = generateEdgeDots();
-
-function Sparkles() {
-  const dotsRef = useRef<(HTMLDivElement | null)[]>([]);
-
-  const twinkle = useCallback(() => {
-    const count = 3 + Math.floor(Math.random() * 4);
-    for (let i = 0; i < count; i++) {
-      const idx = Math.floor(Math.random() * SPARKLE_DOTS.length);
-      const el = dotsRef.current[idx];
-      if (!el) continue;
-      const states = ["off", "medium", "high"];
-      el.dataset.state = states[Math.floor(Math.random() * states.length)];
-    }
-  }, []);
-
-  useEffect(() => {
-    const id = setInterval(twinkle, 300);
-    return () => clearInterval(id);
-  }, [twinkle]);
-
-  const regionStyles: Record<string, string> = {
-    top: "absolute top-0 right-0 left-0 h-[45px]",
-    right: "absolute top-[82px] right-[50px] bottom-[82px] w-[86px]",
-    bottom: "absolute right-0 bottom-0 left-0 h-[45px]",
-    left: "absolute top-[82px] bottom-[82px] left-[50px] w-[86px]",
-  };
-
-  const grouped: Record<string, typeof SPARKLE_DOTS> = {};
-  SPARKLE_DOTS.forEach((d, i) => {
-    if (!grouped[d.region]) grouped[d.region] = [];
-    grouped[d.region].push({ ...d, top: d.top, left: d.left, opacity: d.opacity, region: d.region });
-  });
-
-  let globalIdx = 0;
-  return (
-    <div className="absolute -top-[45px] -right-[135px] -bottom-[45px] -left-[135px] *:absolute pointer-events-none">
-      {Object.entries(regionStyles).map(([region, cls]) => (
-        <div key={region} className={cls}>
-          {SPARKLE_DOTS.filter((d) => d.region === region).map((d) => {
-            const idx = globalIdx++;
-            return (
-              <div
-                key={idx}
-                ref={(el) => { dotsRef.current[idx] = el; }}
-                className="star-sparkle absolute bg-[#26251e] rounded-full"
-                data-index={idx}
-                data-state="off"
-                style={{
-                  height: "1px",
-                  width: "1px",
-                  left: `${d.left}%`,
-                  top: `${d.top}%`,
-                  opacity: d.opacity,
-                }}
-              />
-            );
-          })}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 /* ─── SVG Gradient Lines (responsive) ─── */
 
@@ -569,8 +394,6 @@ function MarqueeRow({
 /* ─── Main Page ─── */
 
 export default function Home() {
-  const [selectedModel, setSelectedModel] = useState("opus");
-  const [selectedChannel, setSelectedChannel] = useState("telegram");
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
 
@@ -590,9 +413,9 @@ export default function Home() {
     <div className="flex flex-row w-screen overflow-x-hidden h-full justify-center px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 min-w-0">
       <div className="w-full flex flex-col gap-0 min-w-0">
         {/* ─── Header ─── */}
-        <header className="w-full max-w-5xl mx-auto flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
+        <header className="w-full max-w-[1300px] mx-auto flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
           <span className="text-base sm:text-lg font-medium text-[#26251e] truncate min-w-0">
-            ClawBroker<span className="text-[#26251e]/55 italic">.ai</span>
+            ClawBroker
           </span>
           <nav className="flex items-center shrink-0">
             <a
@@ -600,7 +423,7 @@ export default function Home() {
               className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base border-b-2 border-[#26251e]/15 text-[#26251e]/55 hover:text-[#26251e]/70 transition-colors duration-500 whitespace-nowrap"
             >
               <MailIcon className="size-4 sm:size-5 shrink-0" />
-              Contact Support
+              Support
             </a>
           </nav>
         </header>
@@ -610,10 +433,26 @@ export default function Home() {
           {/* Heading above card */}
           <div className="w-full max-w-[1300px] px-2 sm:px-0">
             <h1 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e] text-balance">
-              Your CRE AI Employee That Actually Does Things
+              Your CRE AI Employee That Does Things
             </h1>
             <div className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e]/60 text-balance">
               So You Can Focus on Closing.
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 mt-6">
+              <a
+                href="/sign-up"
+                className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors"
+              >
+                Start Free
+              </a>
+              <a
+                href="https://cal.com/cobroker/website"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors"
+              >
+                Talk to a Human
+              </a>
             </div>
           </div>
 
@@ -631,25 +470,6 @@ export default function Home() {
                 remembers client profiles and search criteria, imports deal data
                 from emails, and tracks market changes—all from your phone, 24/7.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <a
-                  href="/sign-up"
-                  className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors"
-                >
-                  Start Free
-                </a>
-                <a
-                  href="https://cal.com/cobroker/website"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors"
-                >
-                  Talk to a Human
-                </a>
-              </div>
-              <div className="text-xs font-mono text-[#26251e]/40 bg-[#ebeae5] rounded-[4px] px-3 py-2 w-fit">
-                Deploy in under 60 seconds
-              </div>
             </div>
 
             {/* Right Column */}
@@ -708,128 +528,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ─── Card with Glow ─── */}
-        <div className="w-full flex justify-center max-w-5xl mx-auto">
-          <div className="flex flex-col items-center [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:w-[80%] w-full">
-            <div className="relative select-none w-full">
-              {/* Blur glow overlay */}
-              <div className="absolute -top-[60px] -right-[70px] -bottom-[60px] -left-[70px] blur-[20px] pointer-events-none transform-[translateZ(0)]">
-                <div
-                  className="absolute inset-0 -z-10"
-                  style={{
-                    clipPath:
-                      "polygon(0 0, 50% 14%, 100% 0, 92% 50%, 100% 100%, 50% 86%, 0 100%, 8% 50%)",
-                    background:
-                      "radial-gradient(40% 147% at 50% 46.2%, rgba(38,37,30,0.04) 5%, rgba(38,37,30,0.02) 60%, rgba(38,37,30,0) 140%)",
-                  }}
-                />
-              </div>
-
-              {/* Sparkles */}
-              <Sparkles />
-
-              {/* Card */}
-              <div className="card-frame relative p-2 transform-[translateZ(0)] rounded-[24px] w-full">
-                <div className="w-full min-w-[280px] min-h-[200px] overflow-hidden bg-white border border-[#26251e]/[0.06] rounded-2xl">
-                  <div className="w-full p-4 sm:p-6 md:p-8 flex flex-col gap-6 sm:gap-8 md:gap-10 min-w-0">
-                    {/* Model selection */}
-                    <div className="flex flex-col gap-3 sm:gap-4">
-                      <h1 className="font-medium text-base sm:text-lg text-balance text-[#26251e]">
-                        Choose your AI model
-                      </h1>
-                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                        {MODELS.map((model) => {
-                          const selected = selectedModel === model.id;
-                          return (
-                            <button
-                              key={model.id}
-                              onClick={() => setSelectedModel(model.id)}
-                              className={`options-card transition-all duration-300 rounded-xl py-3 px-4 flex flex-row items-center gap-2 hover:cursor-pointer group ${selected ? "selected" : ""}`}
-                            >
-                              <img
-                                src={model.img}
-                                alt={model.label}
-                                className={`w-5 h-5 shrink-0 ${model.id === "gpt" ? "invert" : ""}`}
-                              />
-                              <h2
-                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-[#26251e]" : "text-[#26251e]/55 group-hover:text-[#26251e]"}`}
-                              >
-                                {model.label}
-                              </h2>
-                              {selected && (
-                                <span className="shrink-0 ml-auto flex items-center">
-                                  <CheckIcon />
-                                </span>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Channel selection */}
-                    <div className="flex flex-col gap-3 sm:gap-4">
-                      <h1 className="font-medium text-base sm:text-lg text-balance text-[#26251e]">
-                        Select your channel
-                      </h1>
-                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                        {CHANNELS.map((ch) => {
-                          const selected = selectedChannel === ch.id;
-                          return (
-                            <button
-                              key={ch.id}
-                              onClick={() =>
-                                ch.active && setSelectedChannel(ch.id)
-                              }
-                              disabled={!ch.active}
-                              className={`options-card transition-all duration-300 rounded-xl py-3 px-4 flex flex-row items-center gap-2 hover:cursor-pointer group relative px-4 sm:px-7 ${selected ? "selected" : ""} ${!ch.active ? "opacity-50 cursor-not-allowed" : ""}`}
-                            >
-                              <img
-                                src={ch.img}
-                                alt={ch.label}
-                                className="w-5 h-5 shrink-0 object-contain"
-                              />
-                              <h2
-                                className={`font-medium text-sm min-w-0 flex-1 text-left ${selected ? "text-[#26251e]" : "text-[#26251e]/55 group-hover:text-[#26251e]"}`}
-                              >
-                                {ch.label}
-                              </h2>
-                              {!ch.active && (
-                                <span className="absolute bottom-0 right-0 text-[10px] text-[#26251e]/55 group-hover:text-[#26251e]">
-                                  Coming soon
-                                </span>
-                              )}
-                              {selected && (
-                                <span className="shrink-0 ml-auto flex items-center">
-                                  <CheckIcon />
-                                </span>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* CTA */}
-                    <div className="flex flex-col items-center gap-4">
-                      <a
-                        href="/sign-up"
-                        className="main-btn-shadow text-sm sm:text-base whitespace-nowrap inline-block text-center w-full"
-                      >
-                        Get Started — Free $10 Credit
-                      </a>
-                      <h3 className="text-[#26251e]/55 font-medium text-sm">
-                        Deploy your{" "}
-                        <span className="text-[#26251e]">ClawBroker</span>{" "}
-                        agent in under 1 minute.
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* ─── Comparison Section ─── */}
         <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-32 flex flex-col gap-3 max-w-5xl mx-auto min-w-0">
@@ -961,7 +659,7 @@ export default function Home() {
                 className="inline-flex items-center gap-1.5 text-[#26251e] hover:text-[#26251e]/55 transition-colors"
               >
                 <MailIcon className="size-4 sm:size-5 shrink-0" />
-                Contact Support
+                Support
               </a>
             </h4>
           </div>
