@@ -786,7 +786,6 @@ const NAV_ITEMS = [
   { label: "Skills", href: "#skills" },
   { label: "Research", href: "#research" },
   { label: "Deliverables", href: "#deliverables" },
-  { label: "Use Cases", href: "#use-cases" },
 ];
 
 function FloatingNavbar() {
@@ -817,7 +816,7 @@ function FloatingNavbar() {
   return (
     <motion.nav
       className="fixed top-4 left-0 right-0 z-50 mx-auto"
-      initial={{ width: "100%" }}
+      initial={false}
       animate={{
         width: scrolled ? scrolledWidth : "100%",
         maxWidth: scrolled ? (isMobile ? "none" : "820px") : "1348px",
