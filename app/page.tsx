@@ -754,30 +754,28 @@ export default function Home() {
         </section>
 
         {/* ─── The Problem Section ─── */}
-        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center">
+        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
           <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] text-[#c4421a] mb-4">
             THE PROBLEM
           </p>
-          <h2 className="text-[28px] sm:text-[36px] md:text-[44px] font-semibold leading-[1.15] tracking-tight text-[#26251e] text-center text-balance max-w-3xl">
+          <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e] text-center text-balance max-w-3xl">
             Your team is drowning in busywork instead of building
           </h2>
-          <p className="text-base sm:text-lg text-[#26251e]/55 text-center max-w-2xl mt-4 leading-relaxed">
-            Context switching, scattered tools, and manual data entry are a second job.
-            <br />
-            ClawBroker handles the busywork so your team can focus on what matters.
+          <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 text-center max-w-2xl mt-3 text-pretty">
+            Context switching, scattered tools, and manual data entry are a second job. ClawBroker handles the busywork so your team can focus on what matters.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full max-w-4xl mt-12 sm:mt-16">
-            <div className="rounded p-4 bg-[#f2f1ed] flex flex-col sm:aspect-[2/1]">
-              <p className="text-[48px] sm:text-[52px] font-normal text-[#26251e] leading-none tracking-tight grow">23 min</p>
-              <p className="text-base text-[#26251e] leading-snug">Lost refocusing after every interruption</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-[10px] w-full max-w-[1300px] mt-12 sm:mt-16">
+            <div className="rounded p-3 sm:p-[15px] bg-[#f2f1ed] flex flex-col sm:aspect-[16/9]">
+              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] grow">23 min</p>
+              <p className="text-base font-normal text-[#26251e]/70 leading-normal tracking-[0.08px]">Lost refocusing after every interruption</p>
             </div>
-            <div className="rounded p-4 bg-[#f2f1ed] flex flex-col sm:aspect-[2/1]">
-              <p className="text-[48px] sm:text-[52px] font-normal text-[#26251e] leading-none tracking-tight grow">67%</p>
-              <p className="text-base text-[#26251e] leading-snug">Of company context lives undocumented</p>
+            <div className="rounded p-3 sm:p-[15px] bg-[#f2f1ed] flex flex-col sm:aspect-[16/9]">
+              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] grow">67%</p>
+              <p className="text-base font-normal text-[#26251e]/70 leading-normal tracking-[0.08px]">Of company context lives undocumented</p>
             </div>
-            <div className="rounded p-4 bg-[#f2f1ed] flex flex-col sm:aspect-[2/1]">
-              <p className="text-[48px] sm:text-[52px] font-normal text-[#26251e] leading-none tracking-tight grow">6 hrs</p>
-              <p className="text-base text-[#26251e] leading-snug">Average before critical bugs get noticed</p>
+            <div className="rounded p-3 sm:p-[15px] bg-[#f2f1ed] flex flex-col sm:aspect-[16/9]">
+              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] grow">6 hrs</p>
+              <p className="text-base font-normal text-[#26251e]/70 leading-normal tracking-[0.08px]">Average before critical bugs get noticed</p>
             </div>
           </div>
         </section>
