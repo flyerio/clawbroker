@@ -463,21 +463,14 @@ body {
 .slides-scroll-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  animation: scroll-slides var(--scroll-duration, 30s) linear infinite;
+  animation: scroll-slides var(--scroll-duration, 30s) linear forwards;
 }
 
 @keyframes scroll-slides {
   0% {
     transform: translateY(0);
   }
-  90% {
-    transform: translateY(var(--scroll-distance, -3000px));
-  }
-  95% {
-    transform: translateY(var(--scroll-distance, -3000px));
-  }
   100% {
-    transform: translateY(0);
+    transform: translateY(var(--scroll-distance, -3000px));
   }
 }

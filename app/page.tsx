@@ -483,7 +483,7 @@ function ExamplesSection() {
     if (timerRef.current) clearTimeout(timerRef.current);
     const current = activeTabRef.current;
     const tab = EXAMPLE_TABS[current];
-    const delay = "type" in tab && tab.type === "pdf" ? 17000 : 10000;
+    const delay = "type" in tab && tab.type === "pdf" ? 8000 : 10000;
     timerRef.current = setTimeout(() => {
       const next = (activeTabRef.current + 1) % EXAMPLE_TABS.length;
       activeTabRef.current = next;
@@ -539,7 +539,7 @@ function ExamplesSection() {
                   className="slides-scroll-container"
                   style={{
                     ["--scroll-distance" as string]: `-${(tab as any).slides.length * 160}px`,
-                    ["--scroll-duration" as string]: "15s",
+                    ["--scroll-duration" as string]: "7.5s",
                   }}
                 >
                   {(tab as any).slides.map((src: string, i: number) => (
@@ -549,7 +549,7 @@ function ExamplesSection() {
                       alt={`Report slide ${i + 1}`}
                       width={1040}
                       height={585}
-                      className="w-full h-auto block"
+                      className={`w-full h-auto block ${i < (tab as any).slides.length - 1 ? 'border-b-2 border-black' : ''}`}
                     />
                   ))}
                 </div>
