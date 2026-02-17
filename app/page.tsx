@@ -583,7 +583,7 @@ function ExamplesSection() {
                       </div>
                     )}
                     <span
-                      className="text-base sm:text-lg font-semibold transition-colors duration-300"
+                      className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight transition-colors duration-300"
                       style={{ color: isActive ? "#FF683D" : "#292929" }}
                     >
                       {t.title}
@@ -591,19 +591,9 @@ function ExamplesSection() {
                   </div>
                   {isActive && (
                     <div className="pl-[24px] pb-3 flex flex-col gap-2 animate-[fadeIn_0.3s_ease]">
-                      <p className="text-sm text-[#292929]/70 leading-relaxed">
+                      <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60">
                         {t.description}
                       </p>
-                      <div className="flex flex-wrap gap-1.5 mt-1">
-                        {t.items.map((item) => (
-                          <span
-                            key={item}
-                            className="text-xs px-2.5 py-1 rounded-full bg-[#FF683D]/10 text-[#FF683D] font-medium"
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   )}
                 </button>
