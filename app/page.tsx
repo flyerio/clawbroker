@@ -1099,7 +1099,7 @@ export default function Home() {
                           muted
                           playsInline
                           className="w-full h-full object-cover"
-                          style={{ borderRadius: "inherit" }}
+                          style={{ borderRadius: "inherit", objectPosition: "top" }}
                           src="/hero-demo.mp4"
                           onTimeUpdate={handleVideoTimeUpdate}
                           onEnded={() => {
