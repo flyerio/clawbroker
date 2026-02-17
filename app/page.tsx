@@ -824,6 +824,9 @@ export default function Home() {
               <p className="text-base font-normal text-[#26251e]/50 mb-2">
                 Traditional
               </p>
+              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] tabular-nums">
+                60 min
+              </p>
               <ul className="flex flex-col gap-1">
                 {COMPARISON_TRADITIONAL.map((item, i) => (
                   <li
@@ -835,12 +838,6 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-2 pt-3 border-t border-[#26251e]/10 flex justify-between items-baseline">
-                <span className="text-base font-normal text-[#26251e]/50">Total</span>
-                <span className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] tabular-nums">
-                  60 min
-                </span>
-              </div>
               <p className="text-sm text-[#26251e]/50 text-pretty leading-relaxed">
                 If you&apos;re{" "}
                 <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded">
