@@ -808,74 +808,65 @@ export default function Home() {
         <ExamplesSection />
 
         {/* ─── Comparison Section ─── */}
-        <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-32 flex flex-col gap-3 max-w-5xl mx-auto min-w-0">
-          {/* Label */}
-          <div className="comparison-label-bg w-full max-w-full flex flex-wrap items-center justify-center gap-2 sm:gap-4 min-h-[40px] sm:min-h-[46px] px-2">
-            <GradientLineLeft />
-            <span className="mx-1 sm:mx-4 shrink-0 text-xs sm:text-sm text-[#c4421a] font-medium tracking-[0.2px] leading-[160%]">
-              Comparison
-            </span>
-            <GradientLineRight />
+        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
+          <div className="w-full max-w-[1300px] mb-8 sm:mb-10">
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] text-[#c4421a] mb-2">
+              COMPARISON
+            </p>
+            <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
+              Traditional Method vs ClawBroker
+            </p>
           </div>
 
-          {/* Heading */}
-          <h1 className="main-text mb-6 sm:mb-10 text-balance">
-            Traditional Method vs ClawBroker
-          </h1>
-
-          {/* Comparison cards */}
-          <div className="flex flex-col md:flex-row items-stretch min-w-0 mt-4 sm:mt-7 md:gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] w-full max-w-[1300px]">
             {/* Traditional side */}
-            <div className="flex-1 md:pr-10 min-w-0 flex flex-col gap-2 pb-6 md:pb-0">
-              <p className="text-base sm:text-lg font-medium text-[#26251e]/55 italic mb-1">
+            <div className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
+              <p className="text-base font-normal text-[#26251e]/50 mb-2">
                 Traditional
               </p>
-              <ul>
+              <ul className="flex flex-col gap-1">
                 {COMPARISON_TRADITIONAL.map((item, i) => (
                   <li
                     key={i}
-                    className="flex justify-between gap-2 text-sm sm:text-base text-[#26251e]/55"
+                    className="flex justify-between gap-2 text-sm text-[#26251e]/60"
                   >
                     <span className="min-w-0">{item.task}</span>
                     <span className="shrink-0 tabular-nums">{item.time}</span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 pt-3 border-t-2 border-[#26251e]/15 flex justify-between text-base sm:text-lg font-medium text-[#26251e]">
-                <span className="italic">Total</span>
-                <span className="tabular-nums font-medium text-xl">
+              <div className="mt-2 pt-3 border-t border-[#26251e]/10 flex justify-between items-baseline">
+                <span className="text-base font-normal text-[#26251e]/50">Total</span>
+                <span className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] tabular-nums">
                   60 min
                 </span>
-              </p>
-              <p className="mt-3 text-sm font-medium text-[#26251e]/70 text-pretty italic leading-relaxed">
+              </div>
+              <p className="text-sm text-[#26251e]/50 text-pretty leading-relaxed">
                 If you&apos;re{" "}
-                <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded-md">
+                <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded">
                   non-technical
                 </span>
                 , multiply these{" "}
-                <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded-md">
+                <span className="bg-[#c4421a]/10 text-[#c4421a] px-1 py-0.5 rounded">
                   times by 10
                 </span>{" "}
                 &mdash; you have to learn each step before doing.
               </p>
             </div>
 
-            {/* Divider */}
-            <div className="w-full md:w-[2px] h-[2px] md:h-auto md:min-h-px shrink-0 bg-[#26251e]/10" />
-
             {/* ClawBroker side */}
-            <div className="flex-1 md:pl-10 min-w-0 flex flex-col justify-center pt-6 md:pt-0 gap-3 table-left-gradient">
-              <p className="text-base sm:text-lg font-medium text-[#26251e]/55 italic">
+            <div className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
+              <p className="text-base font-normal text-[#26251e]/50 mb-2">
                 ClawBroker
               </p>
-              <p className="text-2xl sm:text-4xl font-semibold text-[#26251e] tabular-nums">
+              <p className="text-[40px] sm:text-[52px] font-normal text-[#26251e] leading-[1.15] tracking-[-1.3px] tabular-nums">
                 &lt;1 min
               </p>
-              <p className="text-sm sm:text-base text-[#26251e]/55 text-pretty leading-relaxed">
+              <p className="text-sm text-[#26251e]/60 text-pretty leading-relaxed">
                 Pick a model, connect Telegram, deploy &mdash; done under 1
                 minute.
               </p>
-              <p className="text-sm sm:text-base text-[#26251e]/55 text-pretty leading-relaxed">
+              <p className="text-sm text-[#26251e]/60 text-pretty leading-relaxed">
                 Servers, SSH and OpenClaw Environment are already set up,
                 waiting to get assigned. Simple, secure and fast connection to
                 your bot.
