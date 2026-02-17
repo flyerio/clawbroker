@@ -77,6 +77,18 @@ const EXAMPLE_TABS = [
     ],
   },
   {
+    title: "Charts",
+    description: "Turn any data into professional bar, line, or doughnut charts instantly.",
+    items: ["Bar Charts", "Line Charts", "Doughnut Charts", "Rent Trends"],
+    gradient: "linear-gradient(135deg, #bcc8a8 0%, #a0b088 25%, #889a70 50%, #708458 75%, #5a7042 100%)",
+    chat: [
+      { role: "user" as const, text: "Compare asking rates for retail spaces across Austin" },
+      { role: "agent" as const, text: `2nd Street leads at <strong>$55/SF</strong>, nearly double The Arboretum. Here's the breakdown:${AUSTIN_CHART_SVG}` },
+      { role: "user" as const, text: "Why is 2nd Street so much higher?" },
+      { role: "agent" as const, text: "2nd Street District commands a <strong>96% premium</strong> over The Arboretum — driven by walkability, lake proximity, and high-income foot traffic." },
+    ],
+  },
+  {
     title: "Memory",
     description: "Remembers every client's criteria, preferences, and deal history across conversations.",
     items: ["Client Profiles", "Criteria", "Deal History", "Preferences"],
@@ -122,18 +134,6 @@ const EXAMPLE_TABS = [
       { role: "agent" as const, text: "Monitor set. I'll check daily at <strong>7:30am</strong> and message you when something new hits." },
       { role: "user" as const, text: "Any updates?" },
       { role: "agent" as const, text: "New listing alert: <strong>1 Seaport Blvd, Suite 400</strong> — 8,200 SF office, $52/SF. Listed today by Cushman. Want details?" },
-    ],
-  },
-  {
-    title: "Charts",
-    description: "Turn any data into professional bar, line, or doughnut charts instantly.",
-    items: ["Bar Charts", "Line Charts", "Doughnut Charts", "Rent Trends"],
-    gradient: "linear-gradient(135deg, #bcc8a8 0%, #a0b088 25%, #889a70 50%, #708458 75%, #5a7042 100%)",
-    chat: [
-      { role: "user" as const, text: "Compare asking rates for retail spaces across Austin" },
-      { role: "agent" as const, text: `2nd Street leads at <strong>$55/SF</strong>, nearly double The Arboretum. Here's the breakdown:${AUSTIN_CHART_SVG}` },
-      { role: "user" as const, text: "Why is 2nd Street so much higher?" },
-      { role: "agent" as const, text: "2nd Street District commands a <strong>96% premium</strong> over The Arboretum — driven by walkability, lake proximity, and high-income foot traffic." },
     ],
   },
 ];
