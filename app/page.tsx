@@ -1159,9 +1159,9 @@ export default function Home() {
                 style={{ left: "calc(50% + 160px)" }}
               >
                 {[
-                  { label: "Chat", desc: "Ask anything — comps, LOIs, market data.", idx: 0 },
-                  { label: "Deliverables", desc: "Maps, reports, and docs generated live.", idx: 1 },
-                ].map(({ label, desc, idx }) => {
+                  { label: "Chat", idx: 0 },
+                  { label: "Deliverables", idx: 1 },
+                ].map(({ label, idx }) => {
                   const isActive = heroScene === idx;
                   const ringRadius = 10;
                   const circumference = 2 * Math.PI * ringRadius;
@@ -1181,7 +1181,7 @@ export default function Home() {
                             <circle
                               cx="12" cy="12" r={ringRadius}
                               fill="none"
-                              stroke="#FF683D"
+                              stroke="#26251e"
                               strokeWidth="2"
                               opacity={isActive ? 0.15 : 0}
                               style={{ transition: "opacity 0.3s" }}
@@ -1192,35 +1192,28 @@ export default function Home() {
                             <circle
                               cx="12" cy="12" r={ringRadius}
                               fill="none"
-                              stroke="#FF683D"
+                              stroke="#26251e"
                               strokeWidth="2"
                               strokeDasharray={circumference}
                               strokeDashoffset={offset}
                               strokeLinecap="round"
                               style={{ transform: "rotate(-90deg)", transformOrigin: "center", transition: isActive ? "none" : "stroke-dashoffset 0.3s" }}
-                              opacity={isActive ? 0.8 : 0}
+                              opacity={isActive ? 0.85 : 0}
                             />
                           </svg>
                           {/* Center dot */}
                           <div
-                            className="w-[8px] h-[8px] rounded-full transition-opacity duration-300"
-                            style={{ background: "#FF683D", opacity: isActive ? 1 : 0 }}
+                            className="w-[8px] h-[8px] rounded-full transition-all duration-300"
+                            style={{ background: "#26251e", opacity: isActive ? 1 : 0.25 }}
                           />
                         </div>
                         <span
                           className="text-base md:text-lg font-normal leading-[1.3] tracking-tight transition-colors duration-300 whitespace-nowrap"
-                          style={{ color: isActive ? "#FF683D" : "#292929" }}
+                          style={{ color: isActive ? "#26251e" : "rgba(38,37,30,0.4)" }}
                         >
                           {label}
                         </span>
                       </div>
-                      {isActive && (
-                        <div className="pl-[20px] pb-2 animate-[fadeIn_0.3s_ease]">
-                          <p className="text-sm font-normal leading-[1.4] text-[#26251e]/55">
-                            {desc}
-                          </p>
-                        </div>
-                      )}
                     </button>
                   );
                 })}
