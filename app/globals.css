@@ -240,24 +240,12 @@ body {
   z-index: 10;
 }
 
-.iphone-statusbar {
-  height: 52px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 0 24px 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #1a1a1a;
-  flex-shrink: 0;
-}
-
 /* ─── Phone Header ─── */
 .phone-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 52px 16px 10px;
   border-bottom: 1px solid #f0f0f0;
   flex-shrink: 0;
 }

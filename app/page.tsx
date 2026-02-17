@@ -517,25 +517,10 @@ function ExamplesSection() {
           <div className="iphone-frame">
             <div className="iphone-screen">
               <div className="iphone-notch" />
-              <div className="iphone-statusbar">
-                <span>9:41</span>
-                <svg width="68" height="12" viewBox="0 0 68 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="0" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.3"/>
-                  <rect x="6" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.5"/>
-                  <rect x="12" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.7"/>
-                  <rect x="18" y="1" width="4" height="10" rx="1" fill="#1a1a1a"/>
-                  <path d="M30 3a5 5 0 0 1 7 0" stroke="#1a1a1a" strokeWidth="1.2" fill="none" opacity="0.4"/>
-                  <path d="M31.5 5a3 3 0 0 1 4 0" stroke="#1a1a1a" strokeWidth="1.2" fill="none" opacity="0.7"/>
-                  <circle cx="33.5" cy="7.5" r="1" fill="#1a1a1a"/>
-                  <rect x="42" y="2.5" width="20" height="7" rx="2" stroke="#1a1a1a" strokeWidth="1"/>
-                  <rect x="43.5" y="4" width="15" height="4" rx="1" fill="#1a1a1a"/>
-                  <rect x="62.5" y="4.5" width="1.5" height="3" rx="0.5" fill="#1a1a1a" opacity="0.4"/>
-                </svg>
-              </div>
               <div className="phone-header">
                 <div className="phone-header-avatar">CB</div>
                 <div className="phone-header-info">
-                  <span className="phone-header-name">ClawBroker Agent</span>
+                  <span className="phone-header-name">ClawBroker</span>
                   <span className="phone-header-status">
                     <span className="agent-status-dot" />
                     Online
@@ -639,7 +624,7 @@ export default function Home() {
       <div className="w-full flex flex-col gap-0 min-w-0">
         {/* ─── Header ─── */}
         <header className="w-full max-w-[1300px] mx-auto flex items-center justify-between gap-3 px-2 sm:px-0 py-2 sm:py-0 min-w-0">
-          <span className="text-lg sm:text-xl font-normal text-[#26251e] truncate min-w-0">
+          <span className="text-lg sm:text-xl font-semibold text-[#26251e] truncate min-w-0">
             ClawBroker
           </span>
           <nav className="flex items-center shrink-0">
@@ -706,25 +691,10 @@ export default function Home() {
               <div className="iphone-frame">
                 <div className="iphone-screen">
                   <div className="iphone-notch" />
-                  <div className="iphone-statusbar">
-                    <span>9:41</span>
-                    <svg width="68" height="12" viewBox="0 0 68 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="0" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.3"/>
-                      <rect x="6" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.5"/>
-                      <rect x="12" y="1" width="4" height="10" rx="1" fill="#1a1a1a" opacity="0.7"/>
-                      <rect x="18" y="1" width="4" height="10" rx="1" fill="#1a1a1a"/>
-                      <path d="M30 3a5 5 0 0 1 7 0" stroke="#1a1a1a" strokeWidth="1.2" fill="none" opacity="0.4"/>
-                      <path d="M31.5 5a3 3 0 0 1 4 0" stroke="#1a1a1a" strokeWidth="1.2" fill="none" opacity="0.7"/>
-                      <circle cx="33.5" cy="7.5" r="1" fill="#1a1a1a"/>
-                      <rect x="42" y="2.5" width="20" height="7" rx="2" stroke="#1a1a1a" strokeWidth="1"/>
-                      <rect x="43.5" y="4" width="15" height="4" rx="1" fill="#1a1a1a"/>
-                      <rect x="62.5" y="4.5" width="1.5" height="3" rx="0.5" fill="#1a1a1a" opacity="0.4"/>
-                    </svg>
-                  </div>
                   <div className="phone-header">
                     <div className="phone-header-avatar">CB</div>
                     <div className="phone-header-info">
-                      <span className="phone-header-name">ClawBroker Agent</span>
+                      <span className="phone-header-name">ClawBroker</span>
                       <span className="phone-header-status">
                         <span className="agent-status-dot" />
                         Online
@@ -903,6 +873,85 @@ export default function Home() {
           <span className="text-sm sm:text-base text-[#26251e]/55 text-pretty text-center italic">
             P.S. — Your agent gets smarter with every conversation.
           </span>
+        </section>
+
+        {/* ─── What Is An AI Team? Section ─── */}
+        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0">
+          <div className="w-full max-w-[1300px]">
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] text-[#c4421a] mb-2">
+              WHAT IS AN AI TEAM?
+            </p>
+            <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
+              A teammate that never sleeps
+            </p>
+            <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 mt-1 text-pretty">
+              Not a chatbot. A proactive team member that lives in your tools.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] w-full max-w-[1300px]">
+            {/* Regular AI Chatbot */}
+            <div className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
+              <div className="flex items-center gap-3 mb-1">
+                <span className="text-2xl">💬</span>
+                <div>
+                  <p className="text-base font-normal text-[#26251e]">
+                    Regular AI Chatbot
+                  </p>
+                  <p className="text-sm text-[#26251e]/50">
+                    Waits for you to ask
+                  </p>
+                </div>
+              </div>
+              <ul className="flex flex-col">
+                {[
+                  "Only answers when prompted",
+                  "No business context",
+                  "Can\u2019t take action",
+                  "Forgets everything",
+                ].map((item, i, arr) => (
+                  <li
+                    key={i}
+                    className={`flex items-center gap-3 py-3 text-sm text-[#26251e]/60${i < arr.length - 1 ? " border-b border-[#26251e]/10" : ""}`}
+                  >
+                    <span className="shrink-0 w-5 h-5 rounded-full bg-[#c4421a]/10 flex items-center justify-center text-[#c4421a] text-xs font-bold">✕</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* ClawBroker */}
+            <div className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
+              <div className="flex items-center gap-3 mb-1">
+                <span className="text-2xl">🦀</span>
+                <div>
+                  <p className="text-base font-normal text-[#26251e]">
+                    ClawBroker
+                  </p>
+                  <p className="text-sm text-[#26251e]/50">
+                    Works proactively for you
+                  </p>
+                </div>
+              </div>
+              <ul className="flex flex-col">
+                {[
+                  "Monitors 24/7, alerts you first",
+                  "Learns your deals & clients",
+                  "Drafts LOIs, pulls comps, sends reports",
+                  "Remembers everything forever",
+                ].map((item, i, arr) => (
+                  <li
+                    key={i}
+                    className={`flex items-center gap-3 py-3 text-sm text-[#26251e]/60${i < arr.length - 1 ? " border-b border-[#26251e]/10" : ""}`}
+                  >
+                    <span className="shrink-0 w-5 h-5 rounded-full bg-green-600/15 flex items-center justify-center text-green-600 text-xs font-bold">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </section>
 
         {/* ─── Footer ─── */}
