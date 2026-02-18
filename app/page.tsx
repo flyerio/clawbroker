@@ -472,6 +472,16 @@ function MarqueeRow({
   );
 }
 
+const SKILL_HEADINGS = [
+  "AI-Powered Property Search for CRE Brokers",
+  "Professional Chart Generation from Any CRE Data",
+  "Client Memory That Remembers Every Deal",
+  "Email Document Extraction — PDF, XLSX, CSV to Project",
+  "ESRI Demographic Analysis for Any Property Location",
+  "Automated Market Monitoring and Listing Alerts",
+  "AI-Generated PDF Reports for Client Deliverables",
+];
+
 /* ─── Examples Section (inverted layout: phone LEFT, tabs RIGHT) ─── */
 
 function ExamplesSection() {
@@ -568,13 +578,30 @@ function ExamplesSection() {
                     </span>
                   </div>
                 </div>
-                <div className="phone-chat">
-                  {tab.chat.map((msg, i) => (
-                    <div
-                      key={`${activeTab}-${i}`}
-                      className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-agent"}
-                      dangerouslySetInnerHTML={{ __html: msg.text }}
-                    />
+                <div className="phone-chat" style={{ position: "relative" }}>
+                  {EXAMPLE_TABS.map((t, tabIdx) => (
+                    "type" in t && t.type === "pdf" ? null : (
+                      <div
+                        key={tabIdx}
+                        aria-hidden={tabIdx !== activeTab}
+                        style={{
+                          position: tabIdx === activeTab ? "relative" : "absolute",
+                          opacity: tabIdx === activeTab ? 1 : 0,
+                          pointerEvents: tabIdx === activeTab ? "auto" : "none",
+                          inset: tabIdx !== activeTab ? 0 : undefined,
+                          transition: "opacity 0.3s ease",
+                        }}
+                      >
+                        <h3 className="sr-only">{SKILL_HEADINGS[tabIdx]}</h3>
+                        {t.chat.map((msg, i) => (
+                          <div
+                            key={`${tabIdx}-${i}`}
+                            className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-agent"}
+                            dangerouslySetInnerHTML={{ __html: msg.text }}
+                          />
+                        ))}
+                      </div>
+                    )
                   ))}
                 </div>
                 <div className="phone-input-bar">
@@ -614,13 +641,20 @@ function ExamplesSection() {
                       {t.title}
                     </span>
                   </div>
-                  {isActive && (
-                    <div className="pl-[24px] pb-3 flex flex-col gap-2 animate-[fadeIn_0.3s_ease]">
-                      <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60">
-                        {t.description}
-                      </p>
-                    </div>
-                  )}
+                  <div
+                    className={`pl-[24px] pb-3 flex flex-col gap-2 ${isActive ? "animate-[fadeIn_0.3s_ease]" : ""}`}
+                    style={{
+                      height: isActive ? "auto" : 0,
+                      overflow: "hidden",
+                      opacity: isActive ? 1 : 0,
+                      transition: "opacity 0.3s ease",
+                    }}
+                    aria-hidden={!isActive}
+                  >
+                    <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60">
+                      {t.description}
+                    </p>
+                  </div>
                 </button>
               );
             })}
@@ -1080,6 +1114,9 @@ export default function Home() {
             <div className="text-[28px] sm:text-[32px] md:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-[#26251e] text-balance">
               So You Can Focus on Closing.
             </div>
+            <p className="sr-only">
+              ClawBroker AI is a commercial real estate AI platform built on the OpenClaw agent framework. It gives CRE brokers and brokerage firms an AI team that handles property search, demographic analysis, document extraction, market monitoring, and client memory — all from Telegram, 24/7.
+            </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
               <a
                 href="/sign-up"

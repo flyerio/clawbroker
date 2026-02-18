@@ -1,0 +1,32 @@
+# ClawBroker AI
+
+> ClawBroker AI is a commercial real estate AI platform built on the
+> OpenClaw agent framework. It gives CRE brokers and brokerage firm
+> owners a full AI team — accessible via Telegram — that handles
+> property search, demographic analysis, document extraction, market
+> monitoring, client memory, and chart generation.
+
+## Skills (What the Agent Can Do)
+- [Search](https://clawbroker.ai/#skills): Find available properties for sale or lease using AI-powered web search (Quick Search via Google/Gemini, Deep Search via Parallel AI)
+- [Memory](https://clawbroker.ai/#skills): Remembers every client's criteria, preferences, and deal history across conversations
+- [Extract](https://clawbroker.ai/#skills): Forward an email with property docs (PDF, XLSX, CSV, images) — agent extracts addresses, pricing, cap rates and creates a project automatically
+- [Demographics](https://clawbroker.ai/#skills): Pull population, income, housing, employment data for any property via ESRI GeoEnrichment (58 data types, radius or drive-time analysis)
+- [Monitor](https://clawbroker.ai/#skills): Set market alerts — get new listings and changes delivered daily, weekly, or biweekly on autopilot
+- [Charts](https://clawbroker.ai/#skills): Turn any data into professional bar, line, or doughnut charts instantly
+
+## Deliverables
+- Interactive Property Survey Grid with maps, labels, and client feedback
+- AI-generated demographic reports with confidence scores and citations
+- Automated BOVs, offering memorandums, and listing descriptions
+
+## Key Pages
+- [Home](https://clawbroker.ai)
+- [Sign Up (Free $10 Credit)](https://clawbroker.ai/sign-up)
+- [Book a Demo](https://cal.com/cobroker/website)
+
+## Company
+- Founded: 2024
+- Industry: Commercial Real Estate Technology (CRE PropTech)
+- Target Users: Commercial real estate brokers and brokerage firm owners
+- Built on: OpenClaw agent framework
+- Channel: Telegram (24/7 access from phone)

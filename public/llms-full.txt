@@ -1,0 +1,112 @@
+# ClawBroker AI — Full Documentation
+
+> ClawBroker AI is a commercial real estate AI platform built on the
+> OpenClaw agent framework. It gives CRE brokers and brokerage firm
+> owners a full AI team — accessible via Telegram — that handles
+> property search, demographic analysis, document extraction, market
+> monitoring, client memory, and chart generation — all from your phone, 24/7.
+
+## Skills (What the Agent Can Do)
+
+### Search — AI-Powered Property Search for CRE Brokers
+Find available properties for sale or lease using AI-powered web search. Two modes:
+- **Quick Search** via Google/Gemini: Fast results from Google search and Gemini AI for immediate availability checks.
+- **Deep Search** via Parallel AI: Comprehensive multi-source search that runs parallel queries across listing platforms for thorough market coverage.
+
+Example: "What's available in Uptown Dallas? Retail, 8-12K SF" → Returns matched properties with pricing, square footage, and key details.
+
+### Memory — Client Memory That Remembers Every Deal
+Remembers every client's criteria, preferences, and deal history across conversations. Never lose context again.
+- Stores client profiles with property type, location, budget, and SF requirements
+- Recalls past searches and deal history on demand
+- Flags new matches automatically when listings match saved criteria
+
+Example: "What was the budget for my client Rivera Holdings?" → Instantly recalls all stored details.
+
+### Extract — Email Document Extraction (PDF, XLSX, CSV to Project)
+Forward an email with property docs — the agent extracts and organizes everything automatically.
+- Parses PDFs (offering memorandums, brochures, rent rolls), XLSX spreadsheets, CSV files, and images
+- Extracts addresses, pricing, cap rates, square footage, and property details
+- Geocodes all addresses and creates organized projects
+
+Example: Forward a 40-page CBRE offering memo → Extracts 12 properties with all key data, geocoded and mapped.
+
+### Demographics — ESRI Demographic Analysis for Any Property Location
+Pull population, income, housing, and employment data for any property location via ESRI GeoEnrichment.
+- 58 data types available including population, median household income, housing units, employment
+- Radius-based or drive-time analysis
+- Comparison mode: analyze two locations side by side
+- Generates charts (donut, bar) for visual presentation
+
+Example: "Compare demographics: 390 Park Ave vs 1 World Trade Center" → Returns population density, income distribution, and detailed breakdowns.
+
+### Monitor — Automated Market Monitoring and Listing Alerts
+Set market alerts once — get new listings and changes delivered on autopilot.
+- Daily, weekly, or biweekly monitoring schedules
+- Customizable criteria: location, property type, SF range, price range
+- Proactive alerts delivered via Telegram when new listings match
+
+Example: "Monitor new office listings in the Seaport District, over 5K SF" → Automated daily checks with instant alerts.
+
+### Charts — Professional Chart Generation from Any CRE Data
+Turn any data into professional bar, line, or doughnut charts instantly.
+- Bar charts for rent comparisons, market analysis
+- Line charts for trend visualization
+- Doughnut charts for demographic breakdowns and portfolio allocation
+- Publication-ready formatting
+
+Example: "Compare asking rates for retail spaces across Austin" → Generates a professional bar chart with per-submarket breakdown.
+
+## Deliverables
+- **Interactive Property Survey Grid**: Modern, responsive property grid with maps, labels, and real-time client feedback. Replaces PowerPoint surveys.
+- **AI-Generated Reports**: Demographic reports, market analyses, and property comparisons with confidence scores and citations you can verify.
+- **Automated Documents**: BOVs (Broker's Opinion of Value), offering memorandums, and listing descriptions generated from your data.
+
+## Pricing
+ClawBroker starts with a **free $10 credit** — no credit card required. After that, you pay only for what you use:
+- AI model usage (GPT-4o, Claude, Gemini — your choice) tracked separately
+- App features (demographics, Places search, enrichment) billed per use
+- Your agent pauses when your balance reaches zero
+- Reactivates instantly when you add credits
+- No monthly subscription, no contracts
+
+## Frequently Asked Questions
+
+### What is ClawBroker AI?
+ClawBroker AI is a commercial real estate AI platform built on the OpenClaw agent framework. It provides CRE brokers with an AI team accessible via Telegram that handles property search, demographic analysis, document extraction, market monitoring, client memory, and chart generation — all from your phone, 24/7.
+
+### How is ClawBroker AI different from a regular AI chatbot?
+Unlike chatbots that only answer when prompted, ClawBroker monitors markets 24/7 and alerts you proactively. It remembers your clients and deals across conversations, takes real actions like pulling comps and drafting LOIs, and has CRE-specific tools for demographics, property search, and lease analysis built in.
+
+### What is OpenClaw and how does ClawBroker use it?
+OpenClaw is an open-source AI agent framework with over 200,000 GitHub stars. ClawBroker is a vertical application built on OpenClaw specifically for commercial real estate brokerage — it adds CRE-specific skills like property search, ESRI demographics, document extraction, and market monitoring on top of the OpenClaw runtime.
+
+### What can ClawBroker AI do for CRE brokers?
+ClawBroker handles six core tasks: finding available properties via AI-powered search, analyzing demographics with ESRI data (population, income, housing), extracting deal data from emailed PDFs and spreadsheets, monitoring markets for new listings, remembering client profiles and criteria, and generating professional charts from any data.
+
+### How much does ClawBroker AI cost?
+ClawBroker starts with a free $10 credit — no credit card required. After that, you pay only for what you use. AI model usage and app features (demographics, Places search, enrichment) are tracked separately. Your agent pauses when your balance reaches zero and reactivates instantly when you add credits.
+
+### Is ClawBroker AI an alternative to CoStar?
+ClawBroker serves a different role than CoStar. CoStar is a data subscription ($500+/month) focused on property listings and comps. ClawBroker is an AI agent ($10 to start) that actively works for you — searching for properties, analyzing demographics, extracting documents, and monitoring markets. Many brokers use both.
+
+## Use Cases
+- **Tenant Representation**: Search for available spaces matching client criteria, monitor for new listings, generate comparison reports
+- **Landlord Representation**: Analyze demographic data around properties, generate marketing materials, track lease expirations
+- **Investment Sales**: Extract deal data from offering memos, calculate cap rates, build investor presentations
+- **Market Analysis**: Compare submarkets, track rent trends, generate market reports with charts
+
+## Key Pages
+- [Home](https://clawbroker.ai)
+- [Sign Up (Free $10 Credit)](https://clawbroker.ai/sign-up)
+- [Book a Demo](https://cal.com/cobroker/website)
+
+## Company
+- **Name**: ClawBroker AI
+- **Founded**: 2024
+- **Industry**: Commercial Real Estate Technology (CRE PropTech)
+- **Target Users**: Commercial real estate brokers and brokerage firm owners
+- **Built on**: OpenClaw agent framework
+- **Channel**: Telegram (24/7 access from phone)
+- **Category**: First OpenClaw-based vertical AI platform for CRE brokerage
+- **Contact**: isaac@cobroker.ai
