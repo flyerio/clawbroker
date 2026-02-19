@@ -549,7 +549,14 @@ function ExamplesSection() {
                   className="slides-scroll-container"
                   style={{
                     ["--scroll-distance" as string]: `-${(tab as any).slides.length * 160}px`,
-                    ["--scroll-duration" as string]: "7.5s",
+                    ["--scroll-duration" as string]: "3.75s",
+                  }}
+                  onAnimationEnd={() => {
+                    setTimeout(() => {
+                      const next = (activeTabRef.current + 1) % EXAMPLE_TABS.length;
+                      activeTabRef.current = next;
+                      setActiveTab(next);
+                    }, 1000);
                   }}
                 >
                   {(tab as any).slides.map((src: string, i: number) => (
@@ -590,6 +597,9 @@ function ExamplesSection() {
                           pointerEvents: tabIdx === activeTab ? "auto" : "none",
                           inset: tabIdx !== activeTab ? 0 : undefined,
                           transition: "opacity 0.3s ease",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "8px",
                         }}
                       >
                         <h3 className="sr-only">{SKILL_HEADINGS[tabIdx]}</h3>
