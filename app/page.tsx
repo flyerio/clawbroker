@@ -1484,59 +1484,77 @@ export default function Home() {
         </section>
 
 
-        {/* ─── Closing CTA ─── */}
-        <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center max-w-[1300px] mx-auto text-center">
-          <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance mb-2">
-            Ready to stop drowning in busywork?
-          </p>
-          <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 text-pretty mb-8">
-            Join the brokers who closed more deals last quarter — with less effort.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href="/sign-up"
-              className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors"
-            >
-              Start Free
-            </a>
-            <button
-              onClick={async () => {
-                const cal = await getCalApi();
-                cal("modal", { calLink: "cobroker/website" });
-              }}
-              className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors cursor-pointer"
-            >
-              Book a Demo
-            </button>
-          </div>
-        </section>
+        {/* ─── Cinematic Footer ─── */}
+        <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 max-w-[1300px] mx-auto">
+          <div
+            className="relative rounded-xl overflow-hidden min-h-[500px] sm:min-h-[560px] flex flex-col justify-between p-6 sm:p-8 md:p-10"
+          >
+            <Image
+              src="/journey.jpg"
+              alt=""
+              fill
+              className="object-cover"
+              sizes="(max-width: 1300px) 100vw, 1300px"
+              quality={80}
+              priority={false}
+            />
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
-        {/* ─── Footer ─── */}
-        <section className="w-full px-4 sm:px-6 pt-12 sm:pt-20 md:pt-28 pb-8 flex flex-col gap-6 sm:gap-12 max-w-5xl mx-auto items-center text-center min-w-0">
-          <div className="flex flex-col gap-2">
-            <h4 className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 gap-y-2 text-sm sm:text-base">
-              <span className="flex items-center gap-2">
-                Built with{" "}
-                <span className="text-[#c4421a]" aria-label="love">
-                  &#9829;
-                </span>{" "}
-                by{" "}
+            {/* Upper-left: CTA */}
+            <div className="relative z-10">
+              <p className="text-xs font-bold font-mono uppercase tracking-widest text-white/70 mb-4">
+                GET STARTED
+              </p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold leading-[1.2] tracking-tight text-balance mb-10">
+                <span className="block text-white/60 font-normal">Delegate the busywork to your AI team.</span>
+                <span className="block text-white">Focus on closing.</span>
+              </h2>
+              <div className="flex flex-col sm:flex-row gap-3">
                 <a
-                  href="https://cobroker.ai"
-                  className="text-[#26251e] hover:text-[#26251e]/55 font-medium border-b-2 border-[#26251e]/15 transition-all duration-300"
+                  href="/sign-up"
+                  className="inline-flex items-center justify-center rounded-full bg-white text-[#26251e] px-6 py-2.5 text-sm font-medium hover:bg-white/90 transition-colors"
                 >
-                  Cobroker.ai
+                  Start Free
                 </a>
-              </span>
-              <span className="size-1 rounded-full bg-current opacity-60" />
-              <a
-                href="mailto:isaac@cobroker.ai"
-                className="inline-flex items-center gap-1.5 text-[#26251e] hover:text-[#26251e]/55 transition-colors"
-              >
-                <MailIcon className="size-4 sm:size-5 shrink-0" />
-                Support
-              </a>
-            </h4>
+                <button
+                  onClick={async () => {
+                    const cal = await getCalApi();
+                    cal("modal", { calLink: "cobroker/website" });
+                  }}
+                  className="inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10 transition-colors cursor-pointer"
+                >
+                  Book a Demo
+                </button>
+              </div>
+            </div>
+
+            {/* Lower-right: Made with love */}
+            <div className="relative z-10 self-end text-right mt-8">
+              <p className="flex flex-wrap items-center justify-end gap-x-2 sm:gap-x-3 gap-y-2 text-sm sm:text-base text-white/50">
+                <span className="flex items-center gap-2">
+                  Built with{" "}
+                  <span className="text-white/60" aria-label="love">
+                    &#9829;
+                  </span>{" "}
+                  by{" "}
+                  <a
+                    href="https://cobroker.ai"
+                    className="text-white/50 hover:text-white/70 font-medium transition-colors"
+                  >
+                    Cobroker.ai
+                  </a>
+                </span>
+                <span className="size-1 rounded-full bg-white/40" />
+                <a
+                  href="mailto:isaac@cobroker.ai"
+                  className="inline-flex items-center gap-1.5 text-white/50 hover:text-white/70 transition-colors"
+                >
+                  <MailIcon className="size-4 sm:size-5 shrink-0" />
+                  Support
+                </a>
+              </p>
+            </div>
           </div>
         </section>
       </div>
