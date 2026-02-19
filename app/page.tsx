@@ -1483,36 +1483,6 @@ export default function Home() {
           </span>
         </section>
 
-        {/* ─── Get Started Section (rewritten Comparison) ─── */}
-        <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center max-w-[1300px] mx-auto">
-          <div className="w-full max-w-[1300px] mb-8 sm:mb-10">
-            <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
-              GET STARTED
-            </p>
-            <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance">
-              Up and running in 60 seconds
-            </p>
-            <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e]/60 mt-1 text-pretty">
-              No downloads. No setup guides. Three steps and you&apos;re live.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-[10px] w-full max-w-[1300px]">
-            {[
-              { step: "1", title: "Pick your AI model", description: "Choose from GPT-4o, Claude, Gemini, or others. Switch anytime." },
-              { step: "2", title: "Connect your chat", description: "Link Telegram, WhatsApp, or Slack — wherever your team already works." },
-              { step: "3", title: "Start closing deals", description: "Your AI teammate is live. Ask it anything, assign it tasks, let it work." },
-            ].map((item) => (
-              <div key={item.step} className="rounded p-5 sm:p-8 bg-[#f2f1ed] flex flex-col gap-3">
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#26251e] text-white text-sm font-medium">
-                  {item.step}
-                </span>
-                <p className="text-lg font-medium text-[#26251e]">{item.title}</p>
-                <p className="text-sm text-[#26251e]/60 leading-relaxed">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
 
         {/* ─── Closing CTA ─── */}
         <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center max-w-[1300px] mx-auto text-center">
