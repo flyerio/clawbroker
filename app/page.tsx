@@ -696,7 +696,7 @@ function PropertyDataSection() {
   };
 
   return (
-    <section id="research" className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto scroll-mt-20">
+    <section id="research" className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center max-w-[1300px] mx-auto scroll-mt-20">
       <div className="border border-[#26251e]/10 rounded-xl overflow-hidden bg-[#f2f1ed] w-full">
         <div className="grid grid-cols-1 lg:grid-cols-5 min-h-[400px] lg:min-h-[650px]">
           {/* Left - Text content (2/5) */}
@@ -1328,7 +1328,7 @@ export default function Home() {
         </section>
 
         {/* ─── The Problem Section ─── */}
-        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
+        <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center max-w-[1300px] mx-auto">
           <div className="w-full max-w-[1300px] mb-8 sm:mb-10">
             <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
               THE PROBLEM
@@ -1357,7 +1357,7 @@ export default function Home() {
         </section>
 
         {/* ─── What Is An AI Team? Section ─── */}
-        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0">
+        <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0">
           <div className="w-full max-w-[1300px]">
             <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
               WHAT IS AN AI TEAM?
@@ -1441,7 +1441,7 @@ export default function Home() {
         <ClientExperienceSection />
 
         {/* ─── Use Cases Section ─── */}
-        <section id="use-cases" className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0 scroll-mt-20">
+        <section id="use-cases" className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col gap-8 sm:gap-12 max-w-[1300px] mx-auto min-w-0 scroll-mt-20">
           <div className="w-full max-w-[1300px]">
             <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
               USE CASES
@@ -1474,7 +1474,7 @@ export default function Home() {
         </section>
 
         {/* ─── Get Started Section (rewritten Comparison) ─── */}
-        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto">
+        <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center max-w-[1300px] mx-auto">
           <div className="w-full max-w-[1300px] mb-8 sm:mb-10">
             <p className="text-xs font-bold font-mono uppercase tracking-widest text-[#f54e00] mb-2">
               GET STARTED
@@ -1505,7 +1505,7 @@ export default function Home() {
         </section>
 
         {/* ─── Closing CTA ─── */}
-        <section className="w-full px-4 sm:px-6 py-16 sm:py-24 md:py-32 flex flex-col items-center max-w-[1300px] mx-auto text-center">
+        <section className="w-full px-4 sm:px-6 py-12 sm:py-20 md:py-28 flex flex-col items-center max-w-[1300px] mx-auto text-center">
           <p className="text-lg md:text-[22px] font-normal leading-[1.3] tracking-tight text-[#26251e] text-balance mb-2">
             Ready to stop drowning in busywork?
           </p>
