@@ -789,7 +789,7 @@ function ClientExperienceSection() {
   );
 
   return (
-    <section id="deliverables" className="w-full flex flex-col items-center scroll-mt-20">
+    <section id="deliverables" className="w-full py-12 sm:py-20 md:py-28 flex flex-col items-center scroll-mt-20">
       <div className="relative overflow-hidden bg-[#f2f1ed] w-full">
         <div className="relative w-full min-h-[800px] md:min-h-[950px]">
           {/* Mobile toggle at top center */}
@@ -1102,7 +1102,7 @@ export default function Home() {
       <div className="w-full flex flex-col gap-0 min-w-0 pt-14">
 
         {/* ─── Hero ─── */}
-        <section className="w-full px-2 sm:px-4 md:px-6 pt-6 sm:pt-10 md:pt-16 pb-6 sm:pb-10 md:pb-12 flex flex-col items-center min-w-0">
+        <section className="w-full px-2 sm:px-4 md:px-6 pt-6 sm:pt-10 md:pt-16 pb-12 sm:pb-20 md:pb-28 flex flex-col items-center min-w-0">
           {/* Heading above card */}
           <div className="w-full max-w-[1300px] px-2 sm:px-0">
             <p className="font-mono text-xs sm:text-sm text-[#26251e]/45 mb-4">
@@ -1532,7 +1532,7 @@ export default function Home() {
         </section>
 
         {/* ─── Footer ─── */}
-        <section className="w-full px-4 sm:px-6 pt-12 sm:pt-16 md:pt-24 pb-8 flex flex-col gap-6 sm:gap-12 max-w-5xl mx-auto items-center text-center min-w-0">
+        <section className="w-full px-4 sm:px-6 pt-12 sm:pt-20 md:pt-28 pb-8 flex flex-col gap-6 sm:gap-12 max-w-5xl mx-auto items-center text-center min-w-0">
           <div className="flex flex-col gap-2">
             <h4 className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 gap-y-2 text-sm sm:text-base">
               <span className="flex items-center gap-2">
