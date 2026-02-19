@@ -89,15 +89,20 @@ export default function OnboardingPage() {
                 </p>
                 <div className="mt-3 flex flex-col items-center gap-2 rounded-xl bg-black/[0.02] border border-black/5 p-4">
                   <QRCodeSVG
-                    value="https://t.me/userinfobot"
+                    value="https://t.me/userinfobot?start=id"
                     size={120}
                     bgColor="transparent"
                     fgColor="#18181b"
                     level="M"
                   />
-                  <p className="text-[11px] text-zinc-400">
-                    Scan to open @userinfobot on your phone
-                  </p>
+                  <a
+                    href="https://t.me/userinfobot?start=id"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                  >
+                    Open @userinfobot in Telegram &rarr;
+                  </a>
                 </div>
               </div>
 
