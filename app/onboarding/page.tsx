@@ -3,6 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 
 export default function OnboardingPage() {
   const { user, isLoaded } = useUser();
@@ -86,6 +87,18 @@ export default function OnboardingPage() {
                 <p className="mt-1.5 text-xs text-zinc-400">
                   Message <span className="font-medium text-zinc-500">@userinfobot</span> on Telegram — it will reply with your numeric ID.
                 </p>
+                <div className="mt-3 flex flex-col items-center gap-2 rounded-xl bg-black/[0.02] border border-black/5 p-4">
+                  <QRCodeSVG
+                    value="https://t.me/userinfobot"
+                    size={120}
+                    bgColor="transparent"
+                    fgColor="#18181b"
+                    level="M"
+                  />
+                  <p className="text-[11px] text-zinc-400">
+                    Scan to open @userinfobot on your phone
+                  </p>
+                </div>
               </div>
 
               {error && (
