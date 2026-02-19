@@ -41,34 +41,32 @@ export async function POST(req: Request) {
   let finalUserId = existingUser?.app_user_id || appUserId;
 
   if (!existingUser) {
-    const { error: insertErr } = await supabase
+    // Check if email already exists (e.g. from CoBroker parent app)
+    const { data: byEmail } = await supabase
       .from("user_identity_map")
-      .insert({
-        app_user_id: finalUserId,
-        clerk_user_id: userId,
-        email,
-        user_type: "standard",
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      });
-    if (insertErr) {
-      if (insertErr.code === "23505") {
-        // Row exists with different app_user_id — re-fetch the real one
-        const { data: refetched } = await supabase
-          .from("user_identity_map")
-          .select("app_user_id")
-          .eq("clerk_user_id", userId)
-          .single();
-        if (refetched) {
-          finalUserId = refetched.app_user_id;
-        } else {
-          console.error("user_identity_map 23505 but re-fetch failed");
-          return NextResponse.json(
-            { error: "Failed to create user record" },
-            { status: 500 }
-          );
-        }
-      } else {
+      .select("app_user_id")
+      .eq("email", email)
+      .single();
+
+    if (byEmail) {
+      // Email exists with a different clerk_user_id — reuse the app_user_id
+      finalUserId = byEmail.app_user_id;
+      await supabase
+        .from("user_identity_map")
+        .update({ clerk_user_id: userId, updated_at: new Date().toISOString() })
+        .eq("app_user_id", byEmail.app_user_id);
+    } else {
+      const { error: insertErr } = await supabase
+        .from("user_identity_map")
+        .insert({
+          app_user_id: finalUserId,
+          clerk_user_id: userId,
+          email,
+          user_type: "standard",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+      if (insertErr) {
         console.error("user_identity_map insert error:", insertErr);
         return NextResponse.json(
           { error: "Failed to create user record" },
