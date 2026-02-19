@@ -64,6 +64,7 @@ export default function DashboardPage() {
   const [balance, setBalance] = useState<Balance | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
   const [loading, setLoading] = useState(true);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -163,12 +164,22 @@ export default function DashboardPage() {
                   Your credit balance has been used up. Add more credits to
                   reactivate your agent.
                 </p>
-                <a
-                  href="/dashboard"
+                <button
+                  disabled={checkoutLoading}
+                  onClick={async () => {
+                    setCheckoutLoading(true);
+                    try {
+                      const res = await fetch("/api/checkout", { method: "POST" });
+                      const { url } = await res.json();
+                      if (url) window.location.href = url;
+                    } finally {
+                      setCheckoutLoading(false);
+                    }
+                  }}
                   className="main-btn-shadow text-sm inline-block"
                 >
-                  Add Credits
-                </a>
+                  {checkoutLoading ? "Redirecting..." : "Add Credits"}
+                </button>
               </>
             ) : (
               <>
