@@ -106,6 +106,27 @@ export async function restartMachine(
 }
 
 /**
+ * Patch openclaw.json on a running VM via exec.
+ * Deep-merges `patch` into the existing config.
+ */
+export async function updateTenantConfig(
+  appName: string,
+  machineId: string,
+  patch: Record<string, unknown>
+): Promise<void> {
+  const patchStr = JSON.stringify(JSON.stringify(patch));
+  const cmd = `node -e "\
+const fs=require('fs');\
+const cfg=JSON.parse(fs.readFileSync('/data/openclaw.json','utf8'));\
+const p=JSON.parse(${patchStr});\
+function m(t,s){for(const k in s){if(s[k]&&typeof s[k]==='object'&&!Array.isArray(s[k])){t[k]=t[k]||{};m(t[k],s[k])}else{t[k]=s[k]}}return t}\
+m(cfg,p);\
+fs.writeFileSync('/data/openclaw.json',JSON.stringify(cfg,null,2));\
+"`;
+  await execCommand(appName, machineId, cmd);
+}
+
+/**
  * Clear sessions and restart machine to pick up fresh config.
  * 1. Clear sessions so skills re-snapshot
  * 2. Restart machine to pick up new config

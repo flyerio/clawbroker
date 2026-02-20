@@ -1,7 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { configureTenant } from "@/lib/fly";
+import { configureTenant, updateTenantConfig } from "@/lib/fly";
 import { notifyAdmin } from "@/lib/telegram";
 
 export const maxDuration = 60;
@@ -57,6 +57,11 @@ export async function POST() {
   }
 
   try {
+    // Open DM policy — tenant bot is single-user, link is private
+    await updateTenantConfig(appName, machineId, {
+      channels: { telegram: { dmPolicy: "open" } },
+    });
+
     await configureTenant(appName, machineId);
   } catch (err) {
     console.error("configureTenant failed:", err);
