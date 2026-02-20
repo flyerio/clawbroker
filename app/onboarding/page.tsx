@@ -21,7 +21,12 @@ export default function OnboardingPage() {
       try {
         const res = await fetch("/api/status");
         if (!res.ok) {
+          // 404 = user not yet in identity map — treat as new user, auto-deploy
           setCheckingStatus(false);
+          if (!deployedRef.current) {
+            deployedRef.current = true;
+            handleDeploy();
+          }
           return;
         }
         const data = await res.json();
