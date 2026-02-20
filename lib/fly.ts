@@ -15,7 +15,11 @@ export async function startMachine(
     `${FLY_API}/apps/${appName}/machines/${machineId}/start`,
     { method: "POST", headers: headers() }
   );
-  return res.ok;
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`startMachine failed (${res.status}): ${body}`);
+  }
+  return true;
 }
 
 export async function stopMachine(
