@@ -46,6 +46,26 @@ export async function getMachineStatus(
   return data.state;
 }
 
+// ── Wait for machine state ──────────────────────────────────────────────────
+
+export async function waitForMachineState(
+  appName: string,
+  machineId: string,
+  target: string = "started",
+  timeoutMs: number = 45000,
+  intervalMs: number = 2000
+): Promise<void> {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const state = await getMachineStatus(appName, machineId);
+    if (state === target) return;
+    await new Promise((r) => setTimeout(r, intervalMs));
+  }
+  throw new Error(
+    `Machine ${machineId} did not reach "${target}" within ${timeoutMs / 1000}s`
+  );
+}
+
 // ── Exec & configure ────────────────────────────────────────────────────────
 
 interface ExecResult {
