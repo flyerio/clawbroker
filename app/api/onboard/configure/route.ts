@@ -59,7 +59,7 @@ export async function POST() {
   try {
     // Open DM policy — tenant bot is single-user, link is private
     await updateTenantConfig(appName, machineId, {
-      channels: { telegram: { dmPolicy: "open" } },
+      channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
     });
 
     await configureTenant(appName, machineId);
