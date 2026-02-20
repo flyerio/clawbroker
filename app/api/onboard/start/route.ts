@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { startMachine, waitForMachineState } from "@/lib/fly";
+import { startMachine, restartMachine, getMachineStatus, waitForMachineState } from "@/lib/fly";
 
 export const maxDuration = 60;
 
@@ -50,7 +50,22 @@ export async function POST() {
   }
 
   try {
-    await startMachine(appName, machineId);
+    const state = await getMachineStatus(appName, machineId);
+
+    if (state === "started") {
+      // Already running — skip
+      return NextResponse.json({ started: true });
+    }
+
+    if (state === "failed" || state === "replacing") {
+      // Failed machines can't be started — restart instead
+      const ok = await restartMachine(appName, machineId);
+      if (!ok) throw new Error("restartMachine returned non-200");
+    } else {
+      // stopped, created, etc. — normal start
+      await startMachine(appName, machineId);
+    }
+
     await waitForMachineState(appName, machineId, "started", 45000, 2000);
   } catch (err) {
     console.error("VM start failed:", err);
