@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
-type Step = "init" | "pairing" | "activating";
+type Step = "deploying" | "pairing" | "activating" | "error";
 
 export default function OnboardingPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
-  const [step, setStep] = useState<Step>("init");
+  const [step, setStep] = useState<Step>("deploying");
   const [botUsername, setBotUsername] = useState("");
   const [pairingToken, setPairingToken] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [checkingStatus, setCheckingStatus] = useState(true);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(0);
+  const deployedRef = useRef(false);
 
   const deepLink = botUsername && pairingToken
     ? `https://t.me/${botUsername}?start=${pairingToken}`
@@ -34,7 +34,7 @@ export default function OnboardingPage() {
         if (pollRef.current) clearInterval(pollRef.current);
         pollRef.current = null;
         setError("Pairing timed out. Please try again.");
-        setStep("init");
+        setStep("error");
         return;
       }
 
@@ -89,17 +89,29 @@ export default function OnboardingPage() {
           setCheckingStatus(false);
           return;
         }
-        if (data.status !== "no_tenant") {
-          // Has a tenant in some other state — go to dashboard
-          router.push("/dashboard");
+        if (data.status === "no_tenant") {
+          // Auto-deploy — no button click needed
+          setCheckingStatus(false);
+          if (!deployedRef.current) {
+            deployedRef.current = true;
+            handleDeploy();
+          }
           return;
         }
+        // Has a tenant in some other state — go to dashboard
+        router.push("/dashboard");
+        return;
       } catch {
-        // Network error — show init
+        // Network error — show deploying state, try deploy anyway
+        setCheckingStatus(false);
+        if (!deployedRef.current) {
+          deployedRef.current = true;
+          handleDeploy();
+        }
       }
-      setCheckingStatus(false);
     }
     checkExisting();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // Start polling when we enter pairing or activating step
@@ -116,7 +128,7 @@ export default function OnboardingPage() {
   }, [step, startPolling]);
 
   async function handleDeploy() {
-    setLoading(true);
+    setStep("deploying");
     setError("");
 
     try {
@@ -129,7 +141,7 @@ export default function OnboardingPage() {
 
       if (!res.ok) {
         setError(data.error || "Something went wrong");
-        setLoading(false);
+        setStep("error");
         return;
       }
 
@@ -138,8 +150,7 @@ export default function OnboardingPage() {
       setStep("pairing");
     } catch {
       setError("Network error. Please try again.");
-    } finally {
-      setLoading(false);
+      setStep("error");
     }
   }
 
@@ -160,24 +171,39 @@ export default function OnboardingPage() {
               Welcome, {user?.firstName || "there"}!
             </h1>
 
-            {step === "init" && (
+            {step === "deploying" && (
+              <>
+                <p className="text-sm text-zinc-400 mb-6">
+                  Setting up your personal CRE AI agent...
+                </p>
+                <div className="flex items-center gap-3 text-sm text-zinc-500">
+                  <svg className="w-4 h-4 animate-spin text-indigo-500 shrink-0" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
+                    <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="opacity-75" />
+                  </svg>
+                  Provisioning your agent...
+                </div>
+              </>
+            )}
+
+            {step === "error" && (
               <>
                 <p className="text-sm text-zinc-400 mb-6">
                   Deploy your personal CRE AI agent — accessible via Telegram.
                 </p>
 
-                {error && (
-                  <p className="text-sm text-red-500 bg-red-50 rounded-lg px-3 py-2 mb-4">
-                    {error}
-                  </p>
-                )}
+                <p className="text-sm text-red-500 bg-red-50 rounded-lg px-3 py-2 mb-4">
+                  {error || "Something went wrong"}
+                </p>
 
                 <button
-                  onClick={handleDeploy}
-                  disabled={loading}
-                  className="main-btn-shadow text-sm sm:text-base w-full disabled:opacity-50"
+                  onClick={() => {
+                    deployedRef.current = true;
+                    handleDeploy();
+                  }}
+                  className="main-btn-shadow text-sm sm:text-base w-full"
                 >
-                  {loading ? "Setting up..." : "Deploy My Agent"}
+                  Try Again
                 </button>
               </>
             )}
@@ -226,8 +252,10 @@ export default function OnboardingPage() {
                       {error}
                     </p>
                     <button
-                      onClick={handleDeploy}
-                      disabled={loading}
+                      onClick={() => {
+                        deployedRef.current = true;
+                        handleDeploy();
+                      }}
                       className="text-sm text-indigo-600 hover:text-indigo-700"
                     >
                       Try again
