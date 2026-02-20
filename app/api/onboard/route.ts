@@ -1,12 +1,10 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { notifyAdmin } from "@/lib/telegram";
-import { startMachine, configureTenant } from "@/lib/fly";
-import { sendActivationEmail } from "@/lib/email";
+import { notifyAdmin, setWebhook } from "@/lib/telegram";
 import crypto from "crypto";
 
-export async function POST(req: Request) {
+export async function POST() {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -15,14 +13,6 @@ export async function POST(req: Request) {
   const user = await currentUser();
   if (!user) {
     return NextResponse.json({ error: "User not found" }, { status: 401 });
-  }
-
-  const { telegramUserId } = await req.json();
-  if (!telegramUserId || typeof telegramUserId !== "string" || !/^\d+$/.test(telegramUserId)) {
-    return NextResponse.json(
-      { error: "A valid numeric Telegram user ID is required" },
-      { status: 400 }
-    );
   }
 
   const email = user.emailAddresses[0]?.emailAddress;
@@ -79,10 +69,36 @@ export async function POST(req: Request) {
   // Check if user already has a tenant
   const { data: existingTenant } = await supabase
     .from("tenant_registry")
-    .select("id, status, fly_app_name")
+    .select("id, status, fly_app_name, bot_id, bot_pool(bot_username, bot_token)")
     .eq("user_id", finalUserId)
     .single();
 
+  // If tenant exists and is already pairing, regenerate token and re-set webhook
+  if (existingTenant && existingTenant.status === "pairing") {
+    const pairingToken = crypto.randomUUID();
+    const pairingExpiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+
+    await supabase
+      .from("tenant_registry")
+      .update({ pairing_token: pairingToken, pairing_expires_at: pairingExpiresAt })
+      .eq("id", existingTenant.id);
+
+    const bot = existingTenant.bot_pool as unknown as { bot_username: string; bot_token: string };
+    const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://clawbroker.ai";
+
+    if (bot.bot_token && webhookSecret) {
+      await setWebhook(bot.bot_token, `${appUrl}/api/webhooks/telegram`, webhookSecret);
+    }
+
+    return NextResponse.json({
+      botUsername: bot.bot_username,
+      pairingToken,
+      status: "pairing",
+    });
+  }
+
+  // If tenant exists with any other status, don't allow re-onboard
   if (existingTenant) {
     return NextResponse.json(
       { error: "You already have an agent. Check your dashboard." },
@@ -125,12 +141,16 @@ export async function POST(req: Request) {
     );
   }
 
+  const pairingToken = crypto.randomUUID();
+  const pairingExpiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+
   const { error: tenantErr } = await supabase.from("tenant_registry").insert({
     user_id: finalUserId,
     bot_id: bot.id,
     fly_app_name: bot.fly_app_name,
-    telegram_user_id: telegramUserId,
-    status: "pending",
+    status: "pairing",
+    pairing_token: pairingToken,
+    pairing_expires_at: pairingExpiresAt,
   });
 
   if (tenantErr) {
@@ -159,45 +179,29 @@ export async function POST(req: Request) {
     available_credits: 2000,
   });
 
-  // 4. Auto-activate: configure VM and set tenant to active
-  let activated = false;
-  if (bot.fly_app_name && bot.fly_machine_id) {
-    try {
-      await startMachine(bot.fly_app_name, bot.fly_machine_id);
-      await configureTenant(bot.fly_app_name, bot.fly_machine_id, telegramUserId);
-      await supabase
-        .from("tenant_registry")
-        .update({ status: "active", provisioned_at: new Date().toISOString() })
-        .eq("user_id", finalUserId);
-      activated = true;
-    } catch (err) {
-      console.error("Auto-activation failed (will require manual activation):", err);
+  // 4. Set webhook on the assigned bot
+  const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://clawbroker.ai";
+
+  if (bot.bot_token && webhookSecret) {
+    const webhookSet = await setWebhook(
+      bot.bot_token,
+      `${appUrl}/api/webhooks/telegram`,
+      webhookSecret
+    );
+    if (!webhookSet) {
+      console.error("Failed to set webhook for bot:", bot.bot_username);
     }
   }
 
-  // 5. Send activation email if activated
-  if (activated) {
-    try {
-      await sendActivationEmail({
-        to: email,
-        firstName: email.split("@")[0],
-        botUsername: bot.bot_username,
-      });
-    } catch (err) {
-      console.error("Activation email failed (non-blocking):", err);
-    }
-  }
-
-  // 6. Notify admin
+  // 5. Notify admin
   await notifyAdmin(
-    activated
-      ? `✅ Auto-activated!\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nBot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}`
-      : `🆕 New signup (auto-activation failed — activate manually)\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nBot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}`
+    `🔗 New signup (pairing)\nEmail: ${email}\nBot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}`
   );
 
   return NextResponse.json({
     botUsername: bot.bot_username,
-    flyAppName: bot.fly_app_name,
-    status: activated ? "active" : "pending",
+    pairingToken,
+    status: "pairing",
   });
 }

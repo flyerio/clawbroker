@@ -23,6 +23,45 @@ export async function sendTelegramMessage(
   }
 }
 
+export async function setWebhook(
+  botToken: string,
+  webhookUrl: string,
+  secretToken: string
+): Promise<boolean> {
+  try {
+    const res = await fetch(`${TELEGRAM_API}/bot${botToken}/setWebhook`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        url: webhookUrl,
+        secret_token: secretToken,
+        allowed_updates: ["message"],
+      }),
+    });
+    if (!res.ok) {
+      const body = await res.text();
+      console.error("setWebhook failed:", res.status, body);
+    }
+    return res.ok;
+  } catch (err) {
+    console.error("setWebhook error:", err);
+    return false;
+  }
+}
+
+export async function deleteWebhook(botToken: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${TELEGRAM_API}/bot${botToken}/deleteWebhook`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    return res.ok;
+  } catch (err) {
+    console.error("deleteWebhook error:", err);
+    return false;
+  }
+}
+
 export async function notifyAdmin(message: string): Promise<boolean> {
   const botToken = process.env.ADMIN_TELEGRAM_BOT_TOKEN;
   const chatId = process.env.ADMIN_TELEGRAM_CHAT_ID;

@@ -28,12 +28,19 @@ export async function GET() {
     return NextResponse.json({ status: "no_tenant" });
   }
 
-  return NextResponse.json({
+  const response: Record<string, unknown> = {
     status: tenant.status,
     botUsername: tenant.bot_pool?.bot_username,
     flyAppName: tenant.fly_app_name,
     telegramUserId: tenant.telegram_user_id,
     createdAt: tenant.created_at,
     provisionedAt: tenant.provisioned_at,
-  });
+  };
+
+  // Include pairing token so frontend can rebuild the deep link on page refresh
+  if (tenant.status === "pairing" && tenant.pairing_token) {
+    response.pairingToken = tenant.pairing_token;
+  }
+
+  return NextResponse.json(response);
 }

@@ -2,6 +2,7 @@
 
 import { useUser, useClerk } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface Balance {
@@ -22,6 +23,16 @@ interface Status {
 
 function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { label: string; color: string; bg: string }> = {
+    pairing: {
+      label: "Connecting Telegram...",
+      color: "text-blue-700",
+      bg: "bg-blue-50 border-blue-200",
+    },
+    activating: {
+      label: "Activating...",
+      color: "text-amber-700",
+      bg: "bg-amber-50 border-amber-200",
+    },
     pending: {
       label: "Setting up...",
       color: "text-amber-700",
@@ -61,6 +72,7 @@ function StatusBadge({ status }: { status: string }) {
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
+  const router = useRouter();
   const [balance, setBalance] = useState<Balance | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
   const [loading, setLoading] = useState(true);
@@ -83,6 +95,16 @@ export default function DashboardPage() {
     return (
       <div className="flex min-h-dvh items-center justify-center">
         <p className="text-zinc-400">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  // Redirect pairing users back to onboarding to complete the flow
+  if (status?.status === "pairing") {
+    router.push("/onboarding");
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        <p className="text-zinc-400">Redirecting to onboarding...</p>
       </div>
     );
   }
