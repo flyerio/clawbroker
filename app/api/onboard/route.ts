@@ -1,7 +1,8 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { notifyAdmin, setWebhook } from "@/lib/telegram";
+import { notifyAdmin } from "@/lib/telegram";
+import { startMachine, configureTenant } from "@/lib/fly";
 import crypto from "crypto";
 
 export async function POST() {
@@ -69,32 +70,52 @@ export async function POST() {
   // Check if user already has a tenant
   const { data: existingTenant } = await supabase
     .from("tenant_registry")
-    .select("id, status, fly_app_name, bot_id, bot_pool(bot_username, bot_token)")
+    .select("id, status, fly_app_name, bot_id, bot_pool(bot_username, bot_token, fly_machine_id)")
     .eq("user_id", finalUserId)
     .single();
 
-  // If tenant exists and is already pairing, regenerate token and re-set webhook
-  if (existingTenant && existingTenant.status === "pairing") {
-    const pairingToken = crypto.randomUUID();
-    const pairingExpiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+  // If tenant exists and is still pending/pairing, try to activate it now
+  if (existingTenant && (existingTenant.status === "pairing" || existingTenant.status === "pending")) {
+    const bot = existingTenant.bot_pool as unknown as {
+      bot_username: string;
+      bot_token: string;
+      fly_machine_id: string;
+    };
 
-    await supabase
-      .from("tenant_registry")
-      .update({ pairing_token: pairingToken, pairing_expires_at: pairingExpiresAt })
-      .eq("id", existingTenant.id);
+    if (existingTenant.fly_app_name && bot.fly_machine_id) {
+      try {
+        await startMachine(existingTenant.fly_app_name, bot.fly_machine_id);
+        await configureTenant(existingTenant.fly_app_name, bot.fly_machine_id);
 
-    const bot = existingTenant.bot_pool as unknown as { bot_username: string; bot_token: string };
-    const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://clawbroker.ai";
+        await supabase
+          .from("tenant_registry")
+          .update({
+            status: "active",
+            provisioned_at: new Date().toISOString(),
+          })
+          .eq("id", existingTenant.id);
 
-    if (bot.bot_token && webhookSecret) {
-      await setWebhook(bot.bot_token, `${appUrl}/api/webhooks/telegram`, webhookSecret);
+        return NextResponse.json({
+          botUsername: bot.bot_username,
+          status: "active",
+        });
+      } catch (err) {
+        console.error("VM activation failed for existing tenant:", err);
+        await supabase
+          .from("tenant_registry")
+          .update({ status: "pending" })
+          .eq("id", existingTenant.id);
+
+        return NextResponse.json(
+          { error: "Failed to start your agent. Please try again." },
+          { status: 500 }
+        );
+      }
     }
 
     return NextResponse.json({
       botUsername: bot.bot_username,
-      pairingToken,
-      status: "pairing",
+      status: "active",
     });
   }
 
@@ -141,16 +162,12 @@ export async function POST() {
     );
   }
 
-  const pairingToken = crypto.randomUUID();
-  const pairingExpiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
-
   const { error: tenantErr } = await supabase.from("tenant_registry").insert({
     user_id: finalUserId,
     bot_id: bot.id,
     fly_app_name: bot.fly_app_name,
-    status: "pairing",
-    pairing_token: pairingToken,
-    pairing_expires_at: pairingExpiresAt,
+    status: "active",
+    provisioned_at: new Date().toISOString(),
   });
 
   if (tenantErr) {
@@ -179,29 +196,33 @@ export async function POST() {
     available_credits: 2000,
   });
 
-  // 4. Set webhook on the assigned bot
-  const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://clawbroker.ai";
+  // 4. Start VM and configure
+  if (bot.fly_app_name && bot.fly_machine_id) {
+    try {
+      await startMachine(bot.fly_app_name, bot.fly_machine_id);
+      await configureTenant(bot.fly_app_name, bot.fly_machine_id);
+    } catch (err) {
+      console.error("VM activation failed:", err);
+      // Mark as pending so admin or retry can fix
+      await supabase
+        .from("tenant_registry")
+        .update({ status: "pending" })
+        .eq("user_id", finalUserId);
 
-  if (bot.bot_token && webhookSecret) {
-    const webhookSet = await setWebhook(
-      bot.bot_token,
-      `${appUrl}/api/webhooks/telegram`,
-      webhookSecret
-    );
-    if (!webhookSet) {
-      console.error("Failed to set webhook for bot:", bot.bot_username);
+      return NextResponse.json(
+        { error: "Agent created but failed to start. Please try again." },
+        { status: 500 }
+      );
     }
   }
 
   // 5. Notify admin
   await notifyAdmin(
-    `🔗 New signup (pairing)\nEmail: ${email}\nBot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}`
+    `🚀 New signup (active)\nEmail: ${email}\nBot: @${bot.bot_username}\nFly app: ${bot.fly_app_name}`
   );
 
   return NextResponse.json({
     botUsername: bot.bot_username,
-    pairingToken,
-    status: "pairing",
+    status: "active",
   });
 }

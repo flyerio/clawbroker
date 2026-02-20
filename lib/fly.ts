@@ -82,53 +82,22 @@ export async function restartMachine(
 }
 
 /**
- * Replicates deploy-tenant.sh configure-user:
- * 1. Read /data/openclaw.json
- * 2. Add telegramUserId to channels.telegram.allowFrom (idempotent)
- * 3. Write updated config back
- * 4. Clear sessions so skills re-snapshot
- * 5. Restart machine to pick up new config
+ * Clear sessions and restart machine to pick up fresh config.
+ * 1. Clear sessions so skills re-snapshot
+ * 2. Restart machine to pick up new config
  */
 export async function configureTenant(
   appName: string,
-  machineId: string,
-  telegramUserId: string
+  machineId: string
 ): Promise<void> {
-  // 1. Read current config
-  const readResult = await execCommand(appName, machineId, "cat /data/openclaw.json");
-  if (readResult.exit_code !== 0) {
-    throw new Error(`Failed to read openclaw.json: ${readResult.stderr}`);
-  }
-
-  // 2. Parse and update allowFrom
-  const config = JSON.parse(readResult.stdout);
-  if (!config.channels) config.channels = {};
-  if (!config.channels.telegram) config.channels.telegram = {};
-  const allowFrom: string[] = config.channels.telegram.allowFrom || [];
-  if (!allowFrom.includes(telegramUserId)) {
-    allowFrom.push(telegramUserId);
-  }
-  config.channels.telegram.allowFrom = allowFrom;
-
-  // 3. Write updated config back via base64 to avoid shell escaping issues
-  const encoded = Buffer.from(JSON.stringify(config, null, 2)).toString("base64");
-  const writeResult = await execCommand(
-    appName,
-    machineId,
-    `echo '${encoded}' | base64 -d > /data/openclaw.json && chown node:node /data/openclaw.json`
-  );
-  if (writeResult.exit_code !== 0) {
-    throw new Error(`Failed to write openclaw.json: ${writeResult.stderr}`);
-  }
-
-  // 4. Clear sessions to force skill re-snapshot
+  // 1. Clear sessions to force skill re-snapshot
   await execCommand(
     appName,
     machineId,
     "rm -f /data/agents/main/sessions/*.jsonl /data/agents/main/sessions/sessions.json && chown -R node:node /data/agents"
   );
 
-  // 5. Restart to pick up new config
+  // 2. Restart to pick up new config
   const restarted = await restartMachine(appName, machineId);
   if (!restarted) {
     throw new Error("Failed to restart machine after configuration");

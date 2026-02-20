@@ -34,19 +34,12 @@ export async function POST(req: Request) {
 
   const flyAppName = tenant.fly_app_name;
   const machineId = tenant.bot_pool?.fly_machine_id;
-  const telegramUserId = tenant.telegram_user_id;
   const email = tenant.user_identity_map?.email;
   const botUsername = tenant.bot_pool?.bot_username;
 
   if (!flyAppName || !machineId) {
     return NextResponse.json(
       { error: "Tenant is missing fly_app_name or fly_machine_id" },
-      { status: 400 }
-    );
-  }
-  if (!telegramUserId) {
-    return NextResponse.json(
-      { error: "Tenant is missing telegram_user_id" },
       { status: 400 }
     );
   }
@@ -60,9 +53,9 @@ export async function POST(req: Request) {
     );
   }
 
-  // Configure the tenant VM (add Telegram user ID, restart)
+  // Configure the tenant VM (clear sessions, restart)
   try {
-    await configureTenant(flyAppName, machineId, telegramUserId);
+    await configureTenant(flyAppName, machineId);
   } catch (err) {
     console.error("configureTenant failed:", err);
     return NextResponse.json(

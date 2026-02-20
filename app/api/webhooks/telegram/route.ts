@@ -109,7 +109,7 @@ export async function POST(req: Request) {
   if (tenant.fly_app_name && bot?.fly_machine_id) {
     try {
       await startMachine(tenant.fly_app_name, bot.fly_machine_id);
-      await configureTenant(tenant.fly_app_name, bot.fly_machine_id, telegramUserId);
+      await configureTenant(tenant.fly_app_name, bot.fly_machine_id);
       await supabase
         .from("tenant_registry")
         .update({ status: "active", provisioned_at: new Date().toISOString() })
