@@ -127,6 +127,43 @@ fs.writeFileSync('/data/openclaw.json',JSON.stringify(cfg,null,2));\
 }
 
 /**
+ * Set a secret on a Fly app via the GraphQL API.
+ * This triggers a machine restart to pick up the new secret.
+ */
+export async function setAppSecret(
+  appName: string,
+  key: string,
+  value: string
+): Promise<void> {
+  const res = await fetch("https://api.fly.io/graphql", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.FLY_API_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `mutation($input: SetSecretsInput!) {
+        setSecrets(input: $input) { app { name } }
+      }`,
+      variables: {
+        input: {
+          appId: appName,
+          secrets: [{ key, value }],
+        },
+      },
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`setAppSecret failed (${res.status}): ${body}`);
+  }
+  const json = await res.json();
+  if (json.errors?.length) {
+    throw new Error(`setAppSecret GraphQL error: ${json.errors[0].message}`);
+  }
+}
+
+/**
  * Clear sessions and restart machine to pick up fresh config.
  * 1. Clear sessions so skills re-snapshot
  * 2. Restart machine to pick up new config

@@ -1,7 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { configureTenant, updateTenantConfig } from "@/lib/fly";
+import { configureTenant, updateTenantConfig, setAppSecret } from "@/lib/fly";
 import { notifyAdmin } from "@/lib/telegram";
 
 export const maxDuration = 60;
@@ -63,6 +63,9 @@ export async function POST() {
     });
 
     await configureTenant(appName, machineId);
+
+    // Set per-user CoBroker agent ID so skills can access user's data
+    await setAppSecret(appName, "COBROKER_AGENT_USER_ID", identity.app_user_id);
   } catch (err) {
     console.error("configureTenant failed:", err);
     return NextResponse.json(
@@ -72,13 +75,17 @@ export async function POST() {
   }
 
   // Mark tenant as active
-  await supabase
+  const { error: updateErr } = await supabase
     .from("tenant_registry")
     .update({
       status: "active",
       provisioned_at: new Date().toISOString(),
     })
     .eq("id", tenant.id);
+
+  if (updateErr) {
+    console.error("Failed to mark tenant active:", updateErr);
+  }
 
   // Notify admin (fire-and-forget)
   notifyAdmin(
