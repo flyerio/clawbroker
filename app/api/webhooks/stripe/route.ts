@@ -34,7 +34,15 @@ export async function POST(req: Request) {
     }
 
     const amountDollars = amountTotal / 100;
-    const creditsToAdd = Math.round(amountDollars / 0.005);
+
+    // Read credit rate from pricing_config (fallback to 0.005)
+    const { data: pricingRow } = await supabase
+      .from("pricing_config")
+      .select("cost_per_unit")
+      .eq("service_key", "app-features")
+      .single();
+    const costPerCredit = pricingRow ? Number(pricingRow.cost_per_unit) : 0.005;
+    const creditsToAdd = Math.round(amountDollars / costPerCredit);
 
     // Top up USD balance (read-then-increment)
     const { data: currentBal } = await supabase
@@ -87,10 +95,10 @@ export async function POST(req: Request) {
         );
       }
 
-      // Mark as active
+      // Mark as active and reset low-balance warning
       await supabase
         .from("tenant_registry")
-        .update({ status: "active" })
+        .update({ status: "active", low_balance_warned_at: null })
         .eq("id", tenant.id);
     }
   }
