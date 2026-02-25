@@ -105,13 +105,13 @@ export async function POST() {
   // Create balances
   await supabase.from("usd_balance").insert({
     user_id: appUserId,
-    total_budget_usd: 10.0,
+    total_budget_usd: 50.0,
   });
 
   await supabase.from("user_credits").insert({
     user_id: appUserId,
-    total_credits: 2000,
-    available_credits: 2000,
+    total_credits: 10000,
+    available_credits: 10000,
   });
 
   return NextResponse.json({
