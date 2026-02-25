@@ -114,6 +114,18 @@ export async function POST(req: Request) {
         .from("tenant_registry")
         .update({ status: "active", provisioned_at: new Date().toISOString() })
         .eq("id", tenant.id);
+      // Sync to openclaw_agents for admin dashboard
+      await supabase
+        .from("openclaw_agents")
+        .update({
+          user_id: tenant.user_id,
+          telegram_user_id: telegramUserId,
+          status: "active",
+          linked_at: new Date().toISOString(),
+          activated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("fly_app_name", tenant.fly_app_name);
       activated = true;
     } catch (err) {
       console.error("Auto-activation failed:", err);
@@ -122,6 +134,17 @@ export async function POST(req: Request) {
         .from("tenant_registry")
         .update({ status: "pending" })
         .eq("id", tenant.id);
+      // Still sync user linkage even if VM activation fails
+      await supabase
+        .from("openclaw_agents")
+        .update({
+          user_id: tenant.user_id,
+          telegram_user_id: telegramUserId,
+          status: "stopped",
+          linked_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("fly_app_name", tenant.fly_app_name);
     }
   }
 
