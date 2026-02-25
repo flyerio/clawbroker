@@ -123,6 +123,14 @@ export async function GET(req: Request) {
       .update({ status: "suspended" })
       .eq("id", tenant.id);
 
+    // Also update openclaw_agents for admin dashboard visibility
+    if (tenant.fly_app_name) {
+      await supabase
+        .from("openclaw_agents")
+        .update({ status: "suspended", updated_at: new Date().toISOString() })
+        .eq("fly_app_name", tenant.fly_app_name);
+    }
+
     // NOTIFICATION 2: Email to user
     if (email) {
       await sendSuspensionEmail({
