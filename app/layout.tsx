@@ -14,7 +14,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "ClawBroker AI | AI-Powered CRE Team Built on OpenClaw",
   description:
-    "ClawBroker AI is a commercial real estate AI platform built on OpenClaw. Property search, demographic analysis, document extraction, market monitoring, and client memory — all from Telegram. Free $10 credit to start.",
+    "ClawBroker AI is a commercial real estate AI platform built on OpenClaw. Property search, demographic analysis, document extraction, market monitoring, and client memory — all from Telegram. Free $50 credit to start.",
   keywords: [
     "commercial real estate AI",
     "CRE AI tool",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ClawBroker AI | Your CRE AI Team Built on OpenClaw",
     description:
-      "AI-powered property search, demographics, document extraction, and market monitoring for CRE brokers. Built on OpenClaw. Free $10 credit.",
+      "AI-powered property search, demographics, document extraction, and market monitoring for CRE brokers. Built on OpenClaw. Free $50 credit.",
     url: "https://clawbroker.ai",
     siteName: "ClawBroker AI",
     type: "website",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ClawBroker AI | CRE AI Team Built on OpenClaw",
     description:
-      "AI-powered tools for CRE brokers. Free $10 credit to start.",
+      "AI-powered tools for CRE brokers. Free $50 credit to start.",
   },
   alternates: {
     canonical: "https://clawbroker.ai",
@@ -141,7 +141,7 @@ const faqSchema = {
       name: "How much does ClawBroker AI cost?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "ClawBroker starts with a free $10 credit — no credit card required. After that, you pay only for what you use. AI model usage and app features (demographics, Places search, enrichment) are tracked separately. Your agent pauses when your balance reaches zero and reactivates instantly when you add credits.",
+        text: "ClawBroker starts with a free $50 credit — no credit card required. After that, you pay only for what you use. AI model usage and app features (demographics, Places search, enrichment) are tracked separately. Your agent pauses when your balance reaches zero and reactivates instantly when you add credits.",
       },
     },
     {
@@ -149,7 +149,7 @@ const faqSchema = {
       name: "Is ClawBroker AI an alternative to CoStar?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "ClawBroker serves a different role than CoStar. CoStar is a data subscription ($500+/month) focused on property listings and comps. ClawBroker is an AI agent ($10 to start) that actively works for you — searching for properties, analyzing demographics, extracting documents, and monitoring markets. Many brokers use both.",
+        text: "ClawBroker serves a different role than CoStar. CoStar is a data subscription ($500+/month) focused on property listings and comps. ClawBroker is an AI agent ($50 to start) that actively works for you — searching for properties, analyzing demographics, extracting documents, and monitoring markets. Many brokers use both.",
       },
     },
   ],
