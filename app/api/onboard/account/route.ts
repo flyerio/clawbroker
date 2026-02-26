@@ -1,6 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { isPersonalEmail } from "@/lib/email-policy";
 import crypto from "crypto";
 
 export async function POST() {
@@ -17,6 +18,13 @@ export async function POST() {
   const email = user.emailAddresses[0]?.emailAddress;
   if (!email) {
     return NextResponse.json({ error: "No email on account" }, { status: 400 });
+  }
+
+  if (isPersonalEmail(email)) {
+    return NextResponse.json(
+      { error: "Please sign up with a business email. Personal email domains are not accepted." },
+      { status: 403 }
+    );
   }
 
   // Check if user already exists by clerk_user_id
