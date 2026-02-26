@@ -79,27 +79,28 @@ export async function POST(req: Request) {
     }
 
     // Reactivate if suspended
-    const { data: tenant } = await supabase
-      .from("tenant_registry")
-      .select("*, bot_pool(fly_machine_id)")
+    const { data: agent } = await supabase
+      .from("openclaw_agents")
+      .select("id, fly_app_name, fly_machine_id")
       .eq("user_id", appUserId)
       .eq("status", "suspended")
       .single();
 
-    if (tenant) {
+    if (agent) {
       // Start Fly.io machine
-      if (tenant.fly_app_name && tenant.bot_pool?.fly_machine_id) {
-        await startMachine(
-          tenant.fly_app_name,
-          tenant.bot_pool.fly_machine_id
-        );
+      if (agent.fly_app_name && agent.fly_machine_id) {
+        await startMachine(agent.fly_app_name, agent.fly_machine_id);
       }
 
       // Mark as active and reset low-balance warning
       await supabase
-        .from("tenant_registry")
-        .update({ status: "active", low_balance_warned_at: null })
-        .eq("id", tenant.id);
+        .from("openclaw_agents")
+        .update({
+          status: "active",
+          low_balance_warned_at: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", agent.id);
     }
   }
 

@@ -14,14 +14,14 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Missing tenantId" }, { status: 400 });
   }
 
-  // Look up user_id from tenant_registry by fly_app_name
-  const { data: tenant, error: tenantErr } = await supabase
-    .from("tenant_registry")
+  // Look up user_id from openclaw_agents by fly_app_name
+  const { data: agent, error: agentErr } = await supabase
+    .from("openclaw_agents")
     .select("user_id")
     .eq("fly_app_name", tenantId)
     .single();
 
-  if (tenantErr || !tenant) {
+  if (agentErr || !agent) {
     return NextResponse.json({ allowed: true, remaining_usd: null });
   }
 
@@ -29,7 +29,7 @@ export async function GET(req: Request) {
   const { data: balance } = await supabase
     .from("v_user_usd_balance")
     .select("remaining_usd")
-    .eq("user_id", tenant.user_id)
+    .eq("user_id", agent.user_id)
     .single();
 
   const remaining = balance?.remaining_usd ?? null;

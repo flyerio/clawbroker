@@ -8,9 +8,10 @@ export async function GET() {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { data: tenants, error } = await supabase
-    .from("tenant_registry")
-    .select("*, bot_pool(bot_username, fly_machine_id), user_identity_map(email)")
+  const { data: agents, error } = await supabase
+    .from("openclaw_agents")
+    .select("*, user_identity_map:user_id(email)")
+    .not("user_id", "is", null)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -18,7 +19,7 @@ export async function GET() {
   }
 
   // Fetch balances for all tenants
-  const userIds = tenants.map((t: { user_id: string }) => t.user_id);
+  const userIds = agents.map((a: { user_id: string }) => a.user_id);
   const { data: balances } = await supabase
     .from("v_user_usd_balance")
     .select("*")
@@ -28,9 +29,9 @@ export async function GET() {
     (balances || []).map((b: { user_id: string }) => [b.user_id, b])
   );
 
-  const enriched = tenants.map((t: { user_id: string }) => ({
-    ...t,
-    balance: balanceMap.get(t.user_id) || null,
+  const enriched = agents.map((a: { user_id: string }) => ({
+    ...a,
+    balance: balanceMap.get(a.user_id) || null,
   }));
 
   return NextResponse.json(enriched);

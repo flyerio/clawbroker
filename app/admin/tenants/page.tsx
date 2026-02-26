@@ -6,14 +6,12 @@ interface Tenant {
   id: string;
   user_id: string;
   fly_app_name: string;
-  telegram_user_id: string | null;
+  bot_username: string | null;
+  fly_machine_id: string | null;
+  telegram_user_id: number | null;
   status: string;
   created_at: string;
   provisioned_at: string | null;
-  bot_pool: {
-    bot_username: string;
-    fly_machine_id: string | null;
-  } | null;
   user_identity_map: {
     email: string;
   } | null;
@@ -117,7 +115,7 @@ export default function TenantsPage() {
                         {t.telegram_user_id || "—"}
                       </td>
                       <td className="px-4 py-3 text-zinc-500">
-                        @{t.bot_pool?.bot_username || "—"}
+                        @{t.bot_username || "—"}
                       </td>
                       <td className="px-4 py-3">
                         <span

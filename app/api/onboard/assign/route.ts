@@ -24,80 +24,55 @@ export async function POST() {
 
   const appUserId = identity.app_user_id;
 
-  // Check if user already has a tenant
-  const { data: existingTenant } = await supabase
-    .from("tenant_registry")
-    .select("id, status, fly_app_name, bot_id, bot_pool(bot_username, bot_token, fly_app_name, fly_machine_id)")
+  // Check if user already has an agent
+  const { data: existingAgent } = await supabase
+    .from("openclaw_agents")
+    .select("id, status, fly_app_name, bot_username, fly_machine_id")
     .eq("user_id", appUserId)
     .single();
 
-  if (existingTenant) {
-    const bot = existingTenant.bot_pool as unknown as {
-      bot_username: string;
-      fly_app_name: string;
-      fly_machine_id: string;
-    };
+  if (existingAgent) {
     return NextResponse.json({
-      botUsername: bot.bot_username,
-      flyAppName: existingTenant.fly_app_name,
-      flyMachineId: bot.fly_machine_id,
-      tenantStatus: existingTenant.status,
+      botUsername: existingAgent.bot_username,
+      flyAppName: existingAgent.fly_app_name,
+      flyMachineId: existingAgent.fly_machine_id,
+      tenantStatus: existingAgent.status,
     });
   }
 
-  // Assign next available bot
-  const { data: bot, error: botErr } = await supabase
-    .from("bot_pool")
+  // Assign next available agent
+  const { data: agent, error: agentErr } = await supabase
+    .from("openclaw_agents")
     .select("*")
     .eq("status", "available")
+    .not("bot_token", "is", null)
     .order("created_at", { ascending: true })
     .limit(1)
     .single();
 
-  if (botErr || !bot) {
+  if (agentErr || !agent) {
     return NextResponse.json(
       { error: "No bots available right now. Please try again later." },
       { status: 503 }
     );
   }
 
-  // Optimistic lock: assign bot
-  const { error: botUpdateErr } = await supabase
-    .from("bot_pool")
+  // Optimistic lock: assign agent
+  const { error: updateErr } = await supabase
+    .from("openclaw_agents")
     .update({
-      status: "assigned",
-      assigned_to: appUserId,
-      assigned_at: new Date().toISOString(),
+      user_id: appUserId,
+      status: "pending",
+      provisioned_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     })
-    .eq("id", bot.id)
+    .eq("id", agent.id)
     .eq("status", "available");
 
-  if (botUpdateErr) {
-    console.error("bot_pool update error:", botUpdateErr);
+  if (updateErr) {
+    console.error("openclaw_agents update error:", updateErr);
     return NextResponse.json(
       { error: "Failed to assign bot. Please try again." },
-      { status: 500 }
-    );
-  }
-
-  // Create tenant
-  const { error: tenantErr } = await supabase.from("tenant_registry").insert({
-    user_id: appUserId,
-    bot_id: bot.id,
-    fly_app_name: bot.fly_app_name,
-    status: "pending",
-    provisioned_at: new Date().toISOString(),
-  });
-
-  if (tenantErr) {
-    // Rollback bot assignment
-    await supabase
-      .from("bot_pool")
-      .update({ status: "available", assigned_to: null, assigned_at: null })
-      .eq("id", bot.id);
-    console.error("tenant_registry insert error:", tenantErr);
-    return NextResponse.json(
-      { error: "Failed to create tenant" },
       { status: 500 }
     );
   }
@@ -115,9 +90,9 @@ export async function POST() {
   });
 
   return NextResponse.json({
-    botUsername: bot.bot_username,
-    flyAppName: bot.fly_app_name,
-    flyMachineId: bot.fly_machine_id,
+    botUsername: agent.bot_username,
+    flyAppName: agent.fly_app_name,
+    flyMachineId: agent.fly_machine_id,
     tenantStatus: "pending",
   });
 }

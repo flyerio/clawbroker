@@ -33,118 +33,95 @@ export async function POST(req: Request) {
   }
 
   const pairingToken = match[1].trim();
-  const telegramUserId = String(message.from.id);
+  const telegramUserId = Number(message.from.id);
 
-  // 4. Look up tenant by pairing token (optimistic lock on status = "pairing")
-  const { data: tenant, error: lookupErr } = await supabase
-    .from("tenant_registry")
-    .select("*, bot_pool(bot_token, bot_username, fly_machine_id), user_identity_map(email)")
+  // 4. Look up agent by pairing token (optimistic lock on status = "pairing")
+  const { data: agent, error: lookupErr } = await supabase
+    .from("openclaw_agents")
+    .select("*, user_identity_map:user_id(email)")
     .eq("pairing_token", pairingToken)
     .eq("status", "pairing")
     .single();
 
-  if (lookupErr || !tenant) {
-    // Token not found or already used — send user a message
-    const botToken = await getBotTokenFromUpdate(update);
-    if (botToken) {
-      await sendTelegramMessage(
-        botToken,
-        telegramUserId,
-        "This link has expired or was already used. Please go back to clawbroker.ai and try again."
-      );
-    }
+  if (lookupErr || !agent) {
+    // Token not found or already used
     return NextResponse.json({ ok: true });
   }
 
   // 5. Check expiry (15 min TTL)
-  if (tenant.pairing_expires_at && new Date(tenant.pairing_expires_at) < new Date()) {
-    const bot = tenant.bot_pool as unknown as { bot_token: string; bot_username: string };
-    if (bot?.bot_token) {
+  if (agent.pairing_expires_at && new Date(agent.pairing_expires_at) < new Date()) {
+    if (agent.bot_token) {
       await sendTelegramMessage(
-        bot.bot_token,
-        telegramUserId,
+        agent.bot_token,
+        String(telegramUserId),
         "This pairing link has expired. Please go back to clawbroker.ai and click \"Try Again\"."
       );
     }
     return NextResponse.json({ ok: true });
   }
 
-  const bot = tenant.bot_pool as unknown as { bot_token: string; bot_username: string; fly_machine_id: string };
-  const userIdentity = tenant.user_identity_map as unknown as { email: string };
-  const email = userIdentity?.email;
+  const email = (agent.user_identity_map as unknown as { email: string })?.email;
 
-  // 6. Update tenant: set telegram_user_id, clear pairing token, set status to activating
+  // 6. Update agent: set telegram_user_id, clear pairing token, set status to activating
   const { error: updateErr } = await supabase
-    .from("tenant_registry")
+    .from("openclaw_agents")
     .update({
       telegram_user_id: telegramUserId,
       pairing_token: null,
       pairing_expires_at: null,
       status: "activating",
+      updated_at: new Date().toISOString(),
     })
-    .eq("id", tenant.id)
+    .eq("id", agent.id)
     .eq("status", "pairing"); // optimistic lock prevents double-processing
 
   if (updateErr) {
-    console.error("tenant update error:", updateErr);
+    console.error("agent update error:", updateErr);
     return NextResponse.json({ ok: true });
   }
 
   // 7. Send confirmation message to user
-  if (bot?.bot_token) {
+  if (agent.bot_token) {
     await sendTelegramMessage(
-      bot.bot_token,
-      telegramUserId,
+      agent.bot_token,
+      String(telegramUserId),
       "Got it! Setting up your agent now... This usually takes under a minute."
     );
   }
 
   // 8. Delete webhook (gateway will set its own on start)
-  if (bot?.bot_token) {
-    await deleteWebhook(bot.bot_token);
+  if (agent.bot_token) {
+    await deleteWebhook(agent.bot_token);
   }
 
   // 9. Start VM and configure tenant
   let activated = false;
-  if (tenant.fly_app_name && bot?.fly_machine_id) {
+  if (agent.fly_app_name && agent.fly_machine_id) {
     try {
-      await startMachine(tenant.fly_app_name, bot.fly_machine_id);
-      await configureTenant(tenant.fly_app_name, bot.fly_machine_id);
-      await supabase
-        .from("tenant_registry")
-        .update({ status: "active", provisioned_at: new Date().toISOString() })
-        .eq("id", tenant.id);
-      // Sync to openclaw_agents for admin dashboard
+      await startMachine(agent.fly_app_name, agent.fly_machine_id);
+      await configureTenant(agent.fly_app_name, agent.fly_machine_id);
       await supabase
         .from("openclaw_agents")
         .update({
-          user_id: tenant.user_id,
-          telegram_user_id: telegramUserId,
           status: "active",
+          provisioned_at: new Date().toISOString(),
           linked_at: new Date().toISOString(),
           activated_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
-        .eq("fly_app_name", tenant.fly_app_name);
+        .eq("id", agent.id);
       activated = true;
     } catch (err) {
       console.error("Auto-activation failed:", err);
       // Fall back to pending for manual activation
       await supabase
-        .from("tenant_registry")
-        .update({ status: "pending" })
-        .eq("id", tenant.id);
-      // Still sync user linkage even if VM activation fails
-      await supabase
         .from("openclaw_agents")
         .update({
-          user_id: tenant.user_id,
-          telegram_user_id: telegramUserId,
           status: "stopped",
           linked_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
-        .eq("fly_app_name", tenant.fly_app_name);
+        .eq("id", agent.id);
     }
   }
 
@@ -154,7 +131,7 @@ export async function POST(req: Request) {
       await sendActivationEmail({
         to: email,
         firstName: email.split("@")[0],
-        botUsername: bot.bot_username,
+        botUsername: agent.bot_username,
       });
     } catch (err) {
       console.error("Activation email failed (non-blocking):", err);
@@ -164,22 +141,9 @@ export async function POST(req: Request) {
   // 11. Notify admin
   await notifyAdmin(
     activated
-      ? `✅ Auto-activated via Telegram pairing!\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nBot: @${bot.bot_username}\nFly app: ${tenant.fly_app_name}`
-      : `⚠️ Telegram paired but activation failed — activate manually\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nBot: @${bot.bot_username}\nFly app: ${tenant.fly_app_name}`
+      ? `Auto-activated via Telegram pairing!\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nBot: @${agent.bot_username}\nFly app: ${agent.fly_app_name}`
+      : `Telegram paired but activation failed — activate manually\nEmail: ${email}\nTelegram user ID: ${telegramUserId}\nBot: @${agent.bot_username}\nFly app: ${agent.fly_app_name}`
   );
 
   return NextResponse.json({ ok: true });
-}
-
-/**
- * Extract bot token from the webhook URL context.
- * Fallback: look up from bot_pool by matching the update's bot info.
- */
-async function getBotTokenFromUpdate(
-  update: { message?: { chat?: { id: number } } }
-): Promise<string | null> {
-  // We can't determine the bot token from the update alone without DB lookup.
-  // For expired/invalid tokens, we just skip sending a message.
-  void update;
-  return null;
 }

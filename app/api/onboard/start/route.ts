@@ -11,7 +11,7 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Resolve user → tenant → machine
+  // Resolve user → agent
   const { data: identity } = await supabase
     .from("user_identity_map")
     .select("app_user_id")
@@ -25,22 +25,21 @@ export async function POST() {
     );
   }
 
-  const { data: tenant } = await supabase
-    .from("tenant_registry")
-    .select("id, fly_app_name, bot_pool(fly_machine_id)")
+  const { data: agent } = await supabase
+    .from("openclaw_agents")
+    .select("id, fly_app_name, fly_machine_id")
     .eq("user_id", identity.app_user_id)
     .single();
 
-  if (!tenant) {
+  if (!agent) {
     return NextResponse.json(
       { error: "No tenant found. Complete the assign step first." },
       { status: 400 }
     );
   }
 
-  const bot = tenant.bot_pool as unknown as { fly_machine_id: string };
-  const appName = tenant.fly_app_name;
-  const machineId = bot.fly_machine_id;
+  const appName = agent.fly_app_name;
+  const machineId = agent.fly_machine_id;
 
   if (!appName || !machineId) {
     return NextResponse.json(

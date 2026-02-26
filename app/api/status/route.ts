@@ -18,28 +18,28 @@ export async function GET() {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  const { data: tenant } = await supabase
-    .from("tenant_registry")
-    .select("*, bot_pool(*)")
+  const { data: agent } = await supabase
+    .from("openclaw_agents")
+    .select("*")
     .eq("user_id", identity.app_user_id)
     .single();
 
-  if (!tenant) {
+  if (!agent) {
     return NextResponse.json({ status: "no_tenant" });
   }
 
   const response: Record<string, unknown> = {
-    status: tenant.status,
-    botUsername: tenant.bot_pool?.bot_username,
-    flyAppName: tenant.fly_app_name,
-    telegramUserId: tenant.telegram_user_id,
-    createdAt: tenant.created_at,
-    provisionedAt: tenant.provisioned_at,
+    status: agent.status,
+    botUsername: agent.bot_username,
+    flyAppName: agent.fly_app_name,
+    telegramUserId: agent.telegram_user_id,
+    createdAt: agent.created_at,
+    provisionedAt: agent.provisioned_at,
   };
 
   // Include pairing token so frontend can rebuild the deep link on page refresh
-  if (tenant.status === "pairing" && tenant.pairing_token) {
-    response.pairingToken = tenant.pairing_token;
+  if (agent.status === "pairing" && agent.pairing_token) {
+    response.pairingToken = agent.pairing_token;
   }
 
   return NextResponse.json(response);

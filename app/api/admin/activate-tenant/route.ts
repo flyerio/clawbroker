@@ -18,28 +18,28 @@ export async function POST(req: Request) {
     );
   }
 
-  // Fetch tenant with bot + user details
-  const { data: tenant, error: fetchErr } = await supabase
-    .from("tenant_registry")
-    .select("*, bot_pool(bot_username, fly_machine_id), user_identity_map(email)")
+  // Fetch agent with user details
+  const { data: agent, error: fetchErr } = await supabase
+    .from("openclaw_agents")
+    .select("*, user_identity_map:user_id(email)")
     .eq("id", tenantId)
     .single();
 
-  if (fetchErr || !tenant) {
+  if (fetchErr || !agent) {
     return NextResponse.json(
-      { error: fetchErr?.message || "Tenant not found" },
+      { error: fetchErr?.message || "Agent not found" },
       { status: 404 }
     );
   }
 
-  const flyAppName = tenant.fly_app_name;
-  const machineId = tenant.bot_pool?.fly_machine_id;
-  const email = tenant.user_identity_map?.email;
-  const botUsername = tenant.bot_pool?.bot_username;
+  const flyAppName = agent.fly_app_name;
+  const machineId = agent.fly_machine_id;
+  const email = (agent.user_identity_map as unknown as { email: string })?.email;
+  const botUsername = agent.bot_username;
 
   if (!flyAppName || !machineId) {
     return NextResponse.json(
-      { error: "Tenant is missing fly_app_name or fly_machine_id" },
+      { error: "Agent is missing fly_app_name or fly_machine_id" },
       { status: 400 }
     );
   }
@@ -64,12 +64,14 @@ export async function POST(req: Request) {
     );
   }
 
-  // Mark tenant as active
+  // Mark agent as active
   const { error: updateErr } = await supabase
-    .from("tenant_registry")
+    .from("openclaw_agents")
     .update({
       status: "active",
       provisioned_at: new Date().toISOString(),
+      activated_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     })
     .eq("id", tenantId);
 

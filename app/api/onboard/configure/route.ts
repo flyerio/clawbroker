@@ -15,7 +15,7 @@ export async function POST() {
   const user = await currentUser();
   const email = user?.emailAddresses[0]?.emailAddress ?? "unknown";
 
-  // Resolve user → tenant → machine
+  // Resolve user → agent
   const { data: identity } = await supabase
     .from("user_identity_map")
     .select("app_user_id")
@@ -29,25 +29,21 @@ export async function POST() {
     );
   }
 
-  const { data: tenant } = await supabase
-    .from("tenant_registry")
-    .select("id, status, fly_app_name, bot_pool(bot_username, fly_machine_id)")
+  const { data: agent } = await supabase
+    .from("openclaw_agents")
+    .select("id, status, fly_app_name, bot_username, fly_machine_id")
     .eq("user_id", identity.app_user_id)
     .single();
 
-  if (!tenant) {
+  if (!agent) {
     return NextResponse.json(
       { error: "No tenant found. Complete the assign step first." },
       { status: 400 }
     );
   }
 
-  const bot = tenant.bot_pool as unknown as {
-    bot_username: string;
-    fly_machine_id: string;
-  };
-  const appName = tenant.fly_app_name;
-  const machineId = bot.fly_machine_id;
+  const appName = agent.fly_app_name;
+  const machineId = agent.fly_machine_id;
 
   if (!appName || !machineId) {
     return NextResponse.json(
@@ -74,26 +70,28 @@ export async function POST() {
     );
   }
 
-  // Mark tenant as active
+  // Mark agent as active
   const { error: updateErr } = await supabase
-    .from("tenant_registry")
+    .from("openclaw_agents")
     .update({
       status: "active",
       provisioned_at: new Date().toISOString(),
+      activated_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     })
-    .eq("id", tenant.id);
+    .eq("id", agent.id);
 
   if (updateErr) {
-    console.error("Failed to mark tenant active:", updateErr);
+    console.error("Failed to mark agent active:", updateErr);
   }
 
   // Notify admin (fire-and-forget)
   notifyAdmin(
-    `🚀 New signup (active)\nEmail: ${email}\nBot: @${bot.bot_username}\nFly app: ${appName}`
+    `New signup (active)\nEmail: ${email}\nBot: @${agent.bot_username}\nFly app: ${appName}`
   ).catch(() => {});
 
   return NextResponse.json({
-    botUsername: bot.bot_username,
+    botUsername: agent.bot_username,
     status: "active",
   });
 }

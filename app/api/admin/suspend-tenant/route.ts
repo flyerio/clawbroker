@@ -17,25 +17,25 @@ export async function POST(req: Request) {
     );
   }
 
-  // Get tenant + bot info
-  const { data: tenant } = await supabase
-    .from("tenant_registry")
-    .select("*, bot_pool(*)")
+  // Get agent info
+  const { data: agent } = await supabase
+    .from("openclaw_agents")
+    .select("id, fly_app_name, fly_machine_id")
     .eq("id", tenantId)
     .single();
 
-  if (!tenant) {
-    return NextResponse.json({ error: "Tenant not found" }, { status: 404 });
+  if (!agent) {
+    return NextResponse.json({ error: "Agent not found" }, { status: 404 });
   }
 
   // Stop the VM if machine ID is known
-  if (tenant.fly_app_name && tenant.bot_pool?.fly_machine_id) {
-    await stopMachine(tenant.fly_app_name, tenant.bot_pool.fly_machine_id);
+  if (agent.fly_app_name && agent.fly_machine_id) {
+    await stopMachine(agent.fly_app_name, agent.fly_machine_id);
   }
 
   const { error } = await supabase
-    .from("tenant_registry")
-    .update({ status: "suspended" })
+    .from("openclaw_agents")
+    .update({ status: "suspended", updated_at: new Date().toISOString() })
     .eq("id", tenantId);
 
   if (error) {
