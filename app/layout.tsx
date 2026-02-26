@@ -161,7 +161,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider dynamic>
+    <ClerkProvider
+      dynamic
+      localization={{
+        unstable__errors: {
+          not_allowed_access:
+            "Please use a business email address. Personal email domains (Gmail, Yahoo, Outlook, etc.) are not accepted.",
+        },
+      }}
+    >
       <html lang="en">
         <body className={`${GeistSans.className} ${GeistMono.variable} ${montserrat.variable} antialiased overflow-x-hidden min-h-dvh`}>
           <script
