@@ -749,9 +749,9 @@ function PropertyDataSection() {
 /* ─── Client Experience Section ─── */
 
 const CLIENT_TABS = [
-  { value: "tab1", label: "Survey", icon: <Table size={14} />, src: "/01_cobroker_grid.png", alt: "ClawBroker interface showing property survey grid" },
-  { value: "tab2", label: "Labels", icon: <Tag size={14} />, src: "/02_cobroker_labels.png", alt: "ClawBroker interface showing property labels" },
-  { value: "tab3", label: "Chat", icon: <MessageSquare size={14} />, src: "/03_cobroker_feedback.png", alt: "ClawBroker interface showing client chat" },
+  { value: "tab1", label: "Survey", icon: <Table size={14} />, src: "/01_clawbroker_grid.png", alt: "ClawBroker interface showing property survey grid" },
+  { value: "tab2", label: "Labels", icon: <Tag size={14} />, src: "/02_clawbroker_labels.png", alt: "ClawBroker interface showing property labels" },
+  { value: "tab3", label: "Chat", icon: <MessageSquare size={14} />, src: "/03_clawbroker_feedback.png", alt: "ClawBroker interface showing client chat" },
 ];
 
 function ClientExperienceSection() {

@@ -1,10 +1,10 @@
 # ClawBroker AI — Full Documentation
 
-> ClawBroker AI is a commercial real estate AI platform built on the
-> OpenClaw agent framework. It gives CRE brokers and brokerage firm
-> owners a full AI team — accessible via Telegram — that handles
-> property search, demographic analysis, document extraction, market
-> monitoring, client memory, and chart generation — all from your phone, 24/7.
+> ClawBroker AI is a commercial real estate AI platform that gives CRE
+> brokers and brokerage firm owners a full AI team — accessible via
+> Telegram — that handles property search, demographic analysis,
+> document extraction, market monitoring, client memory, and chart
+> generation — all from your phone, 24/7.
 
 ## Skills (What the Agent Can Do)
 
@@ -73,13 +73,10 @@ ClawBroker starts with a **free $50 credit** — no credit card required. After 
 ## Frequently Asked Questions
 
 ### What is ClawBroker AI?
-ClawBroker AI is a commercial real estate AI platform built on the OpenClaw agent framework. It provides CRE brokers with an AI team accessible via Telegram that handles property search, demographic analysis, document extraction, market monitoring, client memory, and chart generation — all from your phone, 24/7.
+ClawBroker AI is a commercial real estate AI platform that provides CRE brokers with an AI team accessible via Telegram. It handles property search, demographic analysis, document extraction, market monitoring, client memory, and chart generation — all from your phone, 24/7.
 
 ### How is ClawBroker AI different from a regular AI chatbot?
 Unlike chatbots that only answer when prompted, ClawBroker monitors markets 24/7 and alerts you proactively. It remembers your clients and deals across conversations, takes real actions like pulling comps and drafting LOIs, and has CRE-specific tools for demographics, property search, and lease analysis built in.
-
-### What is OpenClaw and how does ClawBroker use it?
-OpenClaw is an open-source AI agent framework with over 200,000 GitHub stars. ClawBroker is a vertical application built on OpenClaw specifically for commercial real estate brokerage — it adds CRE-specific skills like property search, ESRI demographics, document extraction, and market monitoring on top of the OpenClaw runtime.
 
 ### What can ClawBroker AI do for CRE brokers?
 ClawBroker handles six core tasks: finding available properties via AI-powered search, analyzing demographics with ESRI data (population, income, housing), extracting deal data from emailed PDFs and spreadsheets, monitoring markets for new listings, remembering client profiles and criteria, and generating professional charts from any data.
@@ -98,7 +95,6 @@ ClawBroker serves a different role than CoStar. CoStar is a data subscription ($
 
 ## Key Pages
 - [Home](https://clawbroker.ai)
-- [Sign Up (Free $50 Credit)](https://clawbroker.ai/sign-up)
 - [Book a Demo](https://cal.com/cobroker/website)
 
 ## Company
@@ -106,7 +102,4 @@ ClawBroker serves a different role than CoStar. CoStar is a data subscription ($
 - **Founded**: 2024
 - **Industry**: Commercial Real Estate Technology (CRE PropTech)
 - **Target Users**: Commercial real estate brokers and brokerage firm owners
-- **Built on**: OpenClaw agent framework
 - **Channel**: Telegram (24/7 access from phone)
-- **Category**: First OpenClaw-based vertical AI platform for CRE brokerage
-- **Contact**: isaac@cobroker.ai
