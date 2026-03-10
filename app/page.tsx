@@ -342,28 +342,6 @@ const TASK_ICON_PATHS: Record<string, React.ReactNode> = {
   ),
 };
 
-/* ─── Mail SVG Icon ─── */
-
-function MailIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7" />
-      <path d="M3 7l9 6l9-6" />
-    </svg>
-  );
-}
 
 
 /* ─── Task Icon ─── */
@@ -949,16 +927,10 @@ function FloatingNavbar() {
         <div className="hidden md:flex items-center gap-2 shrink-0">
           <button
             onClick={handleBookDemo}
-            className="text-sm font-medium text-[#26251e]/70 hover:text-[#26251e] px-3 py-1.5 transition-colors cursor-pointer"
+            className="main-btn-shadow inline-flex items-center justify-center px-5 py-2 text-sm font-medium cursor-pointer"
           >
             Book a Demo
           </button>
-          <a
-            href="/sign-up"
-            className="main-btn-shadow inline-flex items-center justify-center px-5 py-2 text-sm font-medium"
-          >
-            Start Free
-          </a>
         </div>
 
         {/* Mobile hamburger */}
@@ -993,23 +965,16 @@ function FloatingNavbar() {
                 </a>
               ))}
               <div className="border-t border-[#26251e]/10 mx-4 my-2" />
-              <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  handleBookDemo();
-                }}
-                className="px-6 py-3 text-sm font-medium text-[#26251e]/70 hover:text-[#26251e] hover:bg-[#26251e]/[0.04] transition-colors text-left cursor-pointer"
-              >
-                Book a Demo
-              </button>
               <div className="px-4 py-2">
-                <a
-                  href="/sign-up"
-                  className="main-btn-shadow flex items-center justify-center px-5 py-2.5 text-sm font-medium w-full"
-                  onClick={() => setMobileOpen(false)}
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    handleBookDemo();
+                  }}
+                  className="main-btn-shadow flex items-center justify-center px-5 py-2.5 text-sm font-medium w-full cursor-pointer"
                 >
-                  Start Free
-                </a>
+                  Book a Demo
+                </button>
               </div>
             </div>
           </motion.div>
@@ -1128,20 +1093,14 @@ export default function Home() {
               ClawBroker AI is a commercial real estate AI platform built on the OpenClaw agent framework. It gives CRE brokers and brokerage firms an AI team that handles property search, demographic analysis, document extraction, market monitoring, and client memory — all from Telegram, 24/7.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
-              <a
-                href="/sign-up"
-                className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors"
-              >
-                Start Free
-              </a>
               <button
                 onClick={async () => {
                   const cal = await getCalApi();
                   cal("modal", { calLink: "cobroker/website" });
                 }}
-                className="inline-flex items-center justify-center rounded-full border border-[#26251e]/20 px-6 py-2.5 text-sm font-medium text-[#26251e]/70 hover:bg-[#26251e]/[0.04] transition-colors"
+                className="main-btn-shadow inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium transition-colors cursor-pointer"
               >
-                Talk to a Human
+                Book a Demo
               </button>
             </div>
           </div>
@@ -1511,50 +1470,18 @@ export default function Home() {
                 <span className="block text-white">Focus on closing.</span>
               </h2>
               <div className="flex flex-col sm:flex-row gap-3">
-                <a
-                  href="/sign-up"
-                  className="inline-flex items-center justify-center rounded-full bg-white text-[#26251e] px-6 py-2.5 text-sm font-medium hover:bg-white/90 transition-colors"
-                >
-                  Start Free
-                </a>
                 <button
                   onClick={async () => {
                     const cal = await getCalApi();
                     cal("modal", { calLink: "cobroker/website" });
                   }}
-                  className="inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10 transition-colors cursor-pointer"
+                  className="inline-flex items-center justify-center rounded-full bg-white text-[#26251e] px-6 py-2.5 text-sm font-medium hover:bg-white/90 transition-colors cursor-pointer"
                 >
                   Book a Demo
                 </button>
               </div>
             </div>
 
-            {/* Lower-right: Made with love */}
-            <div className="relative z-10 self-end text-right mt-8">
-              <p className="flex flex-wrap items-center justify-end gap-x-2 sm:gap-x-3 gap-y-2 text-sm sm:text-base text-white/50">
-                <span className="flex items-center gap-2">
-                  Built with{" "}
-                  <span className="text-white/60" aria-label="love">
-                    &#9829;
-                  </span>{" "}
-                  by{" "}
-                  <a
-                    href="https://cobroker.ai"
-                    className="text-white/50 hover:text-white/70 font-medium transition-colors"
-                  >
-                    Cobroker.ai
-                  </a>
-                </span>
-                <span className="size-1 rounded-full bg-white/40" />
-                <a
-                  href="mailto:isaac@cobroker.ai"
-                  className="inline-flex items-center gap-1.5 text-white/50 hover:text-white/70 transition-colors"
-                >
-                  <MailIcon className="size-4 sm:size-5 shrink-0" />
-                  Support
-                </a>
-              </p>
-            </div>
           </div>
         </section>
       </div>

@@ -1,9 +1,10 @@
 "use client";
 
 import { useUser, useClerk } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getCalApi } from "@calcom/embed-react";
 
 interface Balance {
   total_budget_usd: number;
@@ -117,14 +118,17 @@ export default function DashboardPage() {
             No agent set up yet
           </h1>
           <p className="text-sm text-zinc-400 mb-4">
-            Complete onboarding to get your personal CRE AI agent.
+            Book a demo and we&apos;ll get your personal CRE AI agent set up.
           </p>
-          <Link
-            href="/onboarding"
-            className="main-btn-shadow text-sm inline-block"
+          <button
+            onClick={async () => {
+              const cal = await getCalApi();
+              cal("modal", { calLink: "cobroker/website" });
+            }}
+            className="main-btn-shadow text-sm inline-block cursor-pointer"
           >
-            Set Up Agent
-          </Link>
+            Book a Demo
+          </button>
         </div>
       </div>
     );
